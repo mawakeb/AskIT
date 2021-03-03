@@ -27,6 +27,14 @@ public class QuoteController {
     }
 
 
+
+    @GetMapping("send/question") // for /quote/search
+    @ResponseBody
+    public void sendQuestion(@RequestParam String question) {
+
+    }
+
+
     /**
      * GET Endpoint to retrieve a random quote.
      *

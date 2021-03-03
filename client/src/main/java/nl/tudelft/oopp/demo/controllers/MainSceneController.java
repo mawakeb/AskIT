@@ -19,9 +19,8 @@ public class MainSceneController {
      * Handles clicking the button.
      */
     public void buttonClicked() {
-        List<Quote> result = ServerCommunication.findQuotes(search.getText());
-        quoteList.getItems().clear();
-        quoteList.getItems().addAll(result);
+        ServerCommunication.sendQuestion(search.getText());
+
 
     }
 }
