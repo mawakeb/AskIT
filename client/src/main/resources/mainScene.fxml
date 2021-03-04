@@ -6,5 +6,5 @@
 <VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
     <Button fx:id="button" onAction="#buttonClicked" text="Click me!" />
    <TextField fx:id="search" />
-   <ListView fx:id="quoteList" prefHeight="200.0" prefWidth="200.0" />
+   <ListView fx:id="questionList" prefHeight="200.0" prefWidth="200.0" />
 </VBox>

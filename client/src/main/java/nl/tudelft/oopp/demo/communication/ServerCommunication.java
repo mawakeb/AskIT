@@ -63,4 +63,18 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
+    public static List<String> getQuestions() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions")).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return gson.fromJson(response.body(), new TypeToken<List<String>>(){}.getType());
+    }
 }
