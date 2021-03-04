@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name="questions")
@@ -27,11 +28,23 @@ public class Question {
         this.content = content;
     }
 
+    public Question() {
+    }
+
     public long getId() {
         return id;
     }
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return id == question.id &&
+                Objects.equals(content, question.content);
     }
 }
