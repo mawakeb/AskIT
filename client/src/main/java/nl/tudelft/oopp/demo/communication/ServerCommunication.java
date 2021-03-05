@@ -15,6 +15,14 @@ public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
+    public ServerCommunication() {
+    }
+
+    // constructor to supply mock client
+    public ServerCommunication(HttpClient client) {
+        this.client = client;
+    }
+
     private static Gson gson = new Gson();
     /**
      * Retrieves a quote from the server.
