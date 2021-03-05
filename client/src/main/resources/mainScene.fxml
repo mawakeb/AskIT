@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
-    <Button fx:id="button" onAction="#buttonClicked" text="Click me!" />
-   <TextField fx:id="search" />
-   <ListView fx:id="quoteList" prefHeight="200.0" prefWidth="200.0" />
+<VBox prefHeight="376.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
+    <TabPane prefHeight="200.0" prefWidth="503.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Join Room">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                            <Button fx:id="join" layoutX="119.0" layoutY="130.0" mnemonicParsing="false" onAction="#joinButtonClicked" text="JOIN" />
+                            <TextField fx:id="link" layoutX="48.0" layoutY="49.0" prefHeight="37.0" prefWidth="183.0" promptText="Enter link" />
+                        </children></AnchorPane>
+                </content>
+            </Tab>
+            <Tab text="Create Room">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                            <Button fx:id="create" layoutX="102.0" layoutY="130.0" mnemonicParsing="false" onAction="#createButtonClicked" text="Create Room" />
+                            <TextField fx:id="name" layoutX="59.0" layoutY="49.0" prefHeight="35.0" prefWidth="171.0" promptText="Enter name (without space)" />
+                        </children></AnchorPane>
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+    <TextField fx:id="question" prefHeight="26.0" prefWidth="236.0" promptText="ask a question..." />
+    <Button fx:id="button" onAction="#buttonClicked" text="Send" />
+    <ListView fx:id="list" prefHeight="117.0" prefWidth="290.0">
+        <cursor>
+            <Cursor fx:constant="DEFAULT" />
+        </cursor></ListView>
 </VBox>
