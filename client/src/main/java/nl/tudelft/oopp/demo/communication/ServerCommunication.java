@@ -63,4 +63,34 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
+    //add alerts for each error
+    public static List<String> createRoom(String name) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/create/name?q=" + name)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+
+        return gson.fromJson(response.body(), new TypeToken<List<String>>(){}.getType());
+    }
+
+    //automatically start polling?
+    public static void joinRoom(String link) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/join/link?q=" + link)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
 }
