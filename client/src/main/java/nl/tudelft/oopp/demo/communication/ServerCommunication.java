@@ -52,7 +52,9 @@ public class ServerCommunication {
     }
 
     public static void sendQuestion(String text) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/send/question?q=" + text)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(text))
+                .uri(URI.create("http://localhost:8080/send/question")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
