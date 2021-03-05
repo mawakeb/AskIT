@@ -16,8 +16,12 @@ import java.util.List;
 @RequestMapping("get")
 public class GettingController {
 
-    @Autowired
     private QuestionRepository repo;
+
+    @Autowired
+    public GettingController(QuestionRepository repo){
+        this.repo = repo;
+    }
 
     // Endpoint that returns a string list containing all questions in the repository
     @GetMapping("questions") // for /get/questions

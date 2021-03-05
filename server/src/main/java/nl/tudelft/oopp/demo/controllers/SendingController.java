@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("send")
 public class SendingController {
 
-    @Autowired
     private QuestionRepository repo;
+
+    @Autowired
+    public SendingController(QuestionRepository repo){
+        this.repo = repo;
+    }
 
     // TODO: ideally this should be handled by an autoincrement on the DB side
     private static long idCounter = 0;

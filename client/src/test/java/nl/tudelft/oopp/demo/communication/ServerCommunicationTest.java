@@ -11,4 +11,14 @@ public class ServerCommunicationTest {
     public void testRandomQuote() {
         assertNotNull(ServerCommunication.getQuote());
     }
+
+    @Test
+    public void testGetQuestions() {
+        assertNotNull(ServerCommunication.getQuestions());
+    }
+
+    @Test
+    public void testSendQuestion() {
+        ServerCommunication.sendQuestion("Unit test question");
+    }
 }
