@@ -89,6 +89,12 @@ public class ServerCommunication {
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 
+    /**
+     * connects to the server endpoint to upvote a single question
+     * no verification prevents from calling multiple times on the same question
+     * that condition should be checked beforehand (assuming that situation is not wanted)
+     * @param id the ID of the question
+     */
     public static void upvoteQuestion(long id) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(Long.toString(id)))
