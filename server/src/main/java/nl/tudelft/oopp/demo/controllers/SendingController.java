@@ -33,8 +33,10 @@ public class SendingController {
      */
     @PostMapping("upvote")
     @ResponseBody
-    public void upvoteQuestion(@RequestParam long id) {
-        Question question = repo.findById(id);
+    public void upvoteQuestion(@RequestBody String id) {
+        long longId = Long.parseLong(id);
+        Question question = repo.findById(longId);
         question.addUpvote();
+        repo.save(question);
     }
 }

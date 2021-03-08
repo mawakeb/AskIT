@@ -32,7 +32,7 @@ class SendingControllerTest {
     void upvoteQuestion(){
         Question question = new Question(5,"Unit test question");
         when(repo.findById(5)).thenReturn(question);
-        sc.upvoteQuestion(5);
+        sc.upvoteQuestion("5");
         assertEquals(1,question.getUpvotes());
     }
 }
