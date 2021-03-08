@@ -17,6 +17,9 @@ public class Question {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "upvotes")
+    private int upvotes;
+
     /**
      * Create a new Question instance.
      *
@@ -26,6 +29,7 @@ public class Question {
     public Question(long id, String content) {
         this.id = id;
         this.content = content;
+        this.upvotes = 0;
     }
 
     public Question() {
@@ -37,6 +41,14 @@ public class Question {
 
     public String getContent() {
         return content;
+    }
+
+    public int getUpvotes(){
+        return upvotes;
+    }
+
+    public void addUpvote() {
+        upvotes++;
     }
 
     @Override

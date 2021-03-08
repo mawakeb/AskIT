@@ -27,4 +27,14 @@ public class SendingController {
         repo.save(question);
         System.out.println(q);
     }
+
+    /**
+     * Add a single upvote to the question with the specified ID
+     */
+    @PostMapping("upvote")
+    @ResponseBody
+    public void upvoteQuestion(@RequestParam long id) {
+        Question question = repo.findById(id);
+        question.addUpvote();
+    }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question,Long> {
     @Query("SELECT content FROM Question")
     List<String> getAllStrings();
+
+    Question findById(long id);
 }
