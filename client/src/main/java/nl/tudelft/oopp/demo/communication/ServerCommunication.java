@@ -88,4 +88,19 @@ public class ServerCommunication {
         }
         return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
+
+    public static void upvoteQuestion(long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(Long.toString(id)))
+                .uri(URI.create("http://localhost:8080/send/upvote")).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
 }
