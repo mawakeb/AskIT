@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.Quote;
 
 import java.lang.reflect.GenericArrayType;
@@ -74,7 +75,7 @@ public class ServerCommunication {
         }
     }
 
-    public static List<String> getQuestions() {
+    public static List<Question> getQuestions() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions")).build();
         HttpResponse<String> response = null;
         try {
@@ -85,6 +86,6 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
-        return gson.fromJson(response.body(), new TypeToken<List<String>>(){}.getType());
+        return gson.fromJson(response.body(), new TypeToken<List<Question>>(){}.getType());
     }
 }

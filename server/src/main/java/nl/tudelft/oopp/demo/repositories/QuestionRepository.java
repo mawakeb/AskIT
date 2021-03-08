@@ -11,4 +11,6 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
     List<String> getAllStrings();
 
     Question findById(long id);
+
+    List<Question> findAll();
 }

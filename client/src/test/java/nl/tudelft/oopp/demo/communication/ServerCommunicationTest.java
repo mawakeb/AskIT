@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -43,14 +44,17 @@ public class ServerCommunicationTest {
 
     @Test
     public void testGetQuestions(){
-        List<String> expected = List.of("Question 1","Question 2","Question 3");
+        List<Question> expected = List.of(
+                new Question(0,"Q1",4),
+                new Question(1,"Q2",5),
+                new Question(3,"Q3",6));
         String json = gson.toJson(expected);
 
         // set response content
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
 
-        List<String> actual = sc.getQuestions();
+        List<Question> actual = sc.getQuestions();
         assertEquals(expected, actual);
     }
 

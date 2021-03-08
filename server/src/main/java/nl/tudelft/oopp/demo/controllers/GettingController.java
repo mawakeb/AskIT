@@ -26,8 +26,7 @@ public class GettingController {
     // Endpoint that returns a string list containing all questions in the repository
     @GetMapping("questions") // for /get/questions
     @ResponseBody
-    public List<String> getQuestions() {
-        List<String> Questions = repo.getAllStrings();
-        return Questions;
+    public List<Question> getQuestions() {
+        return repo.findAll();
     }
 }
