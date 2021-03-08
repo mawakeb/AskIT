@@ -42,4 +42,15 @@ class RoomTest {
     public void differentRoomsSameAttributesEqualsTest(){
         assertTrue(testRoomA.equals(testRoomC));
     }
+
+    @Test
+    public void differentRoomsEqualsTest(){
+        assertFalse(testRoomA.equals(testRoomB));
+    }
+
+    @Test
+    public void catchesNullPointerTest(){
+        Room testRoom = new Room();
+        assertFalse(testRoom.equals(testRoomA));
+    }
 }
