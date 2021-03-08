@@ -23,7 +23,7 @@ public class GettingController {
         this.repo = repo;
     }
 
-    // Endpoint that returns a string list containing all questions in the repository
+    // Endpoint that returns a list containing all questions in the repository
     @GetMapping("questions") // for /get/questions
     @ResponseBody
     public List<Question> getQuestions() {
