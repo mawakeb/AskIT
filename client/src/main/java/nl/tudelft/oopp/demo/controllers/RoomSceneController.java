@@ -10,18 +10,19 @@ import nl.tudelft.oopp.demo.data.Quote;
 
 import java.util.List;
 
-public class MainSceneController {
+public class RoomSceneController {
     @FXML
-    private TextField search;
+    private TextField question;
     @FXML
     private ListView<Question> questionList;
 
     /**
      * Handles clicking the button.
      */
-    public void buttonClicked() {
-        ServerCommunication.sendQuestion(search.getText());
+    public void sendButtonClicked() {
+        ServerCommunication.sendQuestion(question.getText());
         updateQuestionList();
+        question.clear();
     }
 
     /**
