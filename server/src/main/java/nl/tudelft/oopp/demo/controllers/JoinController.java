@@ -38,6 +38,7 @@ public class JoinController {
 
             System.out.println("Successfully joined");
         }
+        System.out.println("Room not found");
     }
 }
 
