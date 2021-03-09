@@ -8,19 +8,16 @@ public class DatabaseLoader {
 
     public DatabaseLoader(QuoteRepository repo) {
         Quote q1 = new Quote(
-                1,
                 "A clever person solves a problem. A wise person avoids it.",
                 "Albert Einstein"
         );
 
         Quote q2 = new Quote(
-                2,
                 "The computer was born to solve problems that did not exist before.",
                 "Bill Gates"
         );
 
         Quote q3 = new Quote(
-                3,
                 "Tell me and I forget.  Teach me and I remember.  Involve me and I learn.",
                 "Benjamin Franklin"
         );
