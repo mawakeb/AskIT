@@ -64,9 +64,11 @@ public class ServerCommunication {
         }
     }
 
-    //add alerts for each error
+    //TODO: add alerts for each error
     public static List<String> createRoom(String name) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/create/name?q=" + name)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(name))
+                .uri(URI.create("http://localhost:8080/create/room")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -75,12 +77,13 @@ public class ServerCommunication {
         }
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            return List.of(Integer.toString(response.statusCode()));
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<String>>(){}.getType());
     }
 
-    //automatically start polling?
+    //TODO: link to roomScene and start polling
     public static void joinRoom(String link) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/join/link?q=" + link)).build();
         HttpResponse<String> response = null;

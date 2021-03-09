@@ -7,13 +7,10 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping({"create"})
+@RequestMapping("create")
 public class RoomController {
     private long roomId = 0L;
     @Autowired
@@ -22,9 +19,9 @@ public class RoomController {
     public RoomController() {
     }
 
-    @GetMapping({"name"})
+    @PostMapping("room")
     @ResponseBody
-    public List<String> createLink(@RequestParam String q) {
+    public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
 
         String string2;
