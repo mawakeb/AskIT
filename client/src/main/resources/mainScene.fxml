@@ -30,7 +30,7 @@
                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                                  <TextField fx:id="link" prefHeight="40.0" prefWidth="256.0" promptText="Enter link to join a lecture..." style="fx-text-fill: #DDDFDF; -fx-background-color: #262B2D;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                  <TextField fx:id="link" prefHeight="40.0" prefWidth="256.0" promptText="Enter link to join a lecture..." style="-fx-text-fill: #DDDFDF; -fx-background-color: #262B2D;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <cursor>
                                  <Cursor fx:constant="TEXT" />
                               </cursor>
@@ -74,7 +74,7 @@
                                     <Cursor fx:constant="DEFAULT" />
                                 </cursor>
                            </ListView>
-                                  <TextField fx:id="name" prefHeight="40.0" prefWidth="260.0" promptText="Enter lecture name..." style="-fx-background-color: #262B2D; -fx-text-fill: #DDDFDF;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                  <TextField fx:id="name" prefHeight="40.0" prefWidth="260.0" promptText="Enter lecture name..." style="-fx-text-fill: #DDDFDF; -fx-background-color: #262B2D;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                               <cursor>
                                  <Cursor fx:constant="TEXT" />
                               </cursor>
