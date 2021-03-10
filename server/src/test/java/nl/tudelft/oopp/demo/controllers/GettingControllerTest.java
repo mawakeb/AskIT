@@ -27,9 +27,9 @@ class GettingControllerTest {
 
         // mock repo.getAllStrings()
         questionList = List.of(
-                new Question(0, "Q1"),
-                new Question(1, "Q2"),
-                new Question(3, "Q3"));
+                new Question("Q1"),
+                new Question("Q2"),
+                new Question("Q3"));
         when(repo.findAll()).thenReturn(questionList);
 
         gc = new GettingController(repo);

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +13,7 @@ public class Question {
 
     @Id
     @Column(name = "id")
-    private long id;
+    private UUID id;
 
     @Column(name = "content")
     private String content;
@@ -26,8 +27,14 @@ public class Question {
      * @param id      Unique identifier as to be used in the database.
      * @param content Actual text content of the question.
      */
-    public Question(long id, String content) {
+    public Question(UUID id, String content) {
         this.id = id;
+        this.content = content;
+        this.upvotes = 0;
+    }
+
+    public Question(String content) {
+        this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = 0;
     }
@@ -35,7 +42,7 @@ public class Question {
     public Question() {
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -60,7 +67,7 @@ public class Question {
             return false;
         }
         Question question = (Question) o;
-        return id == question.id
+        return id.equals(question.id)
                 && Objects.equals(content, question.content);
     }
 }

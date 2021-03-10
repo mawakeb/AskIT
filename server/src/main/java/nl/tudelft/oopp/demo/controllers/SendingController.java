@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.UUID;
+
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class SendingController {
     @PostMapping("question") // for /send/question
     @ResponseBody
     public void sendQuestion(@RequestBody String q) {
-        Question question = new Question(idCounter++, q);
+        Question question = new Question(q);
         repo.save(question);
         System.out.println(q);
     }
@@ -41,8 +43,8 @@ public class SendingController {
     @PostMapping("upvote")
     @ResponseBody
     public void upvoteQuestion(@RequestBody String id) {
-        long longId = Long.parseLong(id);
-        Question question = repo.findById(longId);
+        UUID uuid = UUID.fromString(id);
+        Question question = repo.findById(uuid);
         question.addUpvote();
         repo.save(question);
     }

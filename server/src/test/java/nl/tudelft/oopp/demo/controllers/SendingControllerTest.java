@@ -3,6 +3,8 @@ package nl.tudelft.oopp.demo.controllers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.UUID;
+
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +32,10 @@ class SendingControllerTest {
 
     @Test
     void upvoteQuestion() {
-        Question question = new Question(5, "Unit test question");
-        when(repo.findById(5)).thenReturn(question);
-        sc.upvoteQuestion("5");
+        UUID uuid = UUID.randomUUID();
+        Question question = new Question(uuid,"Unit test question");
+        when(repo.findById(uuid)).thenReturn(question);
+        sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());
     }
 }
