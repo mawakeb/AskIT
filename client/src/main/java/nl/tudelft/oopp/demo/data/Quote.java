@@ -19,9 +19,9 @@ public class Quote {
 
     @Override
     public String toString() {
-        return "Quote{" +
-                "quote='" + quote + '\'' +
-                ", author='" + author + '\'' +
-                '}';
+        return "Quote{"
+                + "quote='" + quote + '\''
+                + ", author='" + author + '\''
+                + '}';
     }
 }

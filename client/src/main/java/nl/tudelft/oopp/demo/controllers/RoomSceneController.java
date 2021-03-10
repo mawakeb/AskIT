@@ -1,8 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import javafx.collections.ObservableList;
+import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -11,8 +10,6 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 
-import java.util.List;
-
 public class RoomSceneController {
     @FXML
     private TextField question;
@@ -20,9 +17,9 @@ public class RoomSceneController {
     private ListView<Question> questionList;
 
     /**
-     * Use @FXML initialize() instead of constructor
-     * as this method is called after linking the @FXML elements
-     * so only at this point can ui elements be addressed from code
+     * Use @FXML initialize() instead of constructor.
+     * This method is called after linking the @FXML elements.
+     * so only at this point can ui elements be addressed from code.
      */
     @FXML
     public void initialize() {
@@ -43,11 +40,11 @@ public class RoomSceneController {
     }
 
     /**
-     * Fetches all questions from the server
-     * Then updates the listview contents to display them
+     * Fetches all questions from the server.
+     * Then updates the listview contents to display them.
      * TODO: Use some sort of polling to call this method, instead of from buttonClicked
      */
-    public void updateQuestionList(){
+    public void updateQuestionList() {
         List<Question> questions = ServerCommunication.getQuestions();
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);

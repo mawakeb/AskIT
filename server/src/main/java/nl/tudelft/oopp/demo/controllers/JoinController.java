@@ -18,6 +18,11 @@ public class JoinController {
     public JoinController() {
     }
 
+    /**
+     * Receives client request to join room and verifies the link type.
+     *
+     * @param q the join link
+     */
     @GetMapping({"link"})
     @ResponseBody
     public void joinLink(@RequestParam String q) {

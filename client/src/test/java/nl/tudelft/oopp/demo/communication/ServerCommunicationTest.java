@@ -1,6 +1,16 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
 import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,22 +18,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.List;
-
 
 public class ServerCommunicationTest {
 
-    private ServerCommunication sc;
     private static Gson gson = new Gson();
-
+    private ServerCommunication sc;
     @Mock
     private HttpClient client;
 
@@ -42,7 +41,7 @@ public class ServerCommunicationTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class),any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -52,11 +51,11 @@ public class ServerCommunicationTest {
     }
 
     @Test
-    public void testGetQuestions(){
+    public void testGetQuestions() {
         List<Question> expected = List.of(
-                new Question(0,"Q1",4),
-                new Question(1,"Q2",5),
-                new Question(3,"Q3",6));
+                new Question(0, "Q1", 4),
+                new Question(1, "Q2", 5),
+                new Question(3, "Q3", 6));
         String json = gson.toJson(expected);
 
         // set response content
@@ -78,12 +77,12 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
 
         ServerCommunication.upvoteQuestion(123);
-        assertEquals("POST",request.method());
+        assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(3,request.bodyPublisher().get().contentLength());
+        assertEquals(3, request.bodyPublisher().get().contentLength());
     }
 }

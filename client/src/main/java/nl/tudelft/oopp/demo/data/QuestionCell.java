@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.data;
 
+import java.util.HashSet;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,37 +12,37 @@ import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
 
-import java.util.HashSet;
-
 /**
- * Class that forms an entry in the question listview
- * also controls up voting behaviour
+ * Class that forms an entry in the question listview.
+ * Also controls up voting behaviour.
  */
 public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private static HashSet<Long> upvotedQuestionIds = new HashSet<Long>();
+    private static final HashSet<Long> upvotedQuestionIds = new HashSet<Long>();
 
-    private RoomSceneController roomSceneController;
+    private final RoomSceneController roomSceneController;
 
     /**
-     * QuestionCell Constructor, passed as lambda function in SetCellFactory
-     * @param roomSceneController the RoomSceneController containing this ListView
+     * QuestionCell Constructor, passed as lambda function in SetCellFactory.
+     *
+     * @param roomSceneController the RoomSceneController containing this ListView.
      */
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
     }
 
     /**
-     * Method that is called when updating an entry in a question ListView
-     * @param q Question this entry relates to
-     * @param empty Boolean that is true iff this entry of the list is empty
-     * inspired by https://stackoverflow.com/questions/53602086/having-two-button-in-a-list-view-in-javafx-with-xml-file
+     * Method that is called when updating an entry in a question ListView.
+     *
+     * @param q     Question this entry relates to.
+     * @param empty Boolean that is true iff this entry of the list is empty.
+     *              inspired by https://stackoverflow.com/questions/53602086/having-two-button-in-a-list-view-in-javafx-with-xml-file
      */
     @Override
-    protected void updateItem(Question q, boolean empty){
-        super.updateItem(q,empty);
+    protected void updateItem(Question q, boolean empty) {
+        super.updateItem(q, empty);
 
         if (q == null || empty) {
             setText(null);
@@ -50,9 +51,6 @@ public class QuestionCell extends ListCell<Question> {
             HBox box = new HBox(10);
             box.setAlignment(Pos.CENTER_LEFT);
 
-            Label questionText = new Label(q.toString());
-            Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
-
             // expanding region that pushes elements to the sides
             Region center = new Region();
             HBox.setHgrow(center, Priority.ALWAYS);
@@ -60,9 +58,11 @@ public class QuestionCell extends ListCell<Question> {
             // create upvote button
             Button upvoteBtn = new Button("Upvote");
             upvoteBtn.setDisable(upvotedQuestionIds.contains(q.getId()));
-            upvoteBtn.setOnAction(event -> useUpvoteBtn(event,upvoteBtn,q));
+            upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
 
             // combine elements in box and set the cell display to it
+            Label questionText = new Label(q.toString());
+            Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             box.getChildren().addAll(questionText, center, upvoteText, upvoteBtn);
             setText(null);
             setGraphic(box);
@@ -70,15 +70,16 @@ public class QuestionCell extends ListCell<Question> {
     }
 
     /**
-     * Automatically Called when clicking the upvote button
-     * @param event JavaFX button press event
+     * Automatically Called when clicking the upvote button.
+     *
+     * @param event     JavaFX button press event
      * @param upvoteBtn button that was pressed
-     * @param q question the button relates to
+     * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-            upvoteBtn.setDisable(true);
-            ServerCommunication.upvoteQuestion(q.getId());
-            upvotedQuestionIds.add(q.getId());
-            roomSceneController.updateQuestionList();
+        upvoteBtn.setDisable(true);
+        ServerCommunication.upvoteQuestion(q.getId());
+        upvotedQuestionIds.add(q.getId());
+        roomSceneController.updateQuestionList();
     }
 }

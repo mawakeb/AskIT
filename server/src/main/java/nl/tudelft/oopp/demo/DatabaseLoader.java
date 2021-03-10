@@ -3,9 +3,15 @@ package nl.tudelft.oopp.demo;
 import nl.tudelft.oopp.demo.entities.Quote;
 import nl.tudelft.oopp.demo.repositories.QuoteRepository;
 import org.springframework.stereotype.Service;
+
 @Service
 public class DatabaseLoader {
 
+    /**
+     * Loads dummy data into the QuoteRepository.
+     *
+     * @param repo the repository to insert the quotes into.
+     */
     public DatabaseLoader(QuoteRepository repo) {
         Quote q1 = new Quote(
                 "A clever person solves a problem. A wise person avoids it.",

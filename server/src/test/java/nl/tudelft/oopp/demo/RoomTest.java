@@ -1,30 +1,32 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import nl.tudelft.oopp.demo.entities.Room;
 
 class RoomTest {
     Room testRoomA;
     Room testRoomB;
     Room testRoomC;
-    Room testRoomD;
 
     @Test
-    public void workingEmptyConstructorTest(){
+    public void workingEmptyConstructorTest() {
         Room testRoom = new Room();
         assertNotNull(testRoom);
     }
 
     @Test
-    public void workingFilledConstructorTest(){
+    public void workingFilledConstructorTest() {
         Room testRoom = new Room(14, "Room N", "abc", "def");
         assertNotNull(testRoom);
     }
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         testRoomA = new Room(1, "Room A", "abc", "def");
         testRoomB = new Room(2, "Room B", "ace", "bdf");
         testRoomC = new Room(1, "Room C", "abc", "def");
@@ -34,22 +36,22 @@ class RoomTest {
     }
 
     @Test
-    public void sameRoomObjectEqualsTest(){
+    public void sameRoomObjectEqualsTest() {
         assertTrue(testRoomA.equals(testRoomA));
     }
 
     @Test
-    public void differentRoomsSameAttributesEqualsTest(){
+    public void differentRoomsSameAttributesEqualsTest() {
         assertTrue(testRoomA.equals(testRoomC));
     }
 
     @Test
-    public void differentRoomsEqualsTest(){
+    public void differentRoomsEqualsTest() {
         assertFalse(testRoomA.equals(testRoomB));
     }
 
     @Test
-    public void catchesNullPointerTest(){
+    public void catchesNullPointerTest() {
         Room testRoom = new Room();
         assertFalse(testRoom.equals(testRoomA));
     }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Quote {
     @Id
     @Column(name = "id")
-    private UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
 
     @Column(name = "text")
     private String quote;
@@ -25,7 +25,7 @@ public class Quote {
     /**
      * Create a new Quote instance.
      *
-     * @param quote Actual text of the quote.
+     * @param quote  Actual text of the quote.
      * @param author Name of the author of the quote.
      */
     public Quote(String quote, String author) {
@@ -40,6 +40,7 @@ public class Quote {
     public String getAuthor() {
         return author;
     }
+
     public UUID getId() {
         return id;
     }
