@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.UUID;
 
 import nl.tudelft.oopp.demo.data.Question;
 
@@ -73,9 +74,9 @@ public class ServerCommunication {
      *
      * @param id the ID of the question
      */
-    public static void upvoteQuestion(long id) {
+    public static void upvoteQuestion(UUID id) {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(Long.toString(id)))
+                .POST(HttpRequest.BodyPublishers.ofString(id.toString()))
                 .uri(URI.create("http://localhost:8080/send/upvote")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {

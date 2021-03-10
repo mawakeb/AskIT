@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.data;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Question {
 
@@ -9,7 +10,7 @@ public class Question {
      * But because these attributes are a subset of that one,
      * a client Question can be deserialized from a server Question in JSON format
      */
-    private final long id;
+    private final UUID id;
     private final String content;
     private final int upvotes;
 
@@ -20,13 +21,19 @@ public class Question {
      * @param content the text content of the question.
      * @param upvotes the current number of up-votes that the question has.
      */
-    public Question(long id, String content, int upvotes) {
+    public Question(UUID id, String content, int upvotes) {
         this.id = id;
         this.content = content;
         this.upvotes = upvotes;
     }
 
-    public long getId() {
+    public Question(String content, int upvotes) {
+        this.id = UUID.randomUUID();
+        this.content = content;
+        this.upvotes = upvotes;
+    }
+
+    public UUID getId() {
         return id;
     }
 
@@ -52,7 +59,7 @@ public class Question {
             return false;
         }
         Question question = (Question) o;
-        return id == question.id
+        return id.equals(question.id)
                 && upvotes == question.upvotes
                 && Objects.equals(content, question.content);
     }
