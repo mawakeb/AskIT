@@ -27,6 +27,12 @@ public class Question {
         this.upvotes = upvotes;
     }
 
+    /**
+     * Constructor for the Question class that generates an id.
+     *
+     * @param content the text content of the question.
+     * @param upvotes the current number of up-votes that the question has.
+     */
     public Question(String content, int upvotes) {
         this.id = UUID.randomUUID();
         this.content = content;

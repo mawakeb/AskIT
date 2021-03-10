@@ -33,6 +33,11 @@ public class Question {
         this.upvotes = 0;
     }
 
+    /**
+     * Constructor for the Question class that generates an id.
+     *
+     * @param content the text content of the question.
+     */
     public Question(String content) {
         this.id = UUID.randomUUID();
         this.content = content;
@@ -56,6 +61,15 @@ public class Question {
 
     public void addUpvote() {
         upvotes++;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{"
+                + "id=" + id
+                + ", content='" + content + '\''
+                + ", upvotes=" + upvotes
+                + '}';
     }
 
     @Override
