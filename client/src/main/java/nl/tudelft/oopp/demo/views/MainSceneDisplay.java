@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class QuoteDisplay extends Application {
+public class MainSceneDisplay extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -19,6 +19,8 @@ public class QuoteDisplay extends Application {
         Parent root = loader.load();
 
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
+        primaryStage.setTitle("AskIT");
         primaryStage.show();
     }
 
