@@ -14,7 +14,7 @@ public class MainSceneDisplay extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/roomScene.fxml");
+        URL xmlUrl = getClass().getResource("/mainScene.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
 
