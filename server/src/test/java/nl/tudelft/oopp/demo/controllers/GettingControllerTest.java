@@ -20,22 +20,25 @@ class GettingControllerTest {
     @Mock
     private QuestionRepository repo;
 
-    private List<String> questionStrings;
+    private List<Question> questionList;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
 
         // mock repo.getAllStrings()
-        questionStrings = List.of("Question 1","Question 2","Question 3");
-        when(repo.getAllStrings()).thenReturn(questionStrings);
+        questionList = List.of(
+                new Question(0,"Q1"),
+                new Question(1,"Q2"),
+                new Question(3,"Q3"));
+        when(repo.findAll()).thenReturn(questionList);
 
         gc = new GettingController(repo);
     }
 
     @Test
     void testGetQuestions() {
-        List<String> actual = gc.getQuestions();
-        assertEquals(questionStrings,actual);
+        List<Question> actual = gc.getQuestions();
+        assertEquals(questionList,actual);
     }
 }

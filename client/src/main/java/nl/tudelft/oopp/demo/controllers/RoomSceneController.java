@@ -1,11 +1,15 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.data.Quote;
+import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.QuestionCell;
 
 import java.util.List;
 
@@ -13,7 +17,21 @@ public class RoomSceneController {
     @FXML
     private TextField question;
     @FXML
-    private ListView<String> questionList;
+    private ListView<Question> questionList;
+
+    /**
+     * Use @FXML initialize() instead of constructor
+     * as this method is called after linking the @FXML elements
+     * so only at this point can ui elements be addressed from code
+     */
+    @FXML
+    public void initialize() {
+        // initialize cellFactory, to have questions be rendered using the QuestionCell class
+        questionList.setCellFactory((Callback<ListView<Question>, ListCell<Question>>) params -> {
+            return new QuestionCell(this);
+        });
+        updateQuestionList();
+    }
 
     /**
      * Handles clicking the button.
@@ -30,8 +48,8 @@ public class RoomSceneController {
      * TODO: Use some sort of polling to call this method, instead of from buttonClicked
      */
     public void updateQuestionList(){
-        List<String> questionStrings = ServerCommunication.getQuestions();
+        List<Question> questions = ServerCommunication.getQuestions();
         questionList.getItems().clear();
-        questionList.getItems().addAll(questionStrings);
+        questionList.getItems().addAll(questions);
     }
 }
