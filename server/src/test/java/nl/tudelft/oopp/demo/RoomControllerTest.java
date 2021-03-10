@@ -28,18 +28,6 @@ class RoomControllerTest {
         assertEquals(randString.length(), 15);
         assertNotNull(randString);
     }
-
-    @Test
-    public void checkIfTwoValidLinksAreReturned(){
-
-        RoomController rc = new RoomController();
-
-        Room testRoom = new Room(1,"TestRoom","1/123","1/456");
-
-        when(roomRepository.save(any(Room.class))).thenReturn(testRoom);
-
-        List<String> testLinks = rc.createLink("TestRoom");
-        assertEquals(testLinks.size(), 2);
-    }
+    
 
 }
