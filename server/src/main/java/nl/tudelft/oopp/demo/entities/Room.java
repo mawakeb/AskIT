@@ -31,11 +31,12 @@ public class Room {
     public Room() {
     }
 
-    /** Constructor for the Room class.
+    /**
+     * Constructor for the Room class.
      *
-     * @param id unique room UUID.
-     * @param name title of the room chosen by lecturer.
-     * @param staff room access code for the staff role.
+     * @param id      unique room UUID.
+     * @param name    title of the room chosen by lecturer.
+     * @param staff   room access code for the staff role.
      * @param student room acces code for the student role.
      */
     public Room(long id, String name, String staff, String student) {

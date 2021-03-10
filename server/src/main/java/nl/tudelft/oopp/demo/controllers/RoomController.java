@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ public class RoomController {
     public RoomController() {
     }
 
-    /** generate random String to use as room s codes.
+    /**
+     * generate random String to use as room s codes.
+     *
      * @return String code of 15 characters.
      */
     public static String randomString() {
@@ -39,7 +42,9 @@ public class RoomController {
         return result;
     }
 
-    /** Create new room on the server and generate two access links.
+    /**
+     * Create new room on the server and generate two access links.
+     *
      * @param q the String title of the room to create.
      * @return list of two strings, containing join links for staff and student respectively.
      */

@@ -7,19 +7,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+
 import nl.tudelft.oopp.demo.data.Question;
 
 public class ServerCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
     private static final Gson gson = new Gson();
+    private static HttpClient client = HttpClient.newBuilder().build();
 
     // constructor to supply mock client
     public ServerCommunication(HttpClient client) {
         ServerCommunication.client = client;
     }
 
-    /** Tries to send specified request to server and catch any exceptions.
+    /**
+     * Tries to send specified request to server and catch any exceptions.
+     *
      * @param request HttpRequest to send.
      * @return response object or null.
      */
@@ -33,7 +36,9 @@ public class ServerCommunication {
         return response;
     }
 
-    /** Send question to server.
+    /**
+     * Send question to server.
+     *
      * @param text text content of question.
      */
     public static void sendQuestion(String text) {
@@ -46,7 +51,9 @@ public class ServerCommunication {
         }
     }
 
-    /** get questions from server.
+    /**
+     * get questions from server.
+     *
      * @return list of all questions on the server.
      */
     public static List<Question> getQuestions() {
@@ -59,7 +66,8 @@ public class ServerCommunication {
         }.getType());
     }
 
-    /** Connects to the server endpoint to upvote a single question.
+    /**
+     * Connects to the server endpoint to upvote a single question.
      * no verification prevents from calling multiple times on the same question.
      * that condition should be checked beforehand (assuming that situation is not wanted).
      *
@@ -75,7 +83,9 @@ public class ServerCommunication {
         }
     }
 
-    /** Create a new room and returns access links.
+    /**
+     * Create a new room and returns access links.
+     *
      * @param name the String title of the room to create.
      * @return list of two strings, containing join links for staff and student respectively.
      */
@@ -94,7 +104,9 @@ public class ServerCommunication {
         }.getType());
     }
 
-    /** Join a room using the specified link.
+    /**
+     * Join a room using the specified link.
+     *
      * @param link the join link entered by the user.
      */
     //TODO: link to roomScene and start polling

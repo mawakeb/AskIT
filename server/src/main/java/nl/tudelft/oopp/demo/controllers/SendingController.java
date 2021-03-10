@@ -22,7 +22,9 @@ public class SendingController {
         this.repo = repo;
     }
 
-    /** Receive question sent by a student and store it in the repository.
+    /**
+     * Receive question sent by a student and store it in the repository.
+     *
      * @param q String containing only the question text content.
      */
     @PostMapping("question") // for /send/question
