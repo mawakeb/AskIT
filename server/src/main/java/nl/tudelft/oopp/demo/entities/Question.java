@@ -36,8 +36,10 @@ public class Question {
     /**
      * Create a new Question instance.
      *
-     * @param id      Unique identifier as to be used in the database.
-     * @param content Actual text content of the question.
+     * @param id the UUID of the question.
+     * @param content the text content of the question.
+     * @param roomId the room the question belongs to.
+     * @param userId user that made this question.
      */
     public Question(UUID id, String content, UUID roomId, UUID userId) {
         this.id = id;
@@ -53,6 +55,8 @@ public class Question {
      * Constructor for the Question class that generates an id.
      *
      * @param content the text content of the question.
+     * @param roomId the room the question belongs to.
+     * @param userId user that made this question.
      */
     public Question(String content, UUID roomId, UUID userId) {
         this.id = UUID.randomUUID();
