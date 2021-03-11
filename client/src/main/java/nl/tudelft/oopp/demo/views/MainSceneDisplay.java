@@ -22,7 +22,6 @@ public class MainSceneDisplay extends Application {
         Parent root = loader.load();
 
         primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
         primaryStage.setTitle("AskIT");
         primaryStage.show();
     }
