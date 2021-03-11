@@ -1,7 +1,8 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import nl.tudelft.oopp.demo.entities.Quote;
 import nl.tudelft.oopp.demo.repositories.QuoteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
