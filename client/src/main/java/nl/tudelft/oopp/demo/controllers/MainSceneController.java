@@ -4,31 +4,67 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.List;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
+/**
+ * Controller for mainScene.fxml.
+ */
 public class MainSceneController {
+
     @FXML
-    private TextField name;
-    @FXML
-    private TextField link;
+    private TextField userText;
     @FXML
     private ListView<String> list;
+    @FXML
+    private Label tabTitle;
+    @FXML
+    private Button createButton;
+    @FXML
+    private Button joinButton;
+    @FXML
+    private Label tabIcon;
+
+
+    /**
+     * Handles switching Create Tab.
+     */
+    public void createTabClicked() {
+        tabTitle.setText("Create Lecture Room");
+        tabIcon.setText("+ ");
+        userText.setPromptText("Enter name of the lecture...");
+        createButton.toFront();
+        list.setVisible(true);
+    }
+
+    /**
+     * Handles switching Join Tab.
+     */
+    public void joinTabClicked() {
+        tabTitle.setText("Join Lecture Room");
+        tabIcon.setText("# ");
+        userText.setPromptText("Enter link to join the lecture...");
+        joinButton.toFront();
+        list.setVisible(false);
+    }
 
     /**
      * Handles clicking the create button.
      */
     public void createButtonClicked() {
-        List<String> links = ServerCommunication.createRoom(name.getText());
-        name.clear();
+        List<String> links = ServerCommunication.createRoom(userText.getText());
+        userText.clear();
         list.getItems().clear();
         if (links.size() == 1) {
             list.getItems().add("error " + links.get(0));
         } else {
-            list.getItems().add("Click on link (individually) to copy to clipboard");
-            list.getItems().add("staff link: ");
+            list.getItems().add("Click on link (individually) to copy"
+                    + "\nstaff link: ");
             list.getItems().add(links.get(0));
             list.getItems().add("student link: ");
             list.getItems().add(links.get(1));
@@ -49,7 +85,7 @@ public class MainSceneController {
      * Handles clicking the join button.
      */
     public void joinButtonClicked() {
-        ServerCommunication.joinRoom(link.getText());
-        link.clear();
+        ServerCommunication.joinRoom(userText.getText());
+        userText.clear();
     }
 }
