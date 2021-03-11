@@ -76,11 +76,11 @@ public class Question {
         return upvotes;
     }
 
-    public UUID getRoom_id() {
+    public UUID getRoomId() {
         return roomId;
     }
 
-    public UUID getUser_id() {
+    public UUID getUserId() {
         return userId;
     }
 
@@ -90,6 +90,14 @@ public class Question {
 
     public boolean isEdited() {
         return edited;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public void setEdited(boolean edited) {
+        this.edited = edited;
     }
 
     public void addUpvote() {
