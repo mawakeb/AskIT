@@ -14,22 +14,16 @@ public class Question {
     @Id
     @Column(name = "id")
     private final UUID id;
-
     @Column(name = "content")
     private final String content;
-
-    @Column(name = "upvotes")
-    private int upvotes;
-
     @Column(name = "roomId")
     private final UUID roomId;
-
     @Column(name = "userId")
     private final UUID userId;
-
+    @Column(name = "upvotes")
+    private int upvotes;
     @Column(name = "deleted")
     private boolean deleted;
-
     @Column(name = "edited")
     private boolean edited;
 
