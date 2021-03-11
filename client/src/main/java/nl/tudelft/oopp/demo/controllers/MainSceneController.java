@@ -29,6 +29,8 @@ public class MainSceneController {
     private Button joinButton;
     @FXML
     private Label tabIcon;
+    @FXML
+    private TextField username;
 
 
     /**
@@ -40,6 +42,10 @@ public class MainSceneController {
         userText.setPromptText("Enter name of the lecture...");
         createButton.toFront();
         list.setVisible(true);
+        joinButton.setVisible(false);
+        joinButton.setDisable(true);
+        username.setVisible(false);
+        username.setDisable(true);
     }
 
     /**
@@ -49,8 +55,12 @@ public class MainSceneController {
         tabTitle.setText("Join Lecture Room");
         tabIcon.setText("# ");
         userText.setPromptText("Enter link to join the lecture...");
-        joinButton.toFront();
+        createButton.toBack();
         list.setVisible(false);
+        joinButton.setVisible(true);
+        joinButton.setDisable(false);
+        username.setVisible(true);
+        username.setDisable(false);
     }
 
     /**
