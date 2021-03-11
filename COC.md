@@ -24,6 +24,9 @@
    should keep up with the issue board and inform others using it.
 9. Every team member abides the git guidelines established during the lectures.
 10. Code of conduct can be updated in the future. Everyone should keep up with the updates and follow them.
+11. Everyone should do tests/checkstyle before doing a merge request.
+12. After creating a merge request, the person making it assigns 2 random people to review it. The assignees should review the merge request within 1 day. If the person has a valid reason not to make it within a day, a different person should be reassigned in his place.
+
 
 ## Consequences for breaking the COC
 
