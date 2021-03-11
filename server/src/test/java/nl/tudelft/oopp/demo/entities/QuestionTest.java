@@ -49,7 +49,7 @@ public class QuestionTest {
     void testToString() {
         assertEquals(
                 question.toString(),
-                "Question{id=" +id+", content='test', upvotes=0}"
+                "Question{id=" + id + ", content='test', upvotes=0}"
         );
     }
 
