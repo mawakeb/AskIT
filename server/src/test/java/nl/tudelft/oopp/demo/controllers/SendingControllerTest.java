@@ -33,7 +33,7 @@ class SendingControllerTest {
     @Test
     void upvoteQuestion() {
         UUID uuid = UUID.randomUUID();
-        Question question = new Question(uuid,"Unit test question");
+        Question question = new Question(uuid, "Unit test question");
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());
