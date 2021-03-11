@@ -13,19 +13,19 @@ public class Question {
 
     @Id
     @Column(name = "id")
-    private UUID id;
+    private final UUID id;
 
     @Column(name = "content")
-    private String content;
+    private final String content;
 
     @Column(name = "upvotes")
     private int upvotes;
 
     @Column(name = "roomId")
-    private UUID roomId;
+    private final UUID roomId;
 
     @Column(name = "userId")
-    private UUID userId;
+    private final UUID userId;
 
     @Column(name = "deleted")
     private boolean deleted;
@@ -36,10 +36,10 @@ public class Question {
     /**
      * Create a new Question instance.
      *
-     * @param id the UUID of the question.
+     * @param id      the UUID of the question.
      * @param content the text content of the question.
-     * @param roomId the room the question belongs to.
-     * @param userId user that made this question.
+     * @param roomId  the room the question belongs to.
+     * @param userId  user that made this question.
      */
     public Question(UUID id, String content, UUID roomId, UUID userId) {
         this.id = id;
@@ -55,8 +55,8 @@ public class Question {
      * Constructor for the Question class that generates an id.
      *
      * @param content the text content of the question.
-     * @param roomId the room the question belongs to.
-     * @param userId user that made this question.
+     * @param roomId  the room the question belongs to.
+     * @param userId  user that made this question.
      */
     public Question(String content, UUID roomId, UUID userId) {
         this.id = UUID.randomUUID();
@@ -92,12 +92,12 @@ public class Question {
         return deleted;
     }
 
-    public boolean isEdited() {
-        return edited;
-    }
-
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isEdited() {
+        return edited;
     }
 
     public void setEdited(boolean edited) {

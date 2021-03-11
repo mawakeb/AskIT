@@ -34,7 +34,7 @@ public class SendingController {
     public void sendQuestion(@RequestBody String q) {
         UUID tempUserId = UUID.randomUUID();
         UUID tempRoomId = UUID.randomUUID();
-        Question question = new Question(q,tempRoomId,tempUserId);
+        Question question = new Question(q, tempRoomId, tempUserId);
         repo.save(question);
         System.out.println(q);
     }
