@@ -14,18 +14,22 @@ public class QuestionTest {
     private static String content;
     private static int upvotes;
     private static Question question;
+    private static UUID userId;
+    private static UUID roomId;
 
     @BeforeEach
     void setUp() {
         id = UUID.randomUUID();
         content = "test";
         upvotes = 5;
-        question = new Question(id, content, upvotes);
+        userId = UUID.randomUUID();
+        roomId = UUID.randomUUID();
+        question = new Question(id, content, upvotes, roomId, userId);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, upvotes);
+        Question question1 = new Question(content, upvotes, roomId, userId);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -54,7 +58,56 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, upvotes);
+        Question question2 = new Question(id, content, upvotes, roomId, userId);
         assertEquals(question, question2);
+    }
+
+    @Test
+    void setUpvotes() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        question2.setUpvotes(10);
+        assertEquals(question2.getUpvotes(), 10);
+
+    }
+
+    @Test
+    void getRoomId() {
+        assertEquals(question.getRoomId(), roomId);
+    }
+
+    @Test
+    void getUserId() {
+        assertEquals(question.getUserId(), userId);
+    }
+
+    @Test
+    void isDeleted() {
+        assertEquals(question.isDeleted(), false);
+    }
+
+    @Test
+    void setDeleted() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        question2.setDeleted(true);
+        assertEquals(question2.isDeleted(), true);
+    }
+
+    @Test
+    void isEdited() {
+        assertEquals(question.isEdited(), false);
+    }
+
+    @Test
+    void setEdited() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        question2.setEdited(true);
+        assertEquals(question2.isEdited(), true);
+    }
+
+    @Test
+    void addUpvote() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        question2.addUpvote();
+        assertEquals(question2.getUpvotes(), 6);
     }
 }

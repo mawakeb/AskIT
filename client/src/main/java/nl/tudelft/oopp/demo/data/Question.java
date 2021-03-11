@@ -55,10 +55,6 @@ public class Question {
         this.edited = false;
     }
 
-    public void setUpvotes(int upvotes) {
-        this.upvotes = upvotes;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -69,6 +65,10 @@ public class Question {
 
     public int getUpvotes() {
         return upvotes;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
     }
 
     public UUID getRoomId() {
