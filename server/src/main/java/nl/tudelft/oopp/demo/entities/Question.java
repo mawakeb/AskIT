@@ -62,6 +62,7 @@ public class Question {
         this.edited = false;
     }
 
+
     public Question() {
 
     }
@@ -74,8 +75,16 @@ public class Question {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public int getUpvotes() {
         return upvotes;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
     }
 
     public UUID getRoomId() {
