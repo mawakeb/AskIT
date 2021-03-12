@@ -83,11 +83,8 @@ public class RoomController {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
 
-        // TODO: room is null because the room id is not sent
-        //  correctly from client. Adding null check for now
         if (room == null) {
-            System.out.println("TODO: room is null because the room id is not "
-                    + "sent correctly from client. Adding null check for now");
+            System.out.println("room doesnt exist, id:" + id);
             return;
         }
         room.close();
