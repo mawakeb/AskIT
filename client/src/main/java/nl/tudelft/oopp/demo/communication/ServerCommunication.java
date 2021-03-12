@@ -119,5 +119,11 @@ public class ServerCommunication {
         }
     }
 
-
+    /**
+     * Close the current room using its specified ID.
+     * @param id the ID of the room to close.
+     */
+    public static void closeRoom(Long id) {
+        System.out.println("Joining room with id: " + id);
+    }
 }

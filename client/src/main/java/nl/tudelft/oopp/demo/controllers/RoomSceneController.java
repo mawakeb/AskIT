@@ -41,6 +41,16 @@ public class RoomSceneController {
     }
 
     /**
+     * Closes the current room through the server.
+     * To prevent new questions from being asked.
+     * Method called through JavaFX onAction attribute.
+     */
+    // TODO: Supply actual ID of the current room to closeRoom
+    public void closeRoomButtonClicked() {
+        ServerCommunication.closeRoom(0L);
+    }
+
+    /**
      * Fetches all questions from the server.
      * Then updates the listview contents to display them.
      * TODO: Use some sort of polling to call this method, instead of from buttonClicked
