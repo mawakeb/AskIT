@@ -77,10 +77,10 @@ public class RoomController {
     @PostMapping("close")
     @ResponseBody
     public void closeRoom(@RequestBody String id) {
+        System.out.println("Closing room on server, id:" + id);
         Long longId = Long.valueOf(id);
         Room room = repo.findByid(longId);
         room.close();
         repo.save(room);
-        System.out.println("Closing room on server, id:" + id);
     }
 }

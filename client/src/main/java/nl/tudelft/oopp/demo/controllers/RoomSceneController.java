@@ -47,7 +47,7 @@ public class RoomSceneController {
      */
     // TODO: Supply actual ID of the current room to closeRoom
     public void closeRoomButtonClicked() {
-        ServerCommunication.closeRoom(0L);
+        ServerCommunication.closeRoom(1L);
     }
 
     /**

@@ -3,7 +3,9 @@ package nl.tudelft.oopp.demo.controllers;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
+import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("send")
 public class SendingController {
 
-    // TODO: ideally this should be handled by an autoincrement on the DB side
-    private static long idCounter = 0;
     private QuestionRepository repo;
+    private RoomRepository roomRepo;
 
     @Autowired
-    public SendingController(QuestionRepository repo) {
+    public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
         this.repo = repo;
+        this.roomRepo = roomRepo;
     }
 
     /**
@@ -33,8 +35,15 @@ public class SendingController {
     @ResponseBody
     public void sendQuestion(@RequestBody String q) {
         Question question = new Question(q);
-        repo.save(question);
-        System.out.println(q);
+
+        // TODO: extract room ID from question instead of hardcoding
+        Room room = roomRepo.findByid(1L);
+        if (room.isOpen()) {
+            repo.save(question);
+            System.out.println(q);
+        } else {
+            System.out.println("Question rejected");
+        }
     }
 
     /**
