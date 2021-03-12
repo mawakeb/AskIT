@@ -13,13 +13,13 @@ public class Question {
 
     @Id
     @Column(name = "id")
-    private final UUID id;
+    private UUID id = null;
     @Column(name = "content")
-    private final String content;
+    private String content = "";
     @Column(name = "roomId")
-    private final UUID roomId;
+    private UUID roomId = null;
     @Column(name = "userId")
-    private final UUID userId;
+    private UUID userId = null;
     @Column(name = "upvotes")
     private int upvotes;
     @Column(name = "deleted")
@@ -60,6 +60,10 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+    }
+
+    public Question() {
+
     }
 
     public UUID getId() {
