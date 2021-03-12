@@ -98,7 +98,7 @@ public class ServerCommunication {
     public static List<String> createRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(name))
-                .uri(URI.create("http://localhost:8080/create/room")).build();
+                .uri(URI.create("http://localhost:8080/room/create")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -130,5 +130,17 @@ public class ServerCommunication {
         }
     }
 
-
+    /**
+     * Close the current room using its specified ID.
+     * @param id the ID of the room to close.
+     */
+    public static void closeRoom(Long id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(id.toString()))
+                .uri(URI.create("http://localhost:8080/room/close")).build();
+        HttpResponse<String> response = getStringHttpResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+    }
 }

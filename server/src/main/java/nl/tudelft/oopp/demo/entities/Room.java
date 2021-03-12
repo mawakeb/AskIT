@@ -28,6 +28,9 @@ public class Room {
     )
     private String student;
 
+    @Column(name = "isOpen")
+    private boolean isOpen;
+
     public Room() {
     }
 
@@ -44,6 +47,7 @@ public class Room {
         this.name = name;
         this.staff = staff;
         this.student = student;
+        this.isOpen = true;
     }
 
     public String getName() {
@@ -56,6 +60,14 @@ public class Room {
 
     public String getStudent() {
         return this.student;
+    }
+
+    public boolean isOpen() {
+        return this.isOpen;
+    }
+
+    public void close() {
+        this.isOpen = false;
     }
 
     @Override

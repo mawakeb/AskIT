@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("create")
+@RequestMapping("room")
 public class RoomController {
     private long roomId = 0L;
     @Autowired
@@ -31,7 +31,7 @@ public class RoomController {
     public static String randomString() {
         String result = "";
         Random random = new Random();
-        char[] characters = ("abcdefghijklmnopqrstuvwxyz "
+        char[] characters = ("abcdefghijklmnopqrstuvwxyz"
                 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890").toCharArray();
 
         for (int i = 0; i < 15; ++i) {
@@ -48,7 +48,7 @@ public class RoomController {
      * @param q the String title of the room to create.
      * @return list of two strings, containing join links for staff and student respectively.
      */
-    @PostMapping("room")
+    @PostMapping("create")
     @ResponseBody
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
@@ -68,5 +68,19 @@ public class RoomController {
         links.add(string1);
         links.add(string2);
         return links;
+    }
+
+    /** Close a room from asking new questions.
+     *
+     * @param id the request body containing room ID in string form
+     */
+    @PostMapping("close")
+    @ResponseBody
+    public void closeRoom(@RequestBody String id) {
+        System.out.println("Closing room on server, id:" + id);
+        Long longId = Long.valueOf(id);
+        Room room = repo.findByid(longId);
+        room.close();
+        repo.save(room);
     }
 }
