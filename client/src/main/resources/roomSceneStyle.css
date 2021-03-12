@@ -1,0 +1,76 @@
+.tabPane {
+    -fx-background-color: #141B2D;
+    -fx-background-insets: 0,0 ;
+    -fx-border: 0px;
+}
+
+.tab-label {
+    -fx-text-fill: #fff;
+    -fx-padding: 20, 10;
+    -fx-font-size: 130%;
+    -fx-background-color: #1F2940;
+}
+
+.tab-header-background {
+    -fx-background-color: #1F2940;
+}
+
+.tab {
+    -fx-background-color: #1F2940;
+    -fx-background-radius: 0;
+}
+
+.tab:selected.tab-label{
+    -fx-text-fill: #fff;
+    -fx-background-color: #141B2D;
+}
+
+.questionList {
+    -fx-background-color: linear-gradient(to bottom, #141B2D, #003f71);
+    -fx-text-fill: #ffffff;
+}
+
+.questionText {
+    -fx-background-radius: 0;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 130%;
+}
+
+.questionText .content {
+    -fx-background-radius: 0;
+    -fx-background-color: #141B2D;
+    -fx-padding: 10;
+}
+
+.questionText .scroll-bar{
+    -fx-opacity: 0;
+}
+.questionText .thumb {
+    -fx-color: #000;
+    -fx-opacity: 0.5;
+}
+
+.box {
+    -fx-background-color: #141B2D;
+    -fx-background-radius: 5;
+    -fx-text-fill: #fff;
+    -fx-margin: 10,0,40,0;
+    -fx-padding: 8,20;
+}
+
+.box.content {
+    -fx-text-fill: #fff;
+}
+
+.upvote {
+    -fx-background-color: #0000;
+    -fx-background-image : url("/upvoteIcon.png");
+    -fx-background-size: 20;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.upvote :disabled {
+    -fx-opacity: 0.5;
+}
+
