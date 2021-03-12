@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.UUID;
+
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +27,11 @@ class GettingControllerTest {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
 
         // mock repo.getAllStrings()
+        UUID dupe = UUID.randomUUID();
         questionList = List.of(
-                new Question(0, "Q1"),
-                new Question(1, "Q2"),
-                new Question(3, "Q3"));
+                new Question("Q1", dupe, dupe),
+                new Question("Q2", dupe, dupe),
+                new Question("Q3", dupe, dupe));
         when(repo.findAll()).thenReturn(questionList);
 
         gc = new GettingController(repo);

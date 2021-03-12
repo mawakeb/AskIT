@@ -11,6 +11,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.UUID;
+
 import nl.tudelft.oopp.demo.data.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,9 +55,9 @@ public class ServerCommunicationTest {
     @Test
     public void testGetQuestions() {
         List<Question> expected = List.of(
-                new Question(0, "Q1", 4),
-                new Question(1, "Q2", 5),
-                new Question(3, "Q3", 6));
+                new Question(UUID.randomUUID(), "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
         String json = gson.toJson(expected);
 
         // set response content
@@ -76,13 +78,14 @@ public class ServerCommunicationTest {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
 
-        ServerCommunication.upvoteQuestion(123);
+        UUID uuid = UUID.randomUUID();
+        ServerCommunication.upvoteQuestion(uuid);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(3, request.bodyPublisher().get().contentLength());
+        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
     }
 }
