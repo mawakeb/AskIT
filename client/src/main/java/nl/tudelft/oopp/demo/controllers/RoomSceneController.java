@@ -4,7 +4,7 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.util.Callback;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
@@ -12,7 +12,7 @@ import nl.tudelft.oopp.demo.data.QuestionCell;
 
 public class RoomSceneController {
     @FXML
-    private TextField question;
+    private TextArea question;
     @FXML
     private ListView<Question> questionList;
 

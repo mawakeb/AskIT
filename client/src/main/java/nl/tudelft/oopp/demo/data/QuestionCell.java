@@ -31,6 +31,8 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
+        this.setStyle("-fx-background-color: #0000;"
+                + "-fx-padding: 7,0,0,0");
     }
 
     /**
@@ -48,17 +50,24 @@ public class QuestionCell extends ListCell<Question> {
             setText(null);
             setGraphic(null);
         } else {
+
             HBox box = new HBox(10);
             box.setAlignment(Pos.CENTER_LEFT);
+            box.getStyleClass().add("box");
+            box.getStylesheets().add(getClass()
+                    .getResource("/roomSceneStyle.css").toExternalForm());
 
             // expanding region that pushes elements to the sides
             Region center = new Region();
             HBox.setHgrow(center, Priority.ALWAYS);
 
             // create upvote button
-            Button upvoteBtn = new Button("Upvote");
+            Button upvoteBtn = new Button("");
             upvoteBtn.setDisable(upvotedQuestionIds.contains(q.getId()));
             upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
+            upvoteBtn.getStyleClass().add("upvote");
+            upvoteBtn.getStylesheets().add(getClass()
+                    .getResource("/roomSceneStyle.css").toExternalForm());
 
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.toString());
