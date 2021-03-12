@@ -93,6 +93,7 @@ public class QuestionTest {
         question.setEdited(true);
         assertEquals(question.isEdited(), true);
     }
+
     @Test
     void setUpvotes() {
         question.setUpvotes(4);
