@@ -32,7 +32,8 @@ public class QuestionCell extends ListCell<Question> {
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
         this.setStyle("-fx-background-color: #0000;"
-                + "-fx-padding: 7 0 0 0");
+                + "-fx-padding: 7 0 0 0;"
+                + "-fx-text-fill: #fff;");
     }
 
     /**
@@ -71,7 +72,9 @@ public class QuestionCell extends ListCell<Question> {
 
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.toString());
+            questionText.getStyleClass().add("question");
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
+            upvoteText.getStyleClass().add("question");
             box.getChildren().addAll(questionText, center, upvoteText, upvoteBtn);
             setText(null);
             setGraphic(box);

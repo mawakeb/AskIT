@@ -16,7 +16,7 @@
        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <Label fx:id="roomTitle" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="223.0" style="-fx-background-color: #1F2940; -fx-text-fill: #fff; -fx-font-size: 140%;" text="Lecture" textAlignment="CENTER" GridPane.columnIndex="1">
+         <Label fx:id="roomTitle" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="223.0" style="-fx-background-color: #1F2940; -fx-text-fill: #9e9e9e; -fx-font-size: 140%;" text="Lecture" textAlignment="CENTER" GridPane.columnIndex="1">
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
