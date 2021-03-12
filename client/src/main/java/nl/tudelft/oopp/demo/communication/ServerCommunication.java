@@ -2,8 +2,6 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -134,7 +132,7 @@ public class ServerCommunication {
      * Close the current room using its specified ID.
      * @param id the ID of the room to close.
      */
-    public static void closeRoom(Long id) {
+    public static void closeRoom(UUID id) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(id.toString()))
                 .uri(URI.create("http://localhost:8080/room/close")).build();

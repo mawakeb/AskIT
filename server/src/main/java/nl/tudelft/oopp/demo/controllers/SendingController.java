@@ -41,7 +41,13 @@ public class SendingController {
         Question question = new Question(q, tempRoomId, tempUserId);
 
         // TODO: extract room ID from question instead of hardcoding
-        Room room = roomRepo.findByid(1L);
+        Room room = roomRepo.findByid(tempRoomId);
+
+        // TODO: the room wont be found, so adding a null check for now
+        if(room == null) {
+            System.out.println("TODO: the room wont be found, so adding a null check for now");
+            return;
+        }
         if (room.isOpen()) {
             repo.save(question);
             System.out.println(q);

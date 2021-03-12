@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.UUID;
+
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class JoinController {
     @ResponseBody
     public void joinLink(@RequestParam String q) {
         String[] links = q.split("/");
-        long id = Long.parseLong(links[0]);
+        UUID id = UUID.fromString(links[0]);
         String role = links[1];
         Room room = this.repo.findByid(id);
         if (room != null) {

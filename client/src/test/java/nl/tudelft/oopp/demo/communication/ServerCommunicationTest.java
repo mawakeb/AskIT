@@ -99,7 +99,7 @@ public class ServerCommunicationTest {
         // to increase the credibility of comparing only content length
         Random rand = new Random();
         for (int i = 0; i < 100; i++) {
-            Long roomID = rand.nextLong();
+            UUID roomID = UUID.randomUUID();
             ServerCommunication.closeRoom(roomID);
             assertEquals("POST", request.method());
 

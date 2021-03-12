@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("room")
 public class RoomController {
-    private long roomId = 0L;
     @Autowired
     private RoomRepository repo;
 
@@ -56,12 +56,13 @@ public class RoomController {
         String string2;
         for (string2 = randomString(); string1.equals(string2); string2 = randomString()) {
         }
-
-        ++this.roomId;
-        Room newRoom = new Room(this.roomId, q, string1, string2);
+        UUID roomId = UUID.randomUUID();
+        Room newRoom = new Room(roomId, q, string1, string2);
         this.repo.save(newRoom);
-        string1 = this.roomId + "/" + string1;
-        string2 = this.roomId + "/" + string2;
+
+        // TODO: links are way too long because of room id
+        string1 = roomId + "/" + string1;
+        string2 = roomId + "/" + string2;
         System.out.println(string1);
         System.out.println(string2);
         List<String> links = new ArrayList<>();
@@ -78,8 +79,14 @@ public class RoomController {
     @ResponseBody
     public void closeRoom(@RequestBody String id) {
         System.out.println("Closing room on server, id:" + id);
-        Long longId = Long.valueOf(id);
-        Room room = repo.findByid(longId);
+        UUID uuid = UUID.fromString(id);
+        Room room = repo.findByid(uuid);
+
+        // TODO: room is null because the room id is not sent correctly from client. Adding null check for now
+        if(room == null) {
+            System.out.println("TODO: room is null because the room id is not sent correctly from client. Adding null check for now");
+            return;
+        }
         room.close();
         repo.save(room);
     }
