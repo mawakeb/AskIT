@@ -12,7 +12,7 @@
       fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
     <TitledPane contentDisplay="RIGHT" graphicTextGap="10.0" prefHeight="28.0" prefWidth="412.0" text="Lecture">
         <graphic>
-            <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Close Room" textAlignment="CENTER" />
+            <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Close Room" textAlignment="CENTER" onAction="#closeRoomButtonClicked"/>
         </graphic></TitledPane>
     <TabPane prefHeight="385.0" prefWidth="358.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
