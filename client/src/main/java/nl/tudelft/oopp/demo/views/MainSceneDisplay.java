@@ -17,14 +17,17 @@ public class MainSceneDisplay extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/mainScene.fxml");
-        loader.setLocation(xmlUrl);
-        Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL xmlUrl = getClass().getResource("/mainScene.fxml");
+            loader.setLocation(xmlUrl);
+            Parent root = loader.load();
 
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
-        primaryStage.setTitle("AskIT");
-        primaryStage.show();
+            primaryStage.setScene(new Scene(root));
+            primaryStage.setTitle("AskIT");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
