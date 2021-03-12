@@ -69,4 +69,15 @@ public class RoomController {
         links.add(string2);
         return links;
     }
+
+    /** Close a room from asking new questions.
+     *
+     * @param id the request body containing room ID in string form
+     */
+    @PostMapping("close")
+    @ResponseBody
+    public void closeRoom(@RequestBody String id) {
+        Long longId = Long.valueOf(id);
+        System.out.println("Closing room on server, id:" + id);
+    }
 }

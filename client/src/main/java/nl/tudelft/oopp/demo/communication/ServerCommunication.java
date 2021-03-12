@@ -124,6 +124,12 @@ public class ServerCommunication {
      * @param id the ID of the room to close.
      */
     public static void closeRoom(Long id) {
-        System.out.println("Joining room with id: " + id);
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(id.toString()))
+                .uri(URI.create("http://localhost:8080/room/close")).build();
+        HttpResponse<String> response = getStringHttpResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
     }
 }

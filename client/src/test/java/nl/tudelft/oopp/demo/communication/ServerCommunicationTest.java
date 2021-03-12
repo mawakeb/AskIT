@@ -11,6 +11,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.data.Question;
@@ -87,5 +88,26 @@ public class ServerCommunicationTest {
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+    }
+
+    @Test
+    void closeRoom() {
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+
+        // run with multiple randomly generated values,
+        // to increase the credibility of comparing only content length
+        Random rand = new Random();
+        for (int i = 0; i < 100; i++) {
+            Long roomID = rand.nextLong();
+            ServerCommunication.closeRoom(roomID);
+            assertEquals("POST", request.method());
+
+            // check if a bodyPublisher was successfully included to transfer the value "123"
+            assertTrue(request.bodyPublisher().isPresent());
+
+            // bodyPublisher does not expose the contents directly, only length can be measured here
+            assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
+        }
     }
 }
