@@ -44,12 +44,8 @@
                            </font></Label>
                           </children>
                       </Pane>
-                      <Button fx:id="joinTab" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#joinTabClicked" prefHeight="64.0" prefWidth="193.0" styleClass="tab" stylesheets="@mainSceneStyle.css" text=" ➲  Join" textFill="WHITE" VBox.vgrow="ALWAYS" />
-                      <Button fx:id="createTab" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createTabClicked" prefHeight="62.0" prefWidth="184.0" styleClass="tab" stylesheets="@mainSceneStyle.css" text=" ➕  Create" textFill="WHITE" VBox.vgrow="ALWAYS">
-                          <font>
-                              <Font name="Courier New" size="12.0" />
-                          </font>
-                      </Button>
+                  <ToggleButton fx:id="joinTab" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#joinTabClicked" prefHeight="64.0" prefWidth="193.0" styleClass="tab" stylesheets="@mainSceneStyle.css" text=" ➲  Join" VBox.vgrow="ALWAYS" />
+                  <ToggleButton fx:id="createTab" alignment="CENTER_LEFT" layoutX="18.0" layoutY="248.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createTabClicked" prefHeight="64.0" prefWidth="193.0" styleClass="tab" stylesheets="@mainSceneStyle.css" text=" ➕  Create" />
                   </children>
               </VBox>
             <Label fx:id="tabIcon" style="-fx-text-fill: #ffffff; -fx-font-size: 250%; -fx-font-weight: bold;" text="# " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">

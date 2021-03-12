@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 /**
@@ -31,7 +32,15 @@ public class MainSceneController {
     private Label tabIcon;
     @FXML
     private TextField username;
+    @FXML
+    private ToggleButton createTab;
+    @FXML
+    private ToggleButton joinTab;
 
+    @FXML
+    public void initialize() {
+        joinTab.setSelected(true);
+    }
 
     /**
      * Handles switching Create Tab.
@@ -46,6 +55,8 @@ public class MainSceneController {
         joinButton.setDisable(true);
         username.setVisible(false);
         username.setDisable(true);
+        joinTab.setSelected(false);
+
     }
 
     /**
@@ -61,6 +72,7 @@ public class MainSceneController {
         joinButton.setDisable(false);
         username.setVisible(true);
         username.setDisable(false);
+        createTab.setSelected(false);
     }
 
     /**

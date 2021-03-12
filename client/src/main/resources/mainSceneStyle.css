@@ -12,14 +12,16 @@
     -fx-text-fill: #ffffff;
 }
 
+.tab:selected {
+    -fx-text-fill: #21C5ED;
+    -fx-border-width: 0 7 0 0;
+    -fx-border-style: solid;
+    -fx-border-color: #21C5ED;
+}
+
 .tab:hover {
     -fx-color: #1D2025;
     -fx-background-color: #21C5ED;
-    -fx-text-fill: #ffffff;
-}
-
-.tab:active {
-    -fx-background-color: #141B2D;
     -fx-text-fill: #ffffff;
 }
 
