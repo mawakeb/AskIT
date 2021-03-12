@@ -32,8 +32,7 @@ public class SendingController {
      *
      * @param q String containing only the question text content.
      */
-
-    //TODO: the client should send roomId and userId, using temp for now
+    
     @PostMapping("question") // for /send/question
     @ResponseBody
     public void sendQuestion(@RequestBody String q) {
