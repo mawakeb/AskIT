@@ -10,7 +10,10 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="412.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/11.0.1"
       fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
-    <TitledPane prefHeight="28.0" prefWidth="412.0" text="Lecture"/>
+    <TitledPane contentDisplay="RIGHT" graphicTextGap="10.0" prefHeight="28.0" prefWidth="412.0" text="Lecture">
+        <graphic>
+            <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Close Room" textAlignment="CENTER" />
+        </graphic></TitledPane>
     <TabPane prefHeight="385.0" prefWidth="358.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
             <Tab text="Questions">
