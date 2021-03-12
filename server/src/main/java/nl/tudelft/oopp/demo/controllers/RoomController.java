@@ -71,7 +71,8 @@ public class RoomController {
         return links;
     }
 
-    /** Close a room from asking new questions.
+    /**
+     * Close a room from asking new questions.
      *
      * @param id the request body containing room ID in string form
      */
@@ -82,9 +83,11 @@ public class RoomController {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
 
-        // TODO: room is null because the room id is not sent correctly from client. Adding null check for now
-        if(room == null) {
-            System.out.println("TODO: room is null because the room id is not sent correctly from client. Adding null check for now");
+        // TODO: room is null because the room id is not sent
+        //  correctly from client. Adding null check for now
+        if (room == null) {
+            System.out.println("TODO: room is null because the room id is not "
+                    + "sent correctly from client. Adding null check for now");
             return;
         }
         room.close();

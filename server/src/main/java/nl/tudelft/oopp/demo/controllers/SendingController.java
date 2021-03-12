@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("send")
 public class SendingController {
 
-    private QuestionRepository repo;
-    private RoomRepository roomRepo;
+    private final QuestionRepository repo;
+    private final RoomRepository roomRepo;
 
     @Autowired
     public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
@@ -44,7 +44,7 @@ public class SendingController {
         Room room = roomRepo.findByid(tempRoomId);
 
         // TODO: the room wont be found, so adding a null check for now
-        if(room == null) {
+        if (room == null) {
             System.out.println("TODO: the room wont be found, so adding a null check for now");
             return;
         }
