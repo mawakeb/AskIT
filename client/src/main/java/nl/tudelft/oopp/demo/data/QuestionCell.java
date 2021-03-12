@@ -32,7 +32,7 @@ public class QuestionCell extends ListCell<Question> {
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
         this.setStyle("-fx-background-color: #0000;"
-                + "-fx-padding: 7,0,0,0");
+                + "-fx-padding: 7 0 0 0");
     }
 
     /**

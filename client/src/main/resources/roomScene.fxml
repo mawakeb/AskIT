@@ -3,13 +3,37 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
-   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1F2940; -fx-text-fill: #ffffff; -fx-font-size: 140%;" text="Lecture" textAlignment="CENTER">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: #1F2940;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
+   <GridPane prefHeight="57.0" prefWidth="400.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="222.99998474121094" minWidth="10.0" percentWidth="60.0" prefWidth="222.99998474121094" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" percentWidth="20.0" prefWidth="77.00001525878906" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label fx:id="roomTitle" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="223.0" style="-fx-background-color: #1F2940; -fx-text-fill: #fff; -fx-font-size: 140%;" text="Lecture" textAlignment="CENTER" GridPane.columnIndex="1">
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <font>
+               <Font name="Century Gothic" size="12.0" />
+            </font>
+         </Label>
+         <Button fx:id="refreshBtn" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#updateQuestionList" prefHeight="28.0" prefWidth="38.0" style="-fx-background-color: #0000; -fx-text-fill: linear-gradient(to bottom, #21C5ED, #28cf87); -fx-font-size: 170%;" text="🔄" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <GridPane.margin>
+               <Insets right="2.0" top="5.0" />
+            </GridPane.margin>
+         </Button>
+      </children>
       <padding>
-         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         <Insets top="5.0" />
       </padding>
-   </Label>
+   </GridPane>
     <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="400.0" styleClass="tabPane" stylesheets="@roomSceneStyle.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
             <Tab closable="false" text="Questions">
@@ -25,7 +49,7 @@
                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <TextArea fx:id="question" prefHeight="52.0" prefWidth="357.0" promptText="Ask a question..." style="-fx-background-color: #0000;" styleClass="questionText" stylesheets="@roomSceneStyle.css" GridPane.rowIndex="1">
+                           <TextArea fx:id="question" prefHeight="52.0" prefWidth="357.0" promptText="Ask a question..." style="-fx-background-color: #0000;" styleClass="questionText" stylesheets="@roomSceneStyle.css" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                               <GridPane.margin>
                                  <Insets right="40.0" />
                               </GridPane.margin>

@@ -1,33 +1,30 @@
 .tabPane {
     -fx-background-color: #141B2D;
-    -fx-background-insets: 0,0 ;
-    -fx-border: 0px;
+    -fx-background-insets: 0 0 ;
+    -fx-border: -1;
 }
 
-.tab-label {
-    -fx-text-fill: #fff;
-    -fx-padding: 20, 10;
-    -fx-font-size: 130%;
-    -fx-background-color: #1F2940;
-}
-
-.tab-header-background {
-    -fx-background-color: #1F2940;
-}
-
-.tab {
+.tab, .tab-header-background {
     -fx-background-color: #1F2940;
     -fx-background-radius: 0;
 }
 
-.tab:selected.tab-label{
+.tab .tab-label {
     -fx-text-fill: #fff;
+    -fx-padding: 1 40;
+    -fx-font-size: 120%;
+    -fx-background-color: #0000;
+}
+
+.tab:selected .tab-label{
     -fx-background-color: #141B2D;
+    -fx-text-fill: linear-gradient(to bottom, #21C5ED, #28cf87);
 }
 
 .questionList {
     -fx-background-color: linear-gradient(to bottom, #141B2D, #003f71);
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #fff;
+    -fx-font-size: 140%;
 }
 
 .questionText {
@@ -42,24 +39,22 @@
     -fx-padding: 10;
 }
 
-.questionText .scroll-bar{
-    -fx-opacity: 0;
+.scroll-bar{
+    -fx-opacity: 0.1;
+    -fx-background-color: #0000;
+    -fx-padding: 0 0 0 7;
 }
-.questionText .thumb {
-    -fx-color: #000;
-    -fx-opacity: 0.5;
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-opacity: 0;
 }
 
 .box {
     -fx-background-color: #141B2D;
     -fx-background-radius: 5;
     -fx-text-fill: #fff;
-    -fx-margin: 10,0,40,0;
-    -fx-padding: 8,20;
-}
-
-.box.content {
-    -fx-text-fill: #fff;
+    -fx-margin: 10 0 40 0;
+    -fx-padding: 7 12;
 }
 
 .upvote {
