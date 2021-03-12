@@ -55,9 +55,9 @@ public class ServerCommunicationTest {
     @Test
     public void testGetQuestions() {
         List<Question> expected = List.of(
-                new Question(UUID.randomUUID(), "Q1", 4),
-                new Question(UUID.randomUUID(), "Q2", 5),
-                new Question(UUID.randomUUID(), "Q3", 6));
+                new Question(UUID.randomUUID(), "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
         String json = gson.toJson(expected);
 
         // set response content

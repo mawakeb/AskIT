@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("send")
 public class SendingController {
 
-    // TODO: ideally this should be handled by an autoincrement on the DB side
-    private static long idCounter = 0;
     private QuestionRepository repo;
 
     @Autowired
@@ -29,10 +27,14 @@ public class SendingController {
      *
      * @param q String containing only the question text content.
      */
+
+    //TODO: the client should send roomId and userId, using temp for now
     @PostMapping("question") // for /send/question
     @ResponseBody
     public void sendQuestion(@RequestBody String q) {
-        Question question = new Question(q);
+        UUID tempUserId = UUID.randomUUID();
+        UUID tempRoomId = UUID.randomUUID();
+        Question question = new Question(q, tempRoomId, tempUserId);
         repo.save(question);
         System.out.println(q);
     }
