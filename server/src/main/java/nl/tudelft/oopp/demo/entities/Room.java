@@ -66,6 +66,10 @@ public class Room {
         this.isOpen = true;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public String getName() {
         return this.name;
     }
