@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ public class Room {
     @Column(
             name = "id"
     )
-    private long id;
+    private UUID id;
     @Column(
             name = "name"
     )
@@ -42,12 +43,31 @@ public class Room {
      * @param staff   room access code for the staff role.
      * @param student room acces code for the student role.
      */
-    public Room(long id, String name, String staff, String student) {
+    public Room(UUID id, String name, String staff, String student) {
         this.id = id;
         this.name = name;
         this.staff = staff;
         this.student = student;
         this.isOpen = true;
+    }
+
+    /**
+     * Constructor for the Room class without specifying id.
+     *
+     * @param name    title of the room chosen by lecturer.
+     * @param staff   room access code for the staff role.
+     * @param student room acces code for the student role.
+     */
+    public Room(String name, String staff, String student) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.staff = staff;
+        this.student = student;
+        this.isOpen = true;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {

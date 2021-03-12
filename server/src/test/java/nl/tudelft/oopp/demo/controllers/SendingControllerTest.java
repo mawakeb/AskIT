@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +33,7 @@ class SendingControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
-        when(roomRepo.findByid(anyLong())).thenReturn(room);
+        when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingController(repo, roomRepo);
     }
 

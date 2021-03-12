@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -46,8 +47,9 @@ public class RoomSceneController {
      * Method called through JavaFX onAction attribute.
      */
     // TODO: Supply actual ID of the current room to closeRoom
+    // TODO: Replace random one with real
     public void closeRoomButtonClicked() {
-        ServerCommunication.closeRoom(1L);
+        ServerCommunication.closeRoom(UUID.randomUUID());
     }
 
     /**
