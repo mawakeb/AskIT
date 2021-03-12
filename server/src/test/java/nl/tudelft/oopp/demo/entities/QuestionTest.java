@@ -62,12 +62,12 @@ public class QuestionTest {
     }
 
     @Test
-    void getRoom_id() {
+    void getRoomid() {
         assertEquals(question.getRoomId(), roomId);
     }
 
     @Test
-    void getUser_id() {
+    void getUserid() {
         assertEquals(question.getUserId(), userId);
 
     }
@@ -84,15 +84,25 @@ public class QuestionTest {
 
     @Test
     void setDeleted() {
-        Question question1 = new Question(content, roomId, userId);
-        question1.setDeleted(true);
-        assertEquals(question1.isDeleted(), true);
+        question.setDeleted(true);
+        assertEquals(question.isDeleted(), true);
     }
 
     @Test
     void setEdited() {
-        Question question1 = new Question(content, roomId, userId);
-        question1.setEdited(true);
-        assertEquals(question1.isEdited(), true);
+        question.setEdited(true);
+        assertEquals(question.isEdited(), true);
     }
+    @Test
+    void setUpvotes() {
+        question.setUpvotes(4);
+        assertEquals(question.getUpvotes(), 4);
+    }
+
+    @Test
+    void addUpvote() {
+        question.addUpvote();
+        assertEquals(question.getUpvotes(), 1);
+    }
+
 }
