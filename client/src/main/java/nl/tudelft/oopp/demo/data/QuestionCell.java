@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.data;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -21,7 +22,7 @@ public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private static final HashSet<Long> upvotedQuestionIds = new HashSet<Long>();
+    private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
 
     private final RoomSceneController roomSceneController;
 
