@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.gson.Gson;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
@@ -18,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 class SendingControllerTest {
-
+    private static final Gson gson = new Gson();
     private SendingController sc;
 
     @Mock
@@ -30,8 +31,11 @@ class SendingControllerTest {
     @Mock
     private Room room;
 
+    private Question question;
+
     @BeforeEach
     void setUp() {
+        question = new Question("test",UUID.randomUUID(),UUID.randomUUID());
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingController(repo, roomRepo);
@@ -40,14 +44,16 @@ class SendingControllerTest {
     @Test
     void sendQuestion() {
         when(room.isOpen()).thenReturn(true);
-        sc.sendQuestion("SendingControllerTest question");
+        String parsed = gson.toJson(question);
+        sc.sendQuestion(parsed);
         verify(repo, times(1)).save(any(Question.class));
     }
 
     @Test
     void sendQuestionRoomClosed() {
         when(room.isOpen()).thenReturn(false);
-        sc.sendQuestion("SendingControllerTest question");
+        String parsed = gson.toJson(question);
+        sc.sendQuestion(parsed);
         verify(repo, times(0)).save(any(Question.class));
     }
 
