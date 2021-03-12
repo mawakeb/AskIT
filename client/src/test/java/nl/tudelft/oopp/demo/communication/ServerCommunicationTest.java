@@ -82,7 +82,6 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         String text = "Unit test question";
         Question userQuestion = new Question(text, 0, null, null);
-        String parsedQuestion = gson.toJson(userQuestion);
 
         ServerCommunication.sendQuestion(text);
         assertEquals("POST", request.method());
@@ -90,6 +89,7 @@ public class ServerCommunicationTest {
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
+        String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
     }
