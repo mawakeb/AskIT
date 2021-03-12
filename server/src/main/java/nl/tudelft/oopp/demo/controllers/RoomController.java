@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("create")
+@RequestMapping("room")
 public class RoomController {
     private long roomId = 0L;
     @Autowired
@@ -31,7 +31,7 @@ public class RoomController {
     public static String randomString() {
         String result = "";
         Random random = new Random();
-        char[] characters = ("abcdefghijklmnopqrstuvwxyz "
+        char[] characters = ("abcdefghijklmnopqrstuvwxyz"
                 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890").toCharArray();
 
         for (int i = 0; i < 15; ++i) {
@@ -48,7 +48,7 @@ public class RoomController {
      * @param q the String title of the room to create.
      * @return list of two strings, containing join links for staff and student respectively.
      */
-    @PostMapping("room")
+    @PostMapping("create")
     @ResponseBody
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();

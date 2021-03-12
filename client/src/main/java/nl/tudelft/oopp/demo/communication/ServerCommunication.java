@@ -94,7 +94,7 @@ public class ServerCommunication {
     public static List<String> createRoom(String name) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(name))
-                .uri(URI.create("http://localhost:8080/create/room")).build();
+                .uri(URI.create("http://localhost:8080/room/create")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
