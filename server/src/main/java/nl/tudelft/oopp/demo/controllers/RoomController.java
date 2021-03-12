@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("room")
 public class RoomController {
-    @Autowired
+
     private RoomRepository repo;
 
-    public RoomController() {
+    @Autowired
+    public RoomController(RoomRepository repo) {
+        this.repo = repo;
     }
 
     /**
