@@ -126,8 +126,6 @@ public class ServerCommunication {
             try {
                 String[] links = link.split("/");
                 currentRoomId = UUID.fromString(links[0]);
-                // String role = links[1];
-
                 RoomSceneDisplay.open();
             } catch (Exception e) {
                 e.printStackTrace();
