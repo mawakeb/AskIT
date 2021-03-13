@@ -85,7 +85,7 @@ public class ServerCommunicationTest {
         ServerCommunication.sendQuestion(text);
         assertEquals("POST", request.method());
 
-        // check if a bodyPublisher was successfully included to transfer the value "123"
+        // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
         Question userQuestion = new Question(text, 0, null, null);
@@ -124,7 +124,7 @@ public class ServerCommunicationTest {
 
         assertEquals(strings.get(0),expected.get(0));
         assertEquals(strings.get(1),expected.get(1));
-        // check if a bodyPublisher was successfully included to transfer the value "123"
+        // check if a bodyPublisher was successfully included to transfer the room name
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
@@ -138,7 +138,6 @@ public class ServerCommunicationTest {
 
         // run with multiple randomly generated values,
         // to increase the credibility of comparing only content length
-        for (int i = 0; i < 100; i++) {
             UUID roomID = UUID.randomUUID();
             ServerCommunication.closeRoom(roomID);
             assertEquals("POST", request.method());
@@ -148,6 +147,5 @@ public class ServerCommunicationTest {
 
             // bodyPublisher does not expose the contents directly, only length can be measured here
             assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
-        }
     }
 }
