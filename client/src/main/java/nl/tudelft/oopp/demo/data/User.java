@@ -6,6 +6,7 @@ import java.util.UUID;
 public class User {
     private final UUID id;
     private UUID roomId;
+    private String name;
     private boolean banned;
     private String role;
     private String roleId;
@@ -19,9 +20,10 @@ public class User {
      * @param role   name of the users role
      * @param roleId secret Id that the user has, what gives him his privileges
      */
-    public User(UUID id, UUID roomId, String role, String roleId) {
+    public User(UUID id, UUID roomId, String name, String role, String roleId) {
         this.id = id;
         this.roomId = roomId;
+        this.name = name;
         this.banned = false;
         this.role = role;
         this.roleId = roleId;
@@ -35,9 +37,10 @@ public class User {
      * @param role   name of the users role
      * @param roleId secret Id that the user has, what gives him his privileges
      */
-    public User(UUID roomId, String role, String roleId) {
+    public User(UUID roomId, String role, String name, String roleId) {
         this.id = UUID.randomUUID();
         this.roomId = roomId;
+        this.name = name;
         this.banned = false;
         this.role = role;
         this.roleId = roleId;
@@ -45,6 +48,14 @@ public class User {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public UUID getRoomId() {
