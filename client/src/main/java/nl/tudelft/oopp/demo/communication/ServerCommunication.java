@@ -17,6 +17,7 @@ public class ServerCommunication {
 
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
+    private static UUID currentRoomId;
 
     // constructor to supply mock client
     public ServerCommunication(HttpClient client) {
@@ -44,9 +45,12 @@ public class ServerCommunication {
      *
      * @param text text content of question.
      */
+    // TODO: make a user object, so the ID doesnt need to be null
     public static void sendQuestion(String text) {
+        Question userQuestion = new Question(text, 0, currentRoomId, null);
+        String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(text))
+                .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))
                 .uri(URI.create("http://localhost:8080/send/question")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
@@ -120,6 +124,8 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         } else {
             try {
+                String[] links = link.split("/");
+                currentRoomId = UUID.fromString(links[0]);
                 RoomSceneDisplay.open();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,6 +136,7 @@ public class ServerCommunication {
 
     /**
      * Close the current room using its specified ID.
+     *
      * @param id the ID of the room to close.
      */
     public static void closeRoom(UUID id) {
