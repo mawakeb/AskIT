@@ -97,8 +97,8 @@ class UserTest {
 
     @Test
     void testToString() {
-        assertEquals(user.toString(), "User{id="+ id +", "
-                + "roomId=" + roomId +", "
+        assertEquals(user.toString(), "User{id=" + id + ", "
+                + "roomId=" + roomId + ", "
                 + "banned=false, role='role', roleId='roleId'}");
     }
 
