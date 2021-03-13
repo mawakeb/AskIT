@@ -122,8 +122,8 @@ public class ServerCommunicationTest {
         List<String> strings = ServerCommunication.createRoom(name);
         assertEquals("POST", request.method());
 
-        assertEquals(strings.get(0),expected.get(0));
-        assertEquals(strings.get(1),expected.get(1));
+        assertEquals(strings.get(0), expected.get(0));
+        assertEquals(strings.get(1), expected.get(1));
         // check if a bodyPublisher was successfully included to transfer the room name
         assertTrue(request.bodyPublisher().isPresent());
 
@@ -138,14 +138,14 @@ public class ServerCommunicationTest {
 
         // run with multiple randomly generated values,
         // to increase the credibility of comparing only content length
-            UUID roomID = UUID.randomUUID();
-            ServerCommunication.closeRoom(roomID);
-            assertEquals("POST", request.method());
+        UUID roomID = UUID.randomUUID();
+        ServerCommunication.closeRoom(roomID);
+        assertEquals("POST", request.method());
 
-            // check if a bodyPublisher was successfully included to transfer the value "123"
-            assertTrue(request.bodyPublisher().isPresent());
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
 
-            // bodyPublisher does not expose the contents directly, only length can be measured here
-            assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
     }
 }
