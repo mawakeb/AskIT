@@ -93,5 +93,4 @@
          <Insets />
       </VBox.margin>
         </TabPane>
-    <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Close Room" textAlignment="CENTER" onAction="#closeRoomButtonClicked"/>
 </VBox>
