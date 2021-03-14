@@ -99,12 +99,12 @@
     -fx-border-radius: 3;
 }
 
-.closeButton :hover {
+.closeButton:hover {
     -fx-text-fill: #fff;
     -fx-background-color: #21C5ED;
 }
 
-.closeButton :disabled {
-    -fx-opacity : 0;
+.closeButton:disabled {
+    -fx-opacity: 0;
     -fx-border-width: 0;
 }
