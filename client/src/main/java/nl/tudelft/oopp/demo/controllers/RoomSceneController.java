@@ -4,6 +4,7 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -19,6 +20,8 @@ public class RoomSceneController {
     private ListView<Question> questionList;
     @FXML
     private Button sendButton;
+    @FXML
+    private Label roomName;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -32,6 +35,7 @@ public class RoomSceneController {
             return new QuestionCell(this);
         });
         updateAll();
+        roomName.setText(ServerCommunication.getCurrentRoomName());
     }
 
     /**
