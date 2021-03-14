@@ -120,6 +120,7 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
+    //TODO: assign role and roleID to user
     public static void joinRoom(String link) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/join/link?q=" + link)).build();
         HttpResponse<String> response = getStringHttpResponse(request);
@@ -129,7 +130,11 @@ public class ServerCommunication {
             try {
                 String[] links = link.split("/");
                 currentRoomId = UUID.fromString(links[0]);
-                RoomSceneDisplay.open();
+                if (response.body().equals("student")) {
+                    RoomSceneDisplay.open("/roomScene.fxml");
+                } else if (response.body().equals("staff")) {
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 getQuestions();

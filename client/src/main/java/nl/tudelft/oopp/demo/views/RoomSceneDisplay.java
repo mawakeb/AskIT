@@ -11,10 +11,10 @@ public class RoomSceneDisplay {
     /**
      * Opens the roomScene in a new window.
      */
-    public static void open() {
+    public static void open(String roomScene) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            URL xmlUrl = RoomSceneDisplay.class.getResource("/roomScene.fxml");
+            URL xmlUrl = RoomSceneDisplay.class.getResource(roomScene);
             loader.setLocation(xmlUrl);
             Parent root = loader.load();
             Stage roomStage = new Stage();
