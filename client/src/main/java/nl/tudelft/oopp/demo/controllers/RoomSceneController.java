@@ -53,6 +53,7 @@ public class RoomSceneController {
     // TODO: Replace random one with real
     public void closeRoomButtonClicked() {
         ServerCommunication.closeRoom(UUID.randomUUID());
+        updateRoomStatus();
     }
 
     /**
