@@ -55,5 +55,12 @@
     -fx-background-color: #21C5ED;
 }
 
+.scroll-bar{
+    -fx-opacity: 0.1;
+    -fx-background-color: #0000;
+}
 
+.list .corner {
+    -fx-background-color: #141B2D;
+}
 
