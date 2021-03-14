@@ -9,18 +9,22 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("room")
 public class RoomController {
-    @Autowired
+
     private RoomRepository repo;
 
-    public RoomController() {
+    @Autowired
+    public RoomController(RoomRepository repo) {
+        this.repo = repo;
     }
 
     /**
@@ -89,5 +93,24 @@ public class RoomController {
         }
         room.close();
         repo.save(room);
+    }
+
+    /**
+     * Get the status of a room by ID.
+     *
+     * @param id the request body containing room ID in string form
+     * @return a boolean, true iff the room is open for new questions,
+     *           also returns false if the room can't be found.
+     */
+    // TODO: return room object that also contains room name, not just isOpen
+    @GetMapping("status")
+    @ResponseBody
+    public boolean getRoomStatus(@RequestParam String id) {
+        UUID uuid = UUID.fromString(id);
+        Room room = repo.findByid(uuid);
+        if (room == null) {
+            return false;
+        }
+        return room.isOpen();
     }
 }

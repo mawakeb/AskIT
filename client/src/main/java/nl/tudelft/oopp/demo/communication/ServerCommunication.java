@@ -126,8 +126,6 @@ public class ServerCommunication {
             try {
                 String[] links = link.split("/");
                 currentRoomId = UUID.fromString(links[0]);
-                // String role = links[1];
-
                 RoomSceneDisplay.open();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -148,5 +146,35 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
         }
+    }
+
+    /**
+     * Get the status of the current room.
+     *
+     * @return true iff the room exists and is open
+     */
+    public static boolean getRoomStatus() {
+        if (currentRoomId == null) {
+            return false;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/room/status?id=" + currentRoomId.toString())).build();
+        HttpResponse<String> response = getStringHttpResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        } else {
+            // extract boolean value from string
+            return response.body().equals(Boolean.TRUE.toString());
+        }
+    }
+
+    public static UUID getCurrentRoomId() {
+        return currentRoomId;
+    }
+
+    public static void setCurrentRoomId(UUID currentRoomId) {
+        ServerCommunication.currentRoomId = currentRoomId;
     }
 }
