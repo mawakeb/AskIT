@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,9 +12,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RoomTest {
-    Room testRoomA;
-    Room testRoomB;
-    Room testRoomC;
+    private Room testRoomA;
+    private Room testRoomB;
+    private Room testRoomC;
+    private UUID dupe;
+    private String name;
+    private String staff;
+    private String student;
 
     @Test
     public void workingEmptyConstructorTest() {
@@ -29,13 +34,48 @@ class RoomTest {
 
     @BeforeEach
     public void setup() {
-        UUID dupe = UUID.randomUUID();
-        testRoomA = new Room(dupe, "Room A", "abc", "def");
+        dupe = UUID.randomUUID();
+        name = "Room A";
+        staff = "abc";
+        student = "def";
+
+        testRoomA = new Room(dupe, name, staff, student);
         testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf");
         testRoomC = new Room(dupe, "Room C", "abc", "def");
 
         // Rooms are identified by their ID,
         // so rooms A & C are identical, regardless of the different room names.
+    }
+
+    @Test
+    void getId() {
+        assertEquals(testRoomA.getId(), dupe);
+    }
+
+    @Test
+    void getName() {
+        assertEquals(testRoomA.getName(), name);
+    }
+
+    @Test
+    void getStaff() {
+        assertEquals(testRoomA.getStaff(), staff);
+    }
+
+    @Test
+    void getStudent() {
+        assertEquals(testRoomA.getStudent(), student);
+    }
+
+    @Test
+    void isOpen() {
+        assertEquals(testRoomA.isOpen(), true);
+    }
+
+    @Test
+    void close() {
+        testRoomA.close();
+        assertEquals(testRoomA.isOpen(),false);
     }
 
     @Test

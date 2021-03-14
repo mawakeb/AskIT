@@ -55,6 +55,15 @@ public class ServerCommunicationTest {
     }
 
     @Test
+    void getStringHttpResponse() {
+        when(response.statusCode()).thenReturn(200);
+
+        ServerCommunication.getStringHttpResponse(request);
+
+        assertEquals(response.statusCode(), 200);
+    }
+
+    @Test
     public void testGetQuestions() {
         List<Question> expected = List.of(
                 new Question(UUID.randomUUID(), "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
@@ -72,7 +81,19 @@ public class ServerCommunicationTest {
 
     @Test
     public void testSendQuestion() {
-        ServerCommunication.sendQuestion("Unit test question");
+        when(response.statusCode()).thenReturn(200);
+        String text = "Unit test question";
+
+        ServerCommunication.sendQuestion(text);
+        assertEquals("POST", request.method());
+
+        // check if a bodyPublisher was successfully included to transfer the question
+        assertTrue(request.bodyPublisher().isPresent());
+
+        Question userQuestion = new Question(text, 0, null, null);
+        String parsedQuestion = gson.toJson(userQuestion);
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
@@ -92,6 +113,27 @@ public class ServerCommunicationTest {
     }
 
     @Test
+    void createRoom() {
+        List<String> expected = List.of("one", "two");
+        String json = gson.toJson(expected);
+
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn(json);
+        String name = "name";
+        List<String> strings = ServerCommunication.createRoom(name);
+        assertEquals("POST", request.method());
+
+        assertEquals(strings.get(0), expected.get(0));
+        assertEquals(strings.get(1), expected.get(1));
+        // check if a bodyPublisher was successfully included to transfer the room name
+        assertTrue(request.bodyPublisher().isPresent());
+
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(name.toString().length(), request.bodyPublisher().get().contentLength());
+    }
+
+    @Test
     void closeRoom() {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
@@ -106,7 +148,6 @@ public class ServerCommunicationTest {
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
-
     }
 
     @Test
