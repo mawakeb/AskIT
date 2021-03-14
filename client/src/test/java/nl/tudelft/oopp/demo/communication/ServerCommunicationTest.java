@@ -138,10 +138,9 @@ public class ServerCommunicationTest {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
 
-        // run with multiple randomly generated values,
-        // to increase the credibility of comparing only content length
         UUID roomID = UUID.randomUUID();
-        ServerCommunication.closeRoom(roomID);
+        ServerCommunication.setCurrentRoomId(roomID);
+        ServerCommunication.closeRoom();
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"

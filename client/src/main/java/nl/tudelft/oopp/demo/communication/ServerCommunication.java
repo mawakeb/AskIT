@@ -18,7 +18,6 @@ public class ServerCommunication {
 
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
-
     private static UUID currentRoomId;
 
     // constructor to supply mock client
@@ -141,11 +140,10 @@ public class ServerCommunication {
     /**
      * Close the current room using its specified ID.
      *
-     * @param id the ID of the room to close.
      */
-    public static void closeRoom(UUID id) {
+    public static void closeRoom() {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(currentRoomId.toString()))
                 .uri(URI.create("http://localhost:8080/room/close")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {

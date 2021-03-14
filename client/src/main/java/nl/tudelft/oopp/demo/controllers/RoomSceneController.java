@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,11 +48,8 @@ public class RoomSceneController {
      * To prevent new questions from being asked.
      * Method called through JavaFX onAction attribute.
      */
-    // TODO: Supply actual ID of the current room to closeRoom
-    // TODO: Replace random one with real
     public void closeRoomButtonClicked() {
-        ServerCommunication.closeRoom(UUID.randomUUID());
-        updateRoomStatus();
+        ServerCommunication.closeRoom();
     }
 
     /**
