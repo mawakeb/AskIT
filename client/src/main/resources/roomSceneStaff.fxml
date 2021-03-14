@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: #1F2940;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
-    <GridPane prefHeight="57.0" prefWidth="400.0">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: #1F2940;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneStaffController">
+    <GridPane prefHeight="38.0" prefWidth="400.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="222.99998474121094" minWidth="10.0" percentWidth="60.0" prefWidth="222.99998474121094" />
@@ -34,7 +34,7 @@
             <Insets top="5.0" />
         </padding>
     </GridPane>
-    <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="562.0" prefWidth="400.0" styleClass="tabPane" stylesheets="@roomSceneStyle.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+    <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="521.0" prefWidth="400.0" styleClass="tabPane" stylesheets="@roomSceneStyle.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
             <Tab closable="false" text="Questions">
                 <content>
@@ -73,5 +73,19 @@
             <Insets />
         </VBox.margin>
     </TabPane>
-    <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeRoomButtonClicked" styleClass="sendButton" stylesheets="@roomSceneStyle.css" text="Close Room" textAlignment="CENTER" />
+   <GridPane prefHeight="50.0" prefWidth="400.0" style="-fx-background-color: #00355f;">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+          <Button fx:id="closeRoomButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeRoomButtonClicked" styleClass="closeButton" stylesheets="@roomSceneStyle.css" text="Close Room" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <GridPane.margin>
+               <Insets bottom="7.0" right="7.0" />
+            </GridPane.margin>
+         </Button>
+      </children>
+   </GridPane>
 </VBox>
