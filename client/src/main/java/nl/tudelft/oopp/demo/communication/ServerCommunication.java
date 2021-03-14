@@ -17,7 +17,7 @@ public class ServerCommunication {
 
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
-    private static UUID currentRoomId = UUID.randomUUID();  // generated for tests
+    private static UUID currentRoomId = null;  // generated for tests
 
     // constructor to supply mock client
     public ServerCommunication(HttpClient client) {
