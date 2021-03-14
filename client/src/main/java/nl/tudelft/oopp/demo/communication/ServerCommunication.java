@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.ServiceConfigurationError;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.data.Question;
@@ -31,7 +32,7 @@ public class ServerCommunication {
      * @param request HttpRequest to send.
      * @return response object or null.
      */
-    private static HttpResponse<String> getStringHttpResponse(HttpRequest request) {
+    static HttpResponse<String> getStringHttpResponse(HttpRequest request) {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -47,7 +48,7 @@ public class ServerCommunication {
      * @param text text content of question.
      */
     // TODO: make a user object, so the ID doesnt need to be null
-    public static void sendQuestion(String text) {
+    public static void sendQuestion(String text) throws ServiceConfigurationError {
         Question userQuestion = new Question(text, 0, currentRoomId, null);
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
@@ -56,6 +57,7 @@ public class ServerCommunication {
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
+            throw new ServiceConfigurationError("Doesn't return 200");
         }
     }
 
@@ -98,14 +100,15 @@ public class ServerCommunication {
      * @return list of two strings, containing join links for staff and student respectively.
      */
     //TODO: add alert to inform user of errors when creating room.
-    public static List<String> createRoom(String name) {
+    public static List<String> createRoom(String name) throws ServiceConfigurationError {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(name))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
-            return List.of(Integer.toString(response.statusCode()));
+            throw new ServiceConfigurationError("Doesn't return 200");
+            // return List.of(Integer.toString(response.statusCode()));
         }
 
         return gson.fromJson(response.body(), new TypeToken<List<String>>() {
