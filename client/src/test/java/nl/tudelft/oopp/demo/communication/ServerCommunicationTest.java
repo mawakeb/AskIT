@@ -96,20 +96,17 @@ public class ServerCommunicationTest {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
 
-        // run with multiple randomly generated values,
-        // to increase the credibility of comparing only content length
-        for (int i = 0; i < 100; i++) {
-            ServerCommunication.setCurrentRoomId(UUID.randomUUID());
-            ServerCommunication.closeRoom();
-            assertEquals("POST", request.method());
+        UUID roomID = UUID.randomUUID();
+        ServerCommunication.setCurrentRoomId(roomID);
+        ServerCommunication.closeRoom();
+        assertEquals("POST", request.method());
 
-            // check if a bodyPublisher was successfully included to transfer the value "123"
-            assertTrue(request.bodyPublisher().isPresent());
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
 
-            UUID roomID = UUID.randomUUID();
-            // bodyPublisher does not expose the contents directly, only length can be measured here
-            assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
-        }
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
+
     }
 
     @Test
