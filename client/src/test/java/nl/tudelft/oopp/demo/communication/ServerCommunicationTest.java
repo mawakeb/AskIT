@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -109,5 +110,17 @@ public class ServerCommunicationTest {
             // bodyPublisher does not expose the contents directly, only length can be measured here
             assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
         }
+    }
+
+    @Test
+    void getRoomStatus() {
+        // mock boolean endpoint
+        when(response.statusCode()).thenReturn(200);
+
+        when(response.body()).thenReturn(Boolean.TRUE.toString());
+        assertTrue(ServerCommunication.getRoomStatus(UUID.randomUUID()));
+
+        when(response.body()).thenReturn(Boolean.FALSE.toString());
+        assertFalse(ServerCommunication.getRoomStatus(UUID.randomUUID()));
     }
 }

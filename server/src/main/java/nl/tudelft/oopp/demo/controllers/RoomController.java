@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -107,7 +108,7 @@ public class RoomController {
     // TODO: return room object that also contains room name, not just isOpen
     @GetMapping("status")
     @ResponseBody
-    public boolean getRoomStatus(@RequestBody String id) {
+    public boolean getRoomStatus(@RequestParam String id) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {

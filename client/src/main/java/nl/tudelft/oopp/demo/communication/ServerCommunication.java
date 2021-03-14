@@ -148,4 +148,23 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
     }
+
+    /**
+     * Get the status of a room by id.
+     *
+     * @param id the UUID of the room to get the status of
+     * @return true iff that room exists and is open
+     */
+    public static boolean getRoomStatus(UUID id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/room/status?id=" + id.toString())).build();
+        HttpResponse<String> response = getStringHttpResponse(request);
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+            return false;
+        } else {
+            // extract boolean value from string
+            return response.body().equals(Boolean.TRUE.toString());
+        }
+    }
 }
