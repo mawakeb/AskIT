@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,4 +70,22 @@ class RoomControllerTest {
 
     }
 
+    @Test
+    void getRoomStatus() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        // room is initialized as open
+        assertTrue(rc.getRoomStatus(id.toString()));
+
+        room.close();
+        assertFalse(rc.getRoomStatus(id.toString()));
+    }
+
+    @Test
+    void getNonExistentRoomStatus() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(null);
+        assertFalse(rc.getRoomStatus(id.toString()));
+    }
 }
