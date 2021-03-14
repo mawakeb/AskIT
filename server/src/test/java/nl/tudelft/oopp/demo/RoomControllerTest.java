@@ -33,9 +33,9 @@ class RoomControllerTest {
 
     @BeforeEach
     void setUp() {
-        id = UUID.randomUUID();
-        room = new Room(id,"test", "staff","student");
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
+        id = UUID.randomUUID();
+        room = new Room(id, "test", "staff", "student");
         rc = new RoomController(roomRepository);
     }
 
