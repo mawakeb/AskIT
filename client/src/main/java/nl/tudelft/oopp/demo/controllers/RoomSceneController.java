@@ -50,6 +50,7 @@ public class RoomSceneController {
      */
     public void closeRoomButtonClicked() {
         ServerCommunication.closeRoom();
+        updateRoomStatus();
     }
 
     /**
