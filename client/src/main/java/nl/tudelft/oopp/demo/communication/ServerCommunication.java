@@ -17,6 +17,7 @@ public class ServerCommunication {
 
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
+
     private static UUID currentRoomId;
 
     // constructor to supply mock client
@@ -150,14 +151,17 @@ public class ServerCommunication {
     }
 
     /**
-     * Get the status of a room by id.
+     * Get the status of the current room.
      *
-     * @param id the UUID of the room to get the status of
-     * @return true iff that room exists and is open
+     * @return true iff the room exists and is open
      */
-    public static boolean getRoomStatus(UUID id) {
+    public static boolean getRoomStatus() {
+        if (currentRoomId == null) {
+            return false;
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/room/status?id=" + id.toString())).build();
+                .uri(URI.create("http://localhost:8080/room/status?id=" + currentRoomId.toString())).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -166,5 +170,13 @@ public class ServerCommunication {
             // extract boolean value from string
             return response.body().equals(Boolean.TRUE.toString());
         }
+    }
+
+    public static UUID getCurrentRoomId() {
+        return currentRoomId;
+    }
+
+    public static void setCurrentRoomId(UUID currentRoomId) {
+        ServerCommunication.currentRoomId = currentRoomId;
     }
 }

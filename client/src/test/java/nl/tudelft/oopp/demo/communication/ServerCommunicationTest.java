@@ -25,7 +25,7 @@ import org.mockito.invocation.InvocationOnMock;
 
 public class ServerCommunicationTest {
 
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private ServerCommunication sc;
     @Mock
     private HttpClient client;
@@ -52,6 +52,7 @@ public class ServerCommunicationTest {
                 });
 
         sc = new ServerCommunication(client);
+        ServerCommunication.setCurrentRoomId(null);
     }
 
     @Test
@@ -66,13 +67,13 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
 
-        List<Question> actual = sc.getQuestions();
+        List<Question> actual = ServerCommunication.getQuestions();
         assertEquals(expected, actual);
     }
 
     @Test
     public void testSendQuestion() {
-        sc.sendQuestion("Unit test question");
+        ServerCommunication.sendQuestion("Unit test question");
     }
 
     @Test
@@ -113,14 +114,28 @@ public class ServerCommunicationTest {
     }
 
     @Test
+    void getNotInitializedRoomStatus() {
+        // mock boolean endpoint
+        when(response.statusCode()).thenReturn(200);
+
+        // should return false regardless of response,
+        // because currentRoomId hasn't been initialized
+        assertFalse(ServerCommunication.getRoomStatus());
+    }
+
+    @Test
     void getRoomStatus() {
         // mock boolean endpoint
         when(response.statusCode()).thenReturn(200);
 
+        // initialize currentRoomId to be non-null
+        // not actually used by mock objects
+        ServerCommunication.setCurrentRoomId(UUID.randomUUID());
+
         when(response.body()).thenReturn(Boolean.TRUE.toString());
-        assertTrue(ServerCommunication.getRoomStatus(UUID.randomUUID()));
+        assertTrue(ServerCommunication.getRoomStatus());
 
         when(response.body()).thenReturn(Boolean.FALSE.toString());
-        assertFalse(ServerCommunication.getRoomStatus(UUID.randomUUID()));
+        assertFalse(ServerCommunication.getRoomStatus());
     }
 }
