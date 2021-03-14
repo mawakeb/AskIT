@@ -106,9 +106,11 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-        upvoteBtn.setDisable(true);
-        ServerCommunication.upvoteQuestion(q.getId());
-        upvotedQuestionIds.add(q.getId());
-        roomSceneController.updateQuestionList();
+        if (roomSceneController != null) {
+            upvoteBtn.setDisable(true);
+            ServerCommunication.upvoteQuestion(q.getId());
+            upvotedQuestionIds.add(q.getId());
+            roomSceneController.updateQuestionList();
+        }
     }
 }
