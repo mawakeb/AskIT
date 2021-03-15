@@ -65,18 +65,18 @@ public class ServerCommunicationTest {
     @Test
     public void testGetQuestions() {
 
-        UUID testUUID = UUID.randomUUID();
+        UUID testId = UUID.randomUUID();
 
         List<Question> expected = List.of(
-                new Question(testUUID, "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
-                new Question(testUUID, "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
-                new Question(testUUID, "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
+                new Question(testId, "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(testId, "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(testId, "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
         String json = gson.toJson(expected);
 
         // set response content
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
-        List<Question> actual = ServerCommunication.getQuestions(testUUID.toString());
+        List<Question> actual = ServerCommunication.getQuestions(testId.toString());
         assertEquals(expected, actual);
     }
 
@@ -85,15 +85,15 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         String text = "Unit test question";
 
-        UUID testUUID = UUID.randomUUID();
+        UUID testId = UUID.randomUUID();
 
-        ServerCommunication.sendQuestion(text, testUUID.toString());
+        ServerCommunication.sendQuestion(text, testId.toString());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, testUUID, null);
+        Question userQuestion = new Question(text, 0, testId, null);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
@@ -165,15 +165,15 @@ public class ServerCommunicationTest {
     @Test
     void getRoomStatus() {
 
-        UUID testUUID = UUID.randomUUID();
+        UUID testId = UUID.randomUUID();
 
         // mock boolean endpoint
         when(response.statusCode()).thenReturn(200);
 
         when(response.body()).thenReturn(Boolean.TRUE.toString());
-        assertTrue(ServerCommunication.getRoomStatus(testUUID.toString()));
+        assertTrue(ServerCommunication.getRoomStatus(testId.toString()));
 
         when(response.body()).thenReturn(Boolean.FALSE.toString());
-        assertFalse(ServerCommunication.getRoomStatus(testUUID.toString()));
+        assertFalse(ServerCommunication.getRoomStatus(testId.toString()));
     }
 }
