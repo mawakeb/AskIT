@@ -51,7 +51,6 @@ public class ServerCommunicationTest {
                 });
 
         sc = new ServerCommunication(client);
-        ServerCommunication.setCurrentRoomId(null);
     }
 
     @Test
@@ -65,17 +64,19 @@ public class ServerCommunicationTest {
 
     @Test
     public void testGetQuestions() {
+
+        UUID testUUID = UUID.randomUUID();
+
         List<Question> expected = List.of(
-                new Question(UUID.randomUUID(), "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
+                new Question(testUUID, "Q1", 4, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(testUUID, "Q2", 5, UUID.randomUUID(), UUID.randomUUID()),
+                new Question(testUUID, "Q3", 6, UUID.randomUUID(), UUID.randomUUID()));
         String json = gson.toJson(expected);
 
         // set response content
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
-        ServerCommunication.setCurrentRoomId(UUID.randomUUID());
-        List<Question> actual = ServerCommunication.getQuestions();
+        List<Question> actual = ServerCommunication.getQuestions(testUUID.toString());
         assertEquals(expected, actual);
     }
 
@@ -84,13 +85,15 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         String text = "Unit test question";
 
-        ServerCommunication.sendQuestion(text);
+        UUID testUUID = UUID.randomUUID();
+
+        ServerCommunication.sendQuestion(text, testUUID.toString());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, null, null);
+        Question userQuestion = new Question(text, 0, testUUID, null);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
@@ -138,16 +141,15 @@ public class ServerCommunicationTest {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
 
-        UUID roomID = UUID.randomUUID();
-        ServerCommunication.setCurrentRoomId(roomID);
-        ServerCommunication.closeRoom();
+        UUID roomId = UUID.randomUUID();
+        ServerCommunication.closeRoom(roomId.toString());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(roomID.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(roomId.toString().length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
@@ -156,23 +158,22 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
 
         // should return false regardless of response,
-        // because currentRoomId hasn't been initialized
-        assertFalse(ServerCommunication.getRoomStatus());
+        // because given string is null
+        assertFalse(ServerCommunication.getRoomStatus(null));
     }
 
     @Test
     void getRoomStatus() {
+
+        UUID testUUID = UUID.randomUUID();
+
         // mock boolean endpoint
         when(response.statusCode()).thenReturn(200);
 
-        // initialize currentRoomId to be non-null
-        // not actually used by mock objects
-        ServerCommunication.setCurrentRoomId(UUID.randomUUID());
-
         when(response.body()).thenReturn(Boolean.TRUE.toString());
-        assertTrue(ServerCommunication.getRoomStatus());
+        assertTrue(ServerCommunication.getRoomStatus(testUUID.toString()));
 
         when(response.body()).thenReturn(Boolean.FALSE.toString());
-        assertFalse(ServerCommunication.getRoomStatus());
+        assertFalse(ServerCommunication.getRoomStatus(testUUID.toString()));
     }
 }
