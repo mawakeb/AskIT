@@ -13,6 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
+import nl.tudelft.oopp.demo.controllers.RoomSceneStaffController;
 
 /**
  * Class that forms an entry in the question listview.
@@ -24,7 +25,8 @@ public class QuestionCell extends ListCell<Question> {
     // up voted this session, to prevent up voting multiple times
     private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
 
-    private final RoomSceneController roomSceneController;
+    private RoomSceneController roomSceneController;
+    private RoomSceneStaffController roomSceneStaffController;
 
     /**
      * QuestionCell Constructor, passed as lambda function in SetCellFactory.
@@ -33,6 +35,19 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
+        this.setStyle("-fx-background-color: #0000;"
+                + "-fx-padding: 7 0 0 0;"
+                + "-fx-text-fill: #fff;");
+    }
+
+    /**
+     * QuestionCell Constructor, passed as lambda function in SetCellFactory.
+     * Separate constructor for roomSceneStaff
+     *
+     * @param roomSceneStaffController the RoomSceneController containing this ListView.
+     */
+    public QuestionCell(RoomSceneStaffController roomSceneStaffController) {
+        this.roomSceneStaffController = roomSceneStaffController;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -91,9 +106,11 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-        upvoteBtn.setDisable(true);
-        ServerCommunication.upvoteQuestion(q.getId());
-        upvotedQuestionIds.add(q.getId());
-        roomSceneController.updateQuestionList();
+        if (roomSceneController != null) {
+            upvoteBtn.setDisable(true);
+            ServerCommunication.upvoteQuestion(q.getId());
+            upvotedQuestionIds.add(q.getId());
+            roomSceneController.updateQuestionList();
+        }
     }
 }

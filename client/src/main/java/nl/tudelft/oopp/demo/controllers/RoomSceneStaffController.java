@@ -7,19 +7,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.util.Callback;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 
-public class RoomSceneController {
-    @FXML
-    private TextArea question;
+public class RoomSceneStaffController {
+
     @FXML
     private ListView<Question> questionList;
     @FXML
-    private Button sendButton;
+    private Button closeRoomButton;
     @FXML
     private Label roomName;
 
@@ -39,12 +37,14 @@ public class RoomSceneController {
     }
 
     /**
-     * Handles clicking the button.
+     * Closes the current room through the server.
+     * To prevent new questions from being asked.
+     * Method called through JavaFX onAction attribute.
      */
-    public void sendButtonClicked() {
-        ServerCommunication.sendQuestion(question.getText());
-        updateAll();
-        question.clear();
+    public void closeRoomButtonClicked() {
+        ServerCommunication.closeRoom();
+        updateRoomStatus();
+
     }
 
     /**
@@ -62,11 +62,7 @@ public class RoomSceneController {
      */
     public void updateRoomStatus() {
         boolean isOpen = ServerCommunication.getRoomStatus();
-        sendButton.setDisable(!isOpen);
-        question.setDisable(!isOpen);
-        if (!isOpen) {
-            question.setPromptText("The room is closed.");
-        }
+        closeRoomButton.setDisable(!isOpen);
     }
 
     /**

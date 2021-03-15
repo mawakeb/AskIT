@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Room;
@@ -27,26 +28,30 @@ public class JoinController {
      */
     @GetMapping({"link"})
     @ResponseBody
-    public void joinLink(@RequestParam String q) {
+    public List<String> joinLink(@RequestParam String q) {
         String[] links = q.split("/");
         UUID id = UUID.fromString(links[0]);
         String role = links[1];
         Room room = this.repo.findByid(id);
         if (room != null) {
+
             if (role.equals(room.getStudent())) {
                 System.out.println("You are a student");
-            } else {
-                if (!role.equals(room.getStaff())) {
-                    return;
-                }
-
+                System.out.println("Successfully joined");
+                return List.of(room.getName(),"student");
+            }
+            if (role.equals(room.getStaff())) {
                 System.out.println("You are a staff");
+                System.out.println("Successfully joined");
+                return List.of(room.getName(),"staff");
             }
 
-            System.out.println("Successfully joined");
+            System.out.println("Incorrect role code");
+
         } else {
             System.out.println("Room not found");
         }
+        return null;
 
     }
 }

@@ -19,6 +19,7 @@ public class ServerCommunication {
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
     private static UUID currentRoomId;
+    private static String currentRoomName;
 
     // constructor to supply mock client
     public ServerCommunication(HttpClient client) {
@@ -120,6 +121,7 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
+    //TODO: assign role and roleID to user
     public static void joinRoom(String link) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/join/link?q=" + link)).build();
         HttpResponse<String> response = getStringHttpResponse(request);
@@ -127,9 +129,16 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         } else {
             try {
+                List<String> responseList = gson.fromJson(response.body(),
+                        new TypeToken<List<String>>() {}.getType());
                 String[] links = link.split("/");
                 currentRoomId = UUID.fromString(links[0]);
-                RoomSceneDisplay.open();
+                currentRoomName = responseList.get(0);
+                if (responseList.get(1).equals("student")) {
+                    RoomSceneDisplay.open("/roomScene.fxml");
+                } else if (responseList.get(1).equals("staff")) {
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 getQuestions();
@@ -175,6 +184,10 @@ public class ServerCommunication {
 
     public static UUID getCurrentRoomId() {
         return currentRoomId;
+    }
+
+    public static String getCurrentRoomName() {
+        return currentRoomName;
     }
 
     public static void setCurrentRoomId(UUID currentRoomId) {
