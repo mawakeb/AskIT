@@ -52,6 +52,22 @@ class QuestionRepositoryTest {
     }
 
     @Test
+    void getAllRoomQuestions() {
+        // Sets up a dummy DB
+        UUID id = UUID.randomUUID();
+        Question question = new Question(UUID.randomUUID(), "content", id, UUID.randomUUID());
+        Question question1 = new Question(UUID.randomUUID(), "content1", id, UUID.randomUUID());
+
+        entityManager.persist(question);
+        entityManager.persist(question1);
+        entityManager.flush();
+
+        List<Question> found = questionRepository.getAllRoomQuestions(id);
+
+        assertEquals(found, List.of(question,question1));
+    }
+
+    @Test
     void findAll() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();

@@ -21,25 +21,26 @@ class GettingControllerTest {
     private QuestionRepository repo;
 
     private List<Question> questionList;
+    private UUID dupe;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
 
         // mock repo.getAllStrings()
-        UUID dupe = UUID.randomUUID();
+        dupe = UUID.randomUUID();
         questionList = List.of(
-                new Question("Q1", dupe, dupe),
-                new Question("Q2", dupe, dupe),
-                new Question("Q3", dupe, dupe));
-        when(repo.findAll()).thenReturn(questionList);
+                new Question(UUID.randomUUID(),"Q1", dupe, UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q2", dupe, UUID.randomUUID()),
+                new Question(UUID.randomUUID(), "Q3", dupe, UUID.randomUUID()));
+        when(repo.getAllRoomQuestions(dupe)).thenReturn(questionList);
 
         gc = new GettingController(repo);
     }
 
     @Test
     void testGetQuestions() {
-        List<Question> actual = gc.getQuestions();
+        List<Question> actual = gc.getQuestions(dupe.toString());
         assertEquals(questionList, actual);
     }
 }
