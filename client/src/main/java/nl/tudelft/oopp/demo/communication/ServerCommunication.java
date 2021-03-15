@@ -18,8 +18,6 @@ public class ServerCommunication {
 
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
-    private static UUID currentRoomId;
-    private static String currentRoomName;
 
     // constructor to supply mock client
     public ServerCommunication(HttpClient client) {
@@ -46,10 +44,11 @@ public class ServerCommunication {
      * Send question to server.
      *
      * @param text text content of question.
+     * @param roomId UUID of the lecture room to connect
      */
     // TODO: make a user object, so the ID doesnt need to be null
-    public static void sendQuestion(String text) throws ServiceConfigurationError {
-        Question userQuestion = new Question(text, 0, currentRoomId, null);
+    public static void sendQuestion(String text, String roomId) throws ServiceConfigurationError {
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null);
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))
@@ -63,11 +62,11 @@ public class ServerCommunication {
 
     /**
      * get questions from server.
-     *
+     * @param roomId UUID of the lecture room to connect
      * @return list of all questions on the server.
      */
-    public static List<Question> getQuestions() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions?q=" + currentRoomId.toString())).build();
+    public static List<Question> getQuestions(String roomId) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions?q=" + roomId)).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -132,16 +131,15 @@ public class ServerCommunication {
                 List<String> responseList = gson.fromJson(response.body(),
                         new TypeToken<List<String>>() {}.getType());
                 String[] links = link.split("/");
-                currentRoomId = UUID.fromString(links[0]);
-                currentRoomName = responseList.get(0);
+                String roomId = links[0];
+                String roomName = responseList.get(0);
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml");
+                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml");
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                getQuestions();
             }
         }
     }
@@ -149,10 +147,11 @@ public class ServerCommunication {
     /**
      * Close the current room using its specified ID.
      *
+     * @param roomId UUID of the lecture room to connect
      */
-    public static void closeRoom() {
+    public static void closeRoom(String roomId) {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(currentRoomId.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(roomId))
                 .uri(URI.create("http://localhost:8080/room/close")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
@@ -163,15 +162,16 @@ public class ServerCommunication {
     /**
      * Get the status of the current room.
      *
+     * @param roomId UUID of the lecture room to connect
      * @return true iff the room exists and is open
      */
-    public static boolean getRoomStatus() {
-        if (currentRoomId == null) {
+    public static boolean getRoomStatus(String roomId) {
+        if (roomId == null) {
             return false;
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/room/status?id=" + currentRoomId.toString())).build();
+                .uri(URI.create("http://localhost:8080/room/status?id=" + roomId)).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
@@ -182,15 +182,4 @@ public class ServerCommunication {
         }
     }
 
-    public static UUID getCurrentRoomId() {
-        return currentRoomId;
-    }
-
-    public static String getCurrentRoomName() {
-        return currentRoomName;
-    }
-
-    public static void setCurrentRoomId(UUID currentRoomId) {
-        ServerCommunication.currentRoomId = currentRoomId;
-    }
 }
