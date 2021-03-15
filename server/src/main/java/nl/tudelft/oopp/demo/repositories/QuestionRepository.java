@@ -11,6 +11,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT content FROM Question")
     List<String> getAllStrings();
 
+    @Query("SELECT q FROM Question q WHERE q.roomId = ?1")
+    List<Question> getAllRoomQuestions(UUID roomId);
+
     Question findById(UUID id);
 
     List<Question> findAll();
