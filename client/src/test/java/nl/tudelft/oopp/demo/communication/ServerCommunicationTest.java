@@ -74,7 +74,7 @@ public class ServerCommunicationTest {
         // set response content
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
-
+        ServerCommunication.setCurrentRoomId(UUID.randomUUID());
         List<Question> actual = ServerCommunication.getQuestions();
         assertEquals(expected, actual);
     }
