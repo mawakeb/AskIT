@@ -67,7 +67,7 @@ public class ServerCommunication {
      * @return list of all questions on the server.
      */
     public static List<Question> getQuestions() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions?q=" + currentRoomId.toString())).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
