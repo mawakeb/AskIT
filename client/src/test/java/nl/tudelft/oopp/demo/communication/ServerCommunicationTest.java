@@ -2,7 +2,9 @@ package nl.tudelft.oopp.demo.communication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +34,10 @@ public class ServerCommunicationTest {
     @Mock
     private HttpResponse<String> response;
 
+    // request made by tests
+    @Mock
+    private HttpRequest mockRequest;
+
     // stores request sent by SUT
     private HttpRequest request;
 
@@ -55,11 +61,27 @@ public class ServerCommunicationTest {
 
     @Test
     void getStringHttpResponse() {
-        when(response.statusCode()).thenReturn(200);
+        // send an empty request
+        HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
 
-        ServerCommunication.getStringHttpResponse(request);
+        // the httpClient responds without errors by default in @BeforeEach
+        // so the method should simple return the mocked response
+        assertEquals(response, result);
+    }
 
-        assertEquals(response.statusCode(), 200);
+    @Test
+    void getStringHttpResponseException() throws IOException, InterruptedException {
+        // test the exception handling, method should not fail but just return null
+        // this tests throw clauses are required when mocking client.send, not thrown by SUT
+        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+                .thenThrow(IOException.class);
+        HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
+
+        try {
+            assertNull(result);
+        } catch (Exception e) {
+            fail("This exception should've been caught and printed to terminal");
+        }
     }
 
     @Test
