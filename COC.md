@@ -26,7 +26,8 @@
 10. Code of conduct can be updated in the future. Everyone should keep up with the updates and follow them.
 11. Everyone should do tests/checkstyle before doing a merge request.
 12. After creating a merge request, the person making it assigns 2 random people to review it. The assignees should review the merge request within 1 day. If the person has a valid reason not to make it within a day, a different person should be reassigned in his place.
-
+13. From 12:00 to 18:00 (outside of lecture hours) everyone should be available. If the person is not available during at least 4 of these 6 hours, it should be announced by them beforehand.
+14. New implemented methods and features should have at least 1 test that verifies its functionality. If the person struggles to write tests, he can ask someone else to add tests to his branch before merging.
 
 ## Consequences for breaking the COC
 
