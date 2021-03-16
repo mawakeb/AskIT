@@ -27,7 +27,7 @@ import org.mockito.invocation.InvocationOnMock;
 public class ServerCommunicationTest {
 
     private static final Gson gson = new Gson();
-    private ServerCommunication sc;
+
     @Mock
     private HttpClient client;
 
@@ -56,7 +56,7 @@ public class ServerCommunicationTest {
                     return response;
                 });
 
-        sc = new ServerCommunication(client);
+        ServerCommunication.setHttpClient(client);
     }
 
     @Test
@@ -155,7 +155,7 @@ public class ServerCommunicationTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(name.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(name.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test

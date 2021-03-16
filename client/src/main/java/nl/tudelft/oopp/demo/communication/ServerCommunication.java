@@ -19,8 +19,8 @@ public class ServerCommunication {
     private static final Gson gson = new Gson();
     private static HttpClient client = HttpClient.newBuilder().build();
 
-    // constructor to supply mock client
-    public ServerCommunication(HttpClient client) {
+    // method to supply mock client
+    public static void setHttpClient(HttpClient client) {
         ServerCommunication.client = client;
     }
 
