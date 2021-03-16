@@ -70,18 +70,17 @@ public class ServerCommunicationTest {
     }
 
     @Test
-    void getStringHttpResponseException() throws IOException, InterruptedException {
-        // test the exception handling, method should not fail but just return null
-        // this tests throw clauses are required when mocking client.send, not thrown by SUT
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
-                .thenThrow(IOException.class);
-        HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
-
+    void getStringHttpResponseException() {
+        // test the exception handling, getStringHttpResponse should not fail but just return null
         try {
-            assertNull(result);
+            when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+                    .thenThrow(IOException.class);
         } catch (Exception e) {
-            fail("This exception should've been caught and printed to terminal");
+            // no exception should be thrown when initializing mock behaviour
         }
+
+        HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
+        assertNull(result);
     }
 
     @Test
