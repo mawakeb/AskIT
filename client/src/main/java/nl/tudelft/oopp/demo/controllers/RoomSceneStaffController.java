@@ -21,6 +21,8 @@ public class RoomSceneStaffController {
     @FXML
     private Label roomName;
 
+    private String roomId;
+
     /**
      * Use @FXML initialize() instead of constructor.
      * This method is called after linking the @FXML elements.
@@ -32,8 +34,18 @@ public class RoomSceneStaffController {
         questionList.setCellFactory((Callback<ListView<Question>, ListCell<Question>>) params -> {
             return new QuestionCell(this);
         });
+    }
+
+    /**
+     * shows name of the room in the scene and sets value for roomId.
+     *
+     * @param roomId - UUID of the room
+     * @param roomName - Name of the room
+     */
+    public void setRoomInfo(String roomId, String roomName) {
+        this.roomId = roomId;
+        this.roomName.setText(roomName);
         updateAll();
-        roomName.setText(ServerCommunication.getCurrentRoomName());
     }
 
     /**
@@ -42,7 +54,7 @@ public class RoomSceneStaffController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        ServerCommunication.closeRoom();
+        ServerCommunication.closeRoom(roomId);
         updateRoomStatus();
 
     }
@@ -52,7 +64,7 @@ public class RoomSceneStaffController {
      * Then updates the listview contents to display them.
      */
     public void updateQuestionList() {
-        List<Question> questions = ServerCommunication.getQuestions();
+        List<Question> questions = ServerCommunication.getQuestions(roomId);
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
@@ -61,7 +73,7 @@ public class RoomSceneStaffController {
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
-        boolean isOpen = ServerCommunication.getRoomStatus();
+        boolean isOpen = ServerCommunication.getRoomStatus(roomId);
         closeRoomButton.setDisable(!isOpen);
     }
 
