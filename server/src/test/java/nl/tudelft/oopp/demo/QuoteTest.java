@@ -17,10 +17,10 @@ public class QuoteTest {
     public void saveAndRetrieveQuote() {
         String quoteText = "Tell me and I forget. Teach me and I remember. Involve me and I learn.";
         String quoteAuthor = "Benjamin Franklin";
-        Quote quote = new Quote(1, quoteText, quoteAuthor);
+        Quote quote = new Quote(quoteText, quoteAuthor);
         quoteRepository.save(quote);
 
-        Quote quote2 = quoteRepository.getOne((long) 1);
+        Quote quote2 = quoteRepository.findQuoteById(quote.getId());
         assertEquals(quote, quote2);
     }
 }

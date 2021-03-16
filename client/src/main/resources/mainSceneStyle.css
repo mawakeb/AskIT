@@ -1,0 +1,66 @@
+
+.menu {
+    -fx-font-family: 'Trebuchet MS', sans-serif;
+    -fx-background-color: #1F2940;
+    -fx-effect: dropshadow(three-pass-box, black, 5, 0, 0, 0)
+}
+.tab {
+    -fx-font-family: 'Century Gothic', sans-serif;
+    -fx-font-size: 180%;
+    -fx-background-color: #0000;
+    -fx-background-radius: 0;
+    -fx-text-fill: #ffffff;
+}
+
+.tab:selected {
+    -fx-text-fill: #21C5ED;
+    -fx-border-width: 0 7 0 0;
+    -fx-border-style: solid;
+    -fx-border-color: #21C5ED;
+}
+
+.tab:hover {
+    -fx-color: #1D2025;
+    -fx-background-color: #21C5ED;
+    -fx-text-fill: #ffffff;
+}
+
+.buttons {
+    -fx-font-family: 'Century Gothic', sans-serif;
+    -fx-background-radius: 5;
+    -fx-background-color: #141B2D;
+    -fx-border-color: #21C5ED;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-text-fill: #21C5ED;
+    -fx-font-size: 130%;
+}
+
+.buttons:hover {
+   -fx-border-color: transparent;
+   -fx-background-color: #21C5ED;
+   -fx-text-fill: #ffffff;
+}
+
+.list,
+.list-cell {
+    -fx-font-family: 'Trebuchet MS', sans-serif;
+    -fx-background-color: #1F2940;
+    -fx-text-fill: #dfdfdf;
+    -fx-font-size: 130%
+}
+
+.list-cell:odd: hover {
+    -fx-text-fill: #1F2940;
+    -fx-background-color: #21C5ED;
+}
+
+.scroll-bar{
+    -fx-opacity: 0.1;
+    -fx-background-color: #0000;
+}
+
+.list .corner {
+    -fx-background-color: #141B2D;
+}
+
