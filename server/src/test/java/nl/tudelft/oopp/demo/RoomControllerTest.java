@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ class RoomControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         id = UUID.randomUUID();
-        room = new Room(id, "test", "staff", "student", LocalDateTime.now());
+        room = new Room(id, "test", "staff", "student", LocalDateTime.now(ZoneOffset.UTC));
         rc = new RoomController(roomRepository);
     }
 
@@ -52,7 +53,9 @@ class RoomControllerTest {
 
     @Test
     void createLink() {
-        List<String> links = rc.createLink(room.getName());
+
+        String info = "name/" + LocalDateTime.now().toString();
+        List<String> links = rc.createLink(info);
         // Sees if the room is saved
         verify(roomRepository, times(1)).save(any(Room.class));
 
