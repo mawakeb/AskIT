@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ class RoomControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         id = UUID.randomUUID();
-        room = new Room(id, "test", "staff", "student");
+        room = new Room(id, "test", "staff", "student", LocalDateTime.now());
         rc = new RoomController(roomRepository);
     }
 
