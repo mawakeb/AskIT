@@ -37,6 +37,10 @@ public class TimeSpinner extends Spinner<LocalTime> {
         this(LocalTime.now());
     }
 
+    /**
+     * Construct a timeSpinner with the desired functionalities.
+     * @param time the current time to show as default
+     */
     public TimeSpinner(LocalTime time) {
         setEditable(true);
 
@@ -66,17 +70,6 @@ public class TimeSpinner extends Spinner<LocalTime> {
             }
         };
 
-        // The textFormatter both manages the text <-> LocalTime conversion,
-        // and vetoes any edits that are not valid. We just make sure we have
-        // two colons and only digits in between:
-        TextFormatter<LocalTime> textFormatter = new TextFormatter<LocalTime>(localTimeConverter, LocalTime.now(), c -> {
-            String newText = c.getControlNewText();
-            if (newText.matches("[0-9]{0,2}:[0-9]{0,2}")) {
-                return c;
-            }
-            return null;
-        });
-
         // The spinner value factory defines increment and decrement by
         // delegating to the current editing mode:
         SpinnerValueFactory<LocalTime> valueFactory = new SpinnerValueFactory<LocalTime>() {
@@ -94,6 +87,18 @@ public class TimeSpinner extends Spinner<LocalTime> {
         };
         valueFactory.setConverter(localTimeConverter);
         valueFactory.setValue(time);
+
+        // The textFormatter both manages the text <-> LocalTime conversion,
+        // and vetoes any edits that are not valid. We just make sure we have
+        // two colons and only digits in between:
+        TextFormatter<LocalTime> textFormatter = new TextFormatter<LocalTime>(localTimeConverter,
+                LocalTime.now(), c -> {
+            String newText = c.getControlNewText();
+            if (newText.matches("[0-9]{0,2}:[0-9]{0,2}")) {
+                return c;
+            }
+            return null;
+        });
 
         this.setValueFactory(valueFactory);
         this.getEditor().setTextFormatter(textFormatter);

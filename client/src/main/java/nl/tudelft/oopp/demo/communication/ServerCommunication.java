@@ -102,7 +102,8 @@ public class ServerCommunication {
      * @return list of two strings, containing join links for staff and student respectively.
      */
     //TODO: add alert to inform user of errors when creating room.
-    public static List<String> createRoom(String name, LocalDateTime openTime) throws ServiceConfigurationError {
+    public static List<String> createRoom(String name, LocalDateTime openTime)
+            throws ServiceConfigurationError {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(name + "/" + openTime.toString()))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
