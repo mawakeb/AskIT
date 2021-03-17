@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Room;
@@ -19,6 +20,7 @@ class RoomTest {
     private String name;
     private String staff;
     private String student;
+    private LocalDateTime time;
 
     @Test
     public void workingEmptyConstructorTest() {
@@ -28,7 +30,7 @@ class RoomTest {
 
     @Test
     public void workingFilledConstructorTest() {
-        Room testRoom = new Room(UUID.randomUUID(), "Room N", "abc", "def");
+        Room testRoom = new Room(UUID.randomUUID(), "Room N", "abc", "def", LocalDateTime.now());
         assertNotNull(testRoom);
     }
 
@@ -38,10 +40,11 @@ class RoomTest {
         name = "Room A";
         staff = "abc";
         student = "def";
+        time = LocalDateTime.now();
 
-        testRoomA = new Room(dupe, name, staff, student);
-        testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf");
-        testRoomC = new Room(dupe, "Room C", "abc", "def");
+        testRoomA = new Room(dupe, name, staff, student, time);
+        testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf", time);
+        testRoomC = new Room(dupe, "Room C", "abc", "def", time);
 
         // Rooms are identified by their ID,
         // so rooms A & C are identical, regardless of the different room names.
@@ -65,6 +68,11 @@ class RoomTest {
     @Test
     void getStudent() {
         assertEquals(testRoomA.getStudent(), student);
+    }
+
+    @Test
+    void getOpenTime() {
+        assertEquals(testRoomA.getOpenTime(), time);
     }
 
     @Test

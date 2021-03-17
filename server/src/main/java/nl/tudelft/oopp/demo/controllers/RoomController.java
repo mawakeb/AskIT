@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -57,11 +58,14 @@ public class RoomController {
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
 
+        String[] info = q.split("/");
+        LocalDateTime time = LocalDateTime.parse(info[1]);
+
         String string2;
         for (string2 = randomString(); string1.equals(string2); string2 = randomString()) {
         }
         UUID roomId = UUID.randomUUID();
-        Room newRoom = new Room(roomId, q, string1, string2);
+        Room newRoom = new Room(roomId, info[0], string1, string2, time);
         this.repo.save(newRoom);
 
         // TODO: links are way too long because of room id
@@ -102,7 +106,6 @@ public class RoomController {
      * @return a boolean, true iff the room is open for new questions,
      *           also returns false if the room can't be found.
      */
-    // TODO: return room object that also contains room name, not just isOpen
     @GetMapping("status")
     @ResponseBody
     public boolean getRoomStatus(@RequestParam String id) {
