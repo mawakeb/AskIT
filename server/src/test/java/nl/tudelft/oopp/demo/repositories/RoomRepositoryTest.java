@@ -25,7 +25,7 @@ class RoomRepositoryTest {
     void findByid() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Room room = new Room(id, "room", "staff", "student");
+        Room room = new Room(id, "room", "staff", "student", null);
         entityManager.persist(room);
         entityManager.flush();
 

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,7 +146,7 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
         String name = "name";
-        List<String> strings = ServerCommunication.createRoom(name);
+        List<String> strings = ServerCommunication.createRoom(name, LocalDateTime.now());
         assertEquals("POST", request.method());
 
         assertEquals(strings.get(0), expected.get(0));
