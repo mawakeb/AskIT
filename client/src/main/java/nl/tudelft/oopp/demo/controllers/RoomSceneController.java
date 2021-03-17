@@ -80,6 +80,8 @@ public class RoomSceneController {
         question.setDisable(!isOpen);
         if (!isOpen) {
             question.setPromptText("The room is closed.");
+        } else {
+            question.setPromptText("Ask a question...");
         }
     }
 
