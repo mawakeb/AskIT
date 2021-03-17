@@ -3,42 +3,53 @@ package nl.tudelft.oopp.demo.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.views.TimeSpinner;
 
 /**
  * Controller for mainScene.fxml.
  */
 public class MainSceneController {
 
-    @FXML
-    private TextField userText;
-    @FXML
-    private ListView<String> list;
-    @FXML
-    private Label tabTitle;
-    @FXML
-    private Button createButton;
-    @FXML
-    private Button joinButton;
-    @FXML
-    private Label tabIcon;
-    @FXML
-    private TextField username;
-    @FXML
-    private ToggleButton createTab;
-    @FXML
-    private ToggleButton joinTab;
+    @FXML private TextField userText;
+    @FXML private ListView<String> list;
+    @FXML private Label tabTitle;
+    @FXML private Button createButton;
+    @FXML private Button joinButton;
+    @FXML private Label tabIcon;
+    @FXML private TextField username;
+    @FXML private ToggleButton createTab;
+    @FXML private ToggleButton joinTab;
+    @FXML private GridPane grid;
 
     @FXML
     public void initialize() {
+
+        // initialize timePicker
+        Spinner<LocalTime> timeSpinner = new TimeSpinner();
+        grid.add(timeSpinner, 3, 6);
+        timeSpinner.getStyleClass().add("spinner");
+        timeSpinner.getStylesheets().add(getClass()
+                .getResource("/mainSceneStyle.css").toExternalForm());
+        timeSpinner.setPrefHeight(30);
+
+        joinTabClicked();
         joinTab.setSelected(true);
     }
 
@@ -79,7 +90,8 @@ public class MainSceneController {
      * Handles clicking the create button.
      */
     public void createButtonClicked() {
-        List<String> links = ServerCommunication.createRoom(userText.getText());
+        List<String> links = ServerCommunication.createRoom(userText.getText(),
+                LocalDateTime.now(ZoneOffset.UTC));
         userText.clear();
         list.getItems().clear();
         if (links.size() == 1) {
