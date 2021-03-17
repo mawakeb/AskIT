@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -83,7 +84,7 @@ public class Room {
     }
 
     public boolean isOpen() {
-        return this.isOpen && LocalDateTime.now().isAfter(this.openTime);
+        return this.isOpen && LocalDateTime.now(ZoneOffset.UTC).isAfter(this.openTime);
     }
 
     public void close() {
