@@ -146,7 +146,10 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
         String name = "name";
-        List<String> strings = ServerCommunication.createRoom(name, LocalDateTime.now());
+        LocalDateTime time = LocalDateTime.now();
+        // 1 is for the '/' added
+        int length = name.length() + time.toString().length() + 1;
+        List<String> strings = ServerCommunication.createRoom(name, time);
         assertEquals("POST", request.method());
 
         assertEquals(strings.get(0), expected.get(0));
@@ -155,7 +158,7 @@ public class ServerCommunicationTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(name.length(), request.bodyPublisher().get().contentLength());
+        assertEquals(length, request.bodyPublisher().get().contentLength());
     }
 
     @Test
