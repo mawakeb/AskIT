@@ -82,8 +82,10 @@
 
 .sendButton {
     -fx-background-color: #0000;
-    -fx-font-size: 230%;
-    -fx-text-fill: linear-gradient(to bottom, #21C5ED, #28cf87);
+    -fx-background-image: url("/sendIcon.png");
+    -fx-background-size: 35;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 .sendButton: disabled {
@@ -107,4 +109,12 @@
 .closeButton:disabled {
     -fx-opacity: 0;
     -fx-border-width: 0;
+}
+
+.refreshButton {
+    -fx-background-color: #0000;
+    -fx-background-image: url("/refreshIcon.png");
+    -fx-background-size: 25;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
