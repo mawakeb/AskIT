@@ -7,8 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,7 +98,7 @@ public class ServerCommunication {
      */
     public static HttpResponse<String> createRoom(String name, LocalDateTime openTime) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(name + "/" + openTime.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime.toString()))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         return getStringHttpResponse(request);
     }

@@ -1,6 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,8 +58,8 @@ public class RoomController {
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
 
-        String[] info = q.split("/");
-        LocalDateTime time = LocalDateTime.parse(info[1]);
+        String[] info = q.split("!@#");
+        ZonedDateTime time = ZonedDateTime.parse(info[1]);
 
         String string2;
         for (string2 = randomString(); string1.equals(string2); string2 = randomString()) {
