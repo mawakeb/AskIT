@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.data;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,8 +19,8 @@ public class Question {
     private int upvotes;
     private boolean deleted;
     private boolean edited;
-    private LocalDateTime createTime;
-    private LocalDateTime answerTime;
+    private int createTime;
+    private int answerTime;
 
     /**
      * Create a new Question instance.
@@ -32,7 +30,7 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(UUID id, String content, int upvotes, UUID roomId, UUID userId) {
+    public Question(UUID id, String content, int upvotes, UUID roomId, UUID userId, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = upvotes;
@@ -40,8 +38,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
-        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
-        this.answerTime = null;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
 
     /**
@@ -51,7 +49,7 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, int upvotes, UUID roomId, UUID userId) {
+    public Question(String content, int upvotes, UUID roomId, UUID userId, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = upvotes;
@@ -59,8 +57,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
-        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
-        this.answerTime = null;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
 
     public UUID getId() {
@@ -107,15 +105,15 @@ public class Question {
         upvotes++;
     }
 
-    public LocalDateTime getCreateTime() {
+    public int getCreateTime() {
         return createTime;
     }
 
-    public LocalDateTime getAnswerTime() {
+    public int getAnswerTime() {
         return answerTime;
     }
 
-    public void setAnswerTime(LocalDateTime answerTime) {
+    public void setAnswerTime(int answerTime) {
         this.answerTime = answerTime;
     }
 

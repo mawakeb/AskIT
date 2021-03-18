@@ -30,9 +30,9 @@ class GettingControllerTest {
         // mock repo.getAllStrings()
         dupe = UUID.randomUUID();
         questionList = List.of(
-                new Question(UUID.randomUUID(),"Q1", dupe, UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q2", dupe, UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q3", dupe, UUID.randomUUID()));
+                new Question(UUID.randomUUID(),"Q1", dupe, UUID.randomUUID(), 5),
+                new Question(UUID.randomUUID(), "Q2", dupe, UUID.randomUUID(), 5),
+                new Question(UUID.randomUUID(), "Q3", dupe, UUID.randomUUID(), 5));
         when(repo.getAllRoomQuestions(dupe)).thenReturn(questionList);
 
         gc = new GettingController(repo);

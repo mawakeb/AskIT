@@ -29,7 +29,7 @@ class QuestionRepositoryTest {
     void getAllStrings() {
         // Sets up a dummy DB
         String content = "test";
-        Question question = new Question(content, UUID.randomUUID(), UUID.randomUUID());
+        Question question = new Question(content, UUID.randomUUID(), UUID.randomUUID(), 5);
         entityManager.persist(question);
         entityManager.flush();
 
@@ -42,7 +42,7 @@ class QuestionRepositoryTest {
     void findById() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question(id, "content", UUID.randomUUID(), UUID.randomUUID());
+        Question question = new Question(id, "content", UUID.randomUUID(), UUID.randomUUID(), 5);
         entityManager.persist(question);
         entityManager.flush();
 
@@ -55,11 +55,11 @@ class QuestionRepositoryTest {
     void getAllRoomQuestions() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question(UUID.randomUUID(), "content", id, UUID.randomUUID());
-        Question question1 = new Question(UUID.randomUUID(), "content1", id, UUID.randomUUID());
+        Question question = new Question(UUID.randomUUID(), "content", id, UUID.randomUUID(), 5);
+        Question question1 = new Question(UUID.randomUUID(), "content1", id, UUID.randomUUID(), 5);
 
         UUID id2 = UUID.randomUUID();
-        Question different = new Question(UUID.randomUUID(), "content2", id2, UUID.randomUUID());
+        Question different = new Question(UUID.randomUUID(), "content2", id2, UUID.randomUUID(), 5);
         entityManager.persist(question);
         entityManager.persist(question1);
         entityManager.persist(different);
@@ -76,7 +76,7 @@ class QuestionRepositoryTest {
     void findAll() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question("content", id, UUID.randomUUID());
+        Question question = new Question("content", id, UUID.randomUUID(), 5);
         entityManager.persist(question);
         entityManager.flush();
 

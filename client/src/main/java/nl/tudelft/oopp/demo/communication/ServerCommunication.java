@@ -49,7 +49,8 @@ public class ServerCommunication {
      */
     // TODO: make a user object, so the ID doesnt need to be null
     public static void sendQuestion(String text, String roomId) throws ServiceConfigurationError {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null);
+        int secondsAfterRoomOpen = 5;  // temp
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, secondsAfterRoomOpen);
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))

@@ -35,7 +35,7 @@ class SendingControllerTest {
 
     @BeforeEach
     void setUp() {
-        question = new Question("test",UUID.randomUUID(),UUID.randomUUID());
+        question = new Question("test",UUID.randomUUID(),UUID.randomUUID(), 5);
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingController(repo, roomRepo);
@@ -61,7 +61,7 @@ class SendingControllerTest {
     void upvoteQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());

@@ -89,9 +89,9 @@ public class ServerCommunicationTest {
         UUID testId = UUID.randomUUID();
 
         List<Question> expected = List.of(
-                new Question(UUID.randomUUID(), "Q1", 4, testId, UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q2", 5, testId, UUID.randomUUID()),
-                new Question(UUID.randomUUID(), "Q3", 6, testId, UUID.randomUUID()));
+                new Question(UUID.randomUUID(), "Q1", 4, testId, UUID.randomUUID(), 5),
+                new Question(UUID.randomUUID(), "Q2", 5, testId, UUID.randomUUID(), 5),
+                new Question(UUID.randomUUID(), "Q3", 6, testId, UUID.randomUUID(), 5));
         String json = gson.toJson(expected);
 
         // set response content
@@ -114,7 +114,7 @@ public class ServerCommunicationTest {
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, testId, null);
+        Question userQuestion = new Question(text, 0, testId, null, 5);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());

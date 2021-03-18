@@ -3,10 +3,7 @@ package nl.tudelft.oopp.demo.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +20,12 @@ public class QuestionTest {
     void setUp() {
         id = UUID.randomUUID();
         content = "test";
-        question = new Question(id, content, roomId, userId);
+        question = new Question(id, content, roomId, userId, 5);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, roomId, userId);
+        Question question1 = new Question(content, roomId, userId, 5);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -60,7 +57,7 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, roomId, userId);
+        Question question2 = new Question(id, content, roomId, userId, 5);
         assertEquals(question, question2);
     }
 
@@ -111,23 +108,13 @@ public class QuestionTest {
 
     @Test
     void getCreateTime() {
-        assertNotNull(question.getCreateTime());
-    }
-
-    @Test
-    void timeAfterCreation() {
-        assertTrue(LocalDateTime.now(ZoneOffset.UTC).isAfter(question.getCreateTime()));
+        assertEquals(question.getCreateTime(), 5);
     }
 
     @Test
     void getAndSetAnswerTime() {
-        question.setAnswerTime(LocalDateTime.now(ZoneOffset.UTC));
-        assertNotNull(question.getAnswerTime());
+        question.setAnswerTime(5);
+        assertEquals(5, question.getAnswerTime());
     }
 
-    @Test
-    void testAnswerAfterCreation() {
-        question.setAnswerTime(LocalDateTime.now(ZoneOffset.UTC));
-        assertTrue(question.getAnswerTime().isAfter(question.getCreateTime()));
-    }
 }
