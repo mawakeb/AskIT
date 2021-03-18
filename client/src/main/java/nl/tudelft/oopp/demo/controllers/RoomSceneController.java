@@ -58,7 +58,7 @@ public class RoomSceneController {
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            ServerCommunication.sendQuestion(question.getText(),roomId);
+            ServerCommunication.sendQuestion(question.getText(),roomId, roomTime);
         }
         updateAll();
         question.clear();

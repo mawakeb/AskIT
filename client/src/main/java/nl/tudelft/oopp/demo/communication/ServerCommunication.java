@@ -7,6 +7,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.UUID;
@@ -23,6 +25,11 @@ public class ServerCommunication {
     // method to supply mock client
     public static void setHttpClient(HttpClient client) {
         ServerCommunication.client = client;
+    }
+
+    public static int getMilisecondsPassed(LocalDateTime roomTime) {
+        long temp = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - roomTime.toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
+        return (int)temp;
     }
 
     /**
@@ -48,9 +55,9 @@ public class ServerCommunication {
      * @param roomId UUID of the lecture room to connect
      */
     // TODO: make a user object, so the ID doesnt need to be null
-    public static void sendQuestion(String text, String roomId) throws ServiceConfigurationError {
-        int secondsAfterRoomOpen = 5;  // temp
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, secondsAfterRoomOpen);
+    public static void sendQuestion(String text, String roomId, LocalDateTime roomTime) throws ServiceConfigurationError {
+        int miliSecondsAfterRoomOpen = getMilisecondsPassed(roomTime);
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, miliSecondsAfterRoomOpen);
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))
@@ -137,8 +144,7 @@ public class ServerCommunication {
                 String[] links = link.split("/");
                 String roomId = links[0];
                 String roomName = responseList.get(0);
-//                ZonedDateTime zd = ZonedDateTime.parse(responseList.get(2));
-                LocalDateTime roomTime = LocalDateTime.now();
+                LocalDateTime roomTime = LocalDateTime.parse(responseList.get(2));
                 if (responseList.get(1).equals("student")) {
                     RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, roomTime);
                 } else if (responseList.get(1).equals("staff")) {

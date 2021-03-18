@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,10 +38,7 @@ public class JoinController {
             if (role.equals(room.getStudent())) {
                 System.out.println("You are a student");
                 System.out.println("Successfully joined");
-                System.out.println(room.getOpenTime().toString());
-                ZonedDateTime zdt = room.getOpenTime().atZone(ZoneOffset.UTC);
-                System.out.println(zdt.toString());
-                return List.of(room.getName(),"student");
+                return List.of(room.getName(),"student", room.getOpenTime().toString());
             }
             if (role.equals(room.getStaff())) {
                 System.out.println("You are a staff");
