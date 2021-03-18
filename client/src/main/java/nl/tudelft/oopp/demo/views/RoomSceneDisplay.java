@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.views;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,7 @@ public class RoomSceneDisplay {
     /**
      * Opens the roomScene in a new window.
      */
-    public static void open(String roomScene, String roomId, String roomName) {
+    public static void open(String roomScene, String roomId, String roomName, LocalDateTime roomTime) {
         try {
             FXMLLoader loader = new FXMLLoader();
             URL xmlUrl = RoomSceneDisplay.class.getResource(roomScene);
@@ -23,10 +24,10 @@ public class RoomSceneDisplay {
 
             if (roomScene.equals("/roomScene.fxml")) {
                 RoomSceneController controller = loader.getController();
-                controller.setRoomInfo(roomId,roomName);
+                controller.setRoomInfo(roomId,roomName, roomTime);
             } else if (roomScene.equals("/roomSceneStaff.fxml")) {
                 RoomSceneStaffController controller = loader.getController();
-                controller.setRoomInfo(roomId,roomName);
+                controller.setRoomInfo(roomId,roomName, roomTime);
             }
 
             Stage roomStage = new Stage();

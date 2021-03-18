@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ServiceConfigurationError;
@@ -137,10 +136,12 @@ public class ServerCommunication {
                 String[] links = link.split("/");
                 String roomId = links[0];
                 String roomName = responseList.get(0);
+//                ZonedDateTime zd = ZonedDateTime.parse(responseList.get(2));
+                LocalDateTime roomTime = LocalDateTime.now();
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, roomTime);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, roomTime);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
