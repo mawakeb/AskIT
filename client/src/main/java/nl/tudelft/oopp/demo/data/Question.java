@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.data;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +21,8 @@ public class Question {
     private int upvotes;
     private boolean deleted;
     private boolean edited;
+    private LocalDateTime createTime;
+    private LocalDateTime answerTime;
 
     /**
      * Create a new Question instance.
@@ -36,6 +40,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
+        this.answerTime = null;
     }
 
     /**
@@ -53,6 +59,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
+        this.answerTime = null;
     }
 
     public UUID getId() {
@@ -97,6 +105,18 @@ public class Question {
 
     public void addUpvote() {
         upvotes++;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public LocalDateTime getAnswerTime() {
+        return answerTime;
+    }
+
+    public void setAnswerTime(LocalDateTime answerTime) {
+        this.answerTime = answerTime;
     }
 
     @Override

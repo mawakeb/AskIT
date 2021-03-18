@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -26,6 +28,10 @@ public class Question {
     private boolean deleted;
     @Column(name = "edited")
     private boolean edited;
+    @Column(name = "createTime")
+    private LocalDateTime createTime;
+    @Column(name = "answerTime")
+    private LocalDateTime answerTime;
 
     /**
      * Create a new Question instance.
@@ -43,6 +49,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
+        this.answerTime = null;
     }
 
     /**
@@ -60,8 +68,9 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = LocalDateTime.now(ZoneOffset.UTC);
+        this.answerTime = null;
     }
-
 
     public Question() {
 
@@ -113,6 +122,18 @@ public class Question {
 
     public void addUpvote() {
         upvotes++;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public LocalDateTime getAnswerTime() {
+        return answerTime;
+    }
+
+    public void setAnswerTime(LocalDateTime answerTime) {
+        this.answerTime = answerTime;
     }
 
     @Override
