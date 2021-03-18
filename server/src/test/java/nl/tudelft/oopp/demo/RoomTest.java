@@ -31,7 +31,11 @@ class RoomTest {
 
     @Test
     public void workingFilledConstructorTest() {
-        Room testRoom = new Room(UUID.randomUUID(), "Room N", "abc", "def", LocalDateTime.now(ZoneOffset.UTC));
+        Room testRoom = new Room(UUID.randomUUID(),
+                "Room N",
+                "abc",
+                "def",
+                LocalDateTime.now(ZoneOffset.UTC));
         assertNotNull(testRoom);
     }
 

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -148,7 +147,6 @@ public class ServerCommunicationTest {
         String name = "name";
         LocalDateTime time = LocalDateTime.now();
         // 1 is for the '/' added
-        int length = name.length() + time.toString().length() + 1;
         List<String> strings = ServerCommunication.createRoom(name, time);
         assertEquals("POST", request.method());
 
@@ -157,6 +155,7 @@ public class ServerCommunicationTest {
         // check if a bodyPublisher was successfully included to transfer the room name
         assertTrue(request.bodyPublisher().isPresent());
 
+        int length = name.length() + time.toString().length() + 1;
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(length, request.bodyPublisher().get().contentLength());
     }

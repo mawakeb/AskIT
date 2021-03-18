@@ -113,6 +113,7 @@ public class QuestionTest {
     void getCreateTime() {
         assertNotNull(question.getCreateTime());
     }
+
     @Test
     void timeAfterCreation() {
         assertTrue(LocalDateTime.now(ZoneOffset.UTC).isAfter(question.getCreateTime()));

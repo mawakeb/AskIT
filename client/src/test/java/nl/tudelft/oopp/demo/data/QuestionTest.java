@@ -113,10 +113,12 @@ public class QuestionTest {
         question2.addUpvote();
         assertEquals(question2.getUpvotes(), 6);
     }
+
     @Test
     void getCreateTime() {
         assertNotNull(question.getCreateTime());
     }
+
     @Test
     void timeAfterCreation() {
         assertTrue(LocalDateTime.now(ZoneOffset.UTC).isAfter(question.getCreateTime()));
@@ -127,7 +129,7 @@ public class QuestionTest {
         question.setAnswerTime(LocalDateTime.now(ZoneOffset.UTC));
         assertNotNull(question.getAnswerTime());
     }
-    
+
     @Test
     void testAnswerAfterCreation() {
         question.setAnswerTime(LocalDateTime.now(ZoneOffset.UTC));
