@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,7 @@ public class Room {
     private boolean isOpen;
 
     @Column(name = "openTime")
-    private LocalDateTime openTime;
+    private ZonedDateTime openTime;
 
     public Room() {
     }
@@ -43,7 +42,7 @@ public class Room {
      * @param staff   room access code for the staff role.
      * @param student room access code for the student role.
      */
-    public Room(UUID id, String name, String staff, String student, LocalDateTime openTime) {
+    public Room(UUID id, String name, String staff, String student, ZonedDateTime openTime) {
         this.id = id;
         this.name = name;
         this.staff = staff;
@@ -84,14 +83,14 @@ public class Room {
     }
 
     public boolean isOpen() {
-        return this.isOpen && LocalDateTime.now(ZoneOffset.UTC).isAfter(this.openTime);
+        return this.isOpen && ZonedDateTime.now().isAfter(this.openTime);
     }
 
     public void close() {
         this.isOpen = false;
     }
 
-    public LocalDateTime getOpenTime() {
+    public ZonedDateTime getOpenTime() {
         return this.openTime;
     }
 

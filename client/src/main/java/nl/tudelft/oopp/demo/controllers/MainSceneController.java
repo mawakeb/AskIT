@@ -78,7 +78,7 @@ public class MainSceneController {
      */
     public void createButtonClicked() {
         List<String> links = ServerCommunication.createRoom(userText.getText(),
-                LocalDateTime.now(ZoneOffset.UTC));
+                ZonedDateTime.now());
         userText.clear();
         list.getItems().clear();
         if (links.size() == 1) {
@@ -119,11 +119,9 @@ public class MainSceneController {
         LocalTime time = timeSpinner.getValue();
         LocalDateTime localTime = LocalDateTime.of(date, time);
 
-        //convert to UTC
+        //convert to ZonedDateTime
         TimeZone tz = TimeZone.getDefault();
-        ZonedDateTime zoneTime = localTime.atZone(ZoneId.of(tz.getID()));
-        ZonedDateTime utcTime = zoneTime.withZoneSameInstant(ZoneId.of("UTC"));
-        LocalDateTime openTime = utcTime.toLocalDateTime();
+        ZonedDateTime openTime = localTime.atZone(ZoneId.of(tz.getID()));
 
         List<String> links = ServerCommunication.createRoom(userText.getText(), openTime);
         userText.clear();
