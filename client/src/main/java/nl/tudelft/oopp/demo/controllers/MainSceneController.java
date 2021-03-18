@@ -7,8 +7,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -112,7 +115,13 @@ public class MainSceneController {
 
         LocalDate date = datePicker.getValue();
         LocalTime time = timeSpinner.getValue();
-        LocalDateTime openTime = LocalDateTime.of(date, time);
+        LocalDateTime localTime = LocalDateTime.of(date, time);
+
+        //convert to UTC
+        TimeZone tz = TimeZone.getDefault();
+        ZonedDateTime zoneTime = localTime.atZone(ZoneId.of(tz.getID()));
+        ZonedDateTime utcTime = zoneTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime openTime = utcTime.toLocalDateTime();
 
         List<String> links = ServerCommunication.createRoom(userText.getText(), openTime);
         userText.clear();
