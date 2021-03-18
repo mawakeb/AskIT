@@ -105,3 +105,17 @@
     -fx-pref-height: -1;
 }
 
+.date-picker:editable > .arrow-button > * {
+    -fx-background-color: #fff;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-color: #0000;
+    -fx-background-radius: 0;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #21C5ED;
+}
+
+

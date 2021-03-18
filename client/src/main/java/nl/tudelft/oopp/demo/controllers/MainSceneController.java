@@ -67,6 +67,8 @@ public class MainSceneController {
         timeSpinner.setVisible(false);
         timeSpinner.setDisable(true);
 
+        datePicker.setValue(LocalDate.now());
+
         joinTabClicked();
         joinTab.setSelected(true);
     }
