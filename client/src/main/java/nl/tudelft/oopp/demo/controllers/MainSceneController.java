@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -19,8 +18,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.views.TimeSpinner;
 
@@ -73,7 +70,7 @@ public class MainSceneController {
      */
     public void createButtonClicked() {
         List<String> links = ServerCommunication.createRoom(userText.getText(),
-                LocalDateTime.now(ZoneOffset.UTC));
+                LocalDateTime.now(ZoneOffset.systemDefault()));
         userText.clear();
         list.getItems().clear();
         if (links.size() == 1) {

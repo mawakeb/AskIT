@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SendingController {
     @ResponseBody
     public void sendQuestion(@RequestBody String q) {
         Question userQuestion = gson.fromJson(q, Question.class);
-        // Set question up-votes to 0, to avoid hackers
+        // Set question up-votes to 0, to avoid hackers.
         userQuestion.setUpvotes(0);
 
         Room room = roomRepo.findByid(userQuestion.getRoomId());
@@ -47,6 +48,8 @@ public class SendingController {
         }
         if (room.isOpen()) {
             repo.save(userQuestion);
+            System.out.println(TimeControl.getMilisecondsPassed(room.getOpenTime()));
+            userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             System.out.println(q);
         } else {
             System.out.println("Question rejected");

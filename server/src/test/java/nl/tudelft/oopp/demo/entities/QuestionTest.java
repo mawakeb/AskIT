@@ -107,7 +107,8 @@ public class QuestionTest {
     }
 
     @Test
-    void getCreateTime() {
+    void getAndSetCreateTime() {
+        question.setCreateTime(5);
         assertEquals(question.getCreateTime(), 5);
     }
 

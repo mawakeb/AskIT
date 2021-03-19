@@ -86,7 +86,7 @@ public class Room {
     }
 
     public boolean isOpen() {
-        return this.isOpen && LocalDateTime.now(ZoneOffset.UTC).isAfter(this.openTime);
+        return this.isOpen && LocalDateTime.now(ZoneOffset.systemDefault()).isAfter(this.openTime);
     }
 
     public void close() {

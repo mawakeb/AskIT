@@ -7,8 +7,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.UUID;
@@ -27,10 +25,6 @@ public class ServerCommunication {
         ServerCommunication.client = client;
     }
 
-    public static int getMilisecondsPassed(LocalDateTime roomTime) {
-        long temp = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - roomTime.toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
-        return (int)temp;
-    }
 
     /**
      * Tries to send specified request to server and catch any exceptions.
@@ -56,8 +50,7 @@ public class ServerCommunication {
      */
     // TODO: make a user object, so the ID doesnt need to be null
     public static void sendQuestion(String text, String roomId, LocalDateTime roomTime) throws ServiceConfigurationError {
-        int miliSecondsAfterRoomOpen = getMilisecondsPassed(roomTime);
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, miliSecondsAfterRoomOpen);
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, 0);
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))

@@ -126,6 +126,10 @@ public class Question {
         return createTime;
     }
 
+    public void setCreateTime(int createTime) {
+        this.createTime = Question.this.createTime;
+    }
+
     public int getAnswerTime() {
         return answerTime;
     }
