@@ -6,7 +6,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.UUID;
@@ -102,10 +102,10 @@ public class ServerCommunication {
      * @return list of two strings, containing join links for staff and student respectively.
      */
     //TODO: add alert to inform user of errors when creating room.
-    public static List<String> createRoom(String name, LocalDateTime openTime)
+    public static List<String> createRoom(String name, ZonedDateTime openTime)
             throws ServiceConfigurationError {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(name + "/" + openTime.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime.toString()))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         HttpResponse<String> response = getStringHttpResponse(request);
         if (response.statusCode() != 200) {
@@ -137,11 +137,11 @@ public class ServerCommunication {
                 String[] links = link.split("/");
                 String roomId = links[0];
                 String roomName = responseList.get(0);
-                LocalDateTime roomTime = LocalDateTime.parse(responseList.get(2));
+                String openTime = responseList.get(2);
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, roomTime);
+                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, openTime);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, roomTime);
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, openTime);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

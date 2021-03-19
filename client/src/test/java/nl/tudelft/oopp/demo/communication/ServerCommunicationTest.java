@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,8 +145,7 @@ public class ServerCommunicationTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
         String name = "name";
-        LocalDateTime time = LocalDateTime.now();
-        // 1 is for the '/' added
+        ZonedDateTime time = ZonedDateTime.now();
         List<String> strings = ServerCommunication.createRoom(name, time);
         assertEquals("POST", request.method());
 
@@ -157,6 +156,8 @@ public class ServerCommunicationTest {
 
         int length = name.length() + time.toString().length() + 1;
         // bodyPublisher does not expose the contents directly, only length can be measured here
+        // 3 is for the '!@#' added
+        int length = name.length() + time.toString().length() + 3;
         assertEquals(length, request.bodyPublisher().get().contentLength());
     }
 

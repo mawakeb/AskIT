@@ -57,12 +57,12 @@
                <font>
                   <Font name="Century Gothic" size="12.0" />
                </font></Label>
-            <TextField fx:id="username" layoutX="248.0" layoutY="107.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="258.0" promptText="Enter name..." style="-fx-background-color: #1F2940; -fx-text-fill: #ffffff; -fx-font-size: 130%;" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="3">
+            <TextField fx:id="username" layoutX="248.0" layoutY="107.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="35.0" promptText="Enter name..." style="-fx-background-color: #1F2940; -fx-text-fill: #ffffff; -fx-font-size: 130%;" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font name="Century Gothic" size="12.0" />
                </font>
             </TextField>
-            <DatePicker fx:id="datePicker" disable="true" prefHeight="35.0" prefWidth="371.0" styleClass="date-picker" stylesheets="@roomSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <DatePicker fx:id="datePicker" disable="true" maxWidth="1.7976931348623157E308" prefHeight="35.0" styleClass="date-picker" stylesheets="@roomSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label fx:id="timeLabel" style="-fx-font-size: 120%; -fx-text-fill: #fff;" text="Select time : " GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <Button fx:id="scheduleButton" alignment="CENTER" layoutX="437.0" layoutY="204.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scheduleButtonClicked" prefHeight="32.0" prefWidth="66.0" styleClass="buttons" stylesheets="@mainSceneStyle.css" text="Schedule" textFill="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="4" />
          </children>

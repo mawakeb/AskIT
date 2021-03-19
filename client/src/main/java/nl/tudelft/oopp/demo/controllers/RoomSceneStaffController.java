@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -15,14 +16,14 @@ import nl.tudelft.oopp.demo.data.QuestionCell;
 
 public class RoomSceneStaffController {
 
-    @FXML
-    private ListView<Question> questionList;
-    @FXML
-    private Button closeRoomButton;
-    @FXML
-    private Label roomName;
+    @FXML private ListView<Question> questionList;
+    @FXML private Button closeRoomButton;
+    @FXML private Label roomName;
+    @FXML private Label timeLabel;
 
     private String roomId;
+    private ZonedDateTime openTime;
+    private DateTimeFormatter formatter;
 
     private LocalDateTime roomTime;
 
@@ -37,6 +38,7 @@ public class RoomSceneStaffController {
         questionList.setCellFactory((Callback<ListView<Question>, ListCell<Question>>) params -> {
             return new QuestionCell(this);
         });
+        this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
     }
 
     /**
@@ -44,11 +46,13 @@ public class RoomSceneStaffController {
      *
      * @param roomId - UUID of the room
      * @param roomName - Name of the room
+     * @param stringTime - openTime of the room in Sting
      */
-    public void setRoomInfo(String roomId, String roomName, LocalDateTime roomTime) {
+    public void setRoomInfo(String roomId, String roomName, String stringTime) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
-        this.roomTime = roomTime;
+        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime);
+        this.openTime = zonedTime;
         updateAll();
     }
 
@@ -74,6 +78,24 @@ public class RoomSceneStaffController {
     }
 
     /**
+     * Shows openTime if the room is not open because it's not the scheduled time yet.
+     */
+    public void checkOpenTime() {
+
+        if (!timeLabel.isVisible()) {
+            return;
+        }
+
+        if (openTime.isAfter(ZonedDateTime.now())) {
+            timeLabel.setVisible(true);
+            String time = "Room opens at " + openTime.format(formatter);
+            timeLabel.setText(time);
+        } else {
+            timeLabel.setVisible(false);
+        }
+    }
+
+    /**
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
@@ -88,5 +110,6 @@ public class RoomSceneStaffController {
     public void updateAll() {
         updateQuestionList();
         updateRoomStatus();
+        checkOpenTime();
     }
 }

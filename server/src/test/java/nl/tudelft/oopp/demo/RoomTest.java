@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Room;
@@ -21,7 +20,7 @@ class RoomTest {
     private String name;
     private String staff;
     private String student;
-    private LocalDateTime time;
+    private ZonedDateTime time;
 
     @Test
     public void workingEmptyConstructorTest() {
@@ -31,11 +30,7 @@ class RoomTest {
 
     @Test
     public void workingFilledConstructorTest() {
-        Room testRoom = new Room(UUID.randomUUID(),
-                "Room N",
-                "abc",
-                "def",
-                LocalDateTime.now(ZoneOffset.UTC));
+        Room testRoom = new Room(UUID.randomUUID(), "Room N", "abc", "def", ZonedDateTime.now());
         assertNotNull(testRoom);
     }
 
@@ -45,7 +40,7 @@ class RoomTest {
         name = "Room A";
         staff = "abc";
         student = "def";
-        time = LocalDateTime.now(ZoneOffset.UTC);
+        time = ZonedDateTime.now();
 
         testRoomA = new Room(dupe, name, staff, student, time);
         testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf", time);

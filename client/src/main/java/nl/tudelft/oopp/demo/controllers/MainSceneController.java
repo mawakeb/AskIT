@@ -6,8 +6,11 @@ import java.awt.datatransfer.StringSelection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,6 +64,8 @@ public class MainSceneController {
         timeSpinner.setVisible(false);
         timeSpinner.setDisable(true);
 
+        datePicker.setValue(LocalDate.now());
+
         joinTabClicked();
         joinTab.setSelected(true);
     }
@@ -70,7 +75,7 @@ public class MainSceneController {
      */
     public void createButtonClicked() {
         List<String> links = ServerCommunication.createRoom(userText.getText(),
-                LocalDateTime.now(ZoneOffset.systemDefault()));
+                ZonedDateTime.now());
         userText.clear();
         list.getItems().clear();
         if (links.size() == 1) {
@@ -109,7 +114,11 @@ public class MainSceneController {
 
         LocalDate date = datePicker.getValue();
         LocalTime time = timeSpinner.getValue();
-        LocalDateTime openTime = LocalDateTime.of(date, time);
+        LocalDateTime localTime = LocalDateTime.of(date, time);
+
+        //convert to ZonedDateTime
+        TimeZone tz = TimeZone.getDefault();
+        ZonedDateTime openTime = localTime.atZone(ZoneId.of(tz.getID()));
 
         List<String> links = ServerCommunication.createRoom(userText.getText(), openTime);
         userText.clear();
