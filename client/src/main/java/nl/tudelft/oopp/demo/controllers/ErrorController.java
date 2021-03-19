@@ -2,15 +2,16 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class ErrorController {
     @FXML
-    private Button closeWindow;
+    private Button closeWindowBTN;
     @FXML
-    private DialogPane errorDescription;
+    private Label errorDescription;
     @FXML
-    private DialogPane errorTitle;
+    private Label errorTitle;
 
     private String errorName;
     private String stackTrace;
@@ -18,8 +19,13 @@ public class ErrorController {
     public void setErrorInfo(String errorName, String stackTrace) {
         this.errorName = errorName;
         this.stackTrace = stackTrace;
-        errorTitle.setContentText(errorName);
-        errorDescription.setContentText(stackTrace);
+        errorTitle.setText(errorName);
+        errorDescription.setText(stackTrace);
+    }
+
+    public void closeWindow() {
+        Stage stage = (Stage) closeWindowBTN.getScene().getWindow();
+        stage.close();
     }
 
 }
