@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 public class ErrorController {
     @FXML
-    private Button closeWindowBTN;
+    private Button closeWindowButton;
     @FXML
     private Label errorDescription;
     @FXML
@@ -16,6 +16,11 @@ public class ErrorController {
     private String errorName;
     private String stackTrace;
 
+    /** Sets the variables and UI text.
+     *
+     * @param errorName name that is displayed on top
+     * @param stackTrace stacktrace or just an error message
+     */
     public void setErrorInfo(String errorName, String stackTrace) {
         this.errorName = errorName;
         this.stackTrace = stackTrace;
@@ -23,8 +28,11 @@ public class ErrorController {
         errorDescription.setText(stackTrace);
     }
 
+    /** Closes a window.
+     *
+     */
     public void closeWindow() {
-        Stage stage = (Stage) closeWindowBTN.getScene().getWindow();
+        Stage stage = (Stage) closeWindowButton.getScene().getWindow();
         stage.close();
     }
 

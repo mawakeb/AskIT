@@ -31,7 +31,8 @@ public class ServerCommunication {
      * @param request HttpRequest to send.
      * @return response object or null.
      */
-    static HttpResponse<String> getStringHttpResponse(HttpRequest request) throws IOException, InterruptedException {
+    static HttpResponse<String> getStringHttpResponse(HttpRequest request)
+            throws IOException, InterruptedException {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -46,9 +47,10 @@ public class ServerCommunication {
      * Send question to server.
      *
      * @param parsedQuestion Question that is parsed and needs to be sent.
+     * @return HttpResponse object
      */
-    // TODO: make a user object, so the ID doesnt need to be null.
-    public static HttpResponse<String> sendQuestionHTTP(String parsedQuestion)
+
+    public static HttpResponse<String> sendQuestionHttp(String parsedQuestion)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -61,9 +63,9 @@ public class ServerCommunication {
      * get questions from server.
      *
      * @param roomId UUID of the lecture room to connect
-     * @return list of all questions on the server.
+     * @return HttpResponse object
      */
-    public static HttpResponse<String> getQuestionsHTTP(String roomId)
+    public static HttpResponse<String> getQuestionsHttp(String roomId)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions?q=" + roomId)).build();
@@ -76,8 +78,9 @@ public class ServerCommunication {
      * that condition should be checked beforehand (assuming that situation is not wanted).
      *
      * @param id the ID of the question
+     * @return HttpResponse object
      */
-    public static HttpResponse<String> upvoteQuestionHTTP(String id)
+    public static HttpResponse<String> upvoteQuestionHttp(String id)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(id))
@@ -89,10 +92,9 @@ public class ServerCommunication {
      * Create a new room and returns access links.
      *
      * @param name the String title of the room to create.
-     * @return list of two strings, containing join links for staff and student respectively.
+     * @return HttpResponse object
      */
-    //TODO: add alert to inform user of errors when creating room.
-    public static HttpResponse<String> createRoomHTTP(String name)
+    public static HttpResponse<String> createRoomHttp(String name)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -105,10 +107,9 @@ public class ServerCommunication {
      * Join a room using the specified link.
      *
      * @param link the join link entered by the user.
+     * @return HttpResponse object
      */
-    //TODO: polling
-    //TODO: assign role and roleID to user
-    public static HttpResponse<String> joinRoomHTTP(String link)
+    public static HttpResponse<String> joinRoomHttp(String link)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/join/link?q=" + link)).build();
@@ -118,9 +119,10 @@ public class ServerCommunication {
     /**
      * Close the current room using its specified ID.
      *
-     * @param roomId UUID of the lecture room to connect
+     * @param roomId parsed UUID of the lecture room to connect
+     * @return HttpResponse object
      */
-    public static HttpResponse<String> closeRoomHTTP(String roomId)
+    public static HttpResponse<String> closeRoomHttp(String roomId)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -132,22 +134,27 @@ public class ServerCommunication {
     /**
      * Get the status of the current room.
      *
-     * @param roomId UUID of the lecture room to connect
-     * @return true iff the room exists and is open
+     * @param roomId parsed UUID of the lecture room to connect
+     * @return HttpResponse object
      */
-    public static HttpResponse<String> getRoomStatusHTTP(String roomId)
+    public static HttpResponse<String> getRoomStatusHttp(String roomId)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/room/status?id=" + roomId)).build();
-         return getStringHttpResponse(request);
+        return getStringHttpResponse(request);
     }
 
-
+    /** Sends a question to server.
+     *
+     * @param text String that represents the question
+     * @param roomId id of the room that it's being sent to
+     */
+    // TODO: make a user object, so the ID doesnt need to be null.
     public static void sendQuestion(String text, String roomId) {
         Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null);
         String parsedQuestion = gson.toJson(userQuestion);
         try {
-            HttpResponse<String> response = sendQuestionHTTP(parsedQuestion);
+            HttpResponse<String> response = sendQuestionHttp(parsedQuestion);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
@@ -156,9 +163,14 @@ public class ServerCommunication {
         }
     }
 
+    /** Gets questions from server.
+     *
+     * @param roomId room that holds the wanted questions
+     * @return list of two strings, containing join links for staff and student respectively.
+     */
     public static List<Question> getQuestions(String roomId) {
         try {
-            HttpResponse<String> response = getQuestionsHTTP(roomId);
+            HttpResponse<String> response = getQuestionsHttp(roomId);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
                 return List.of();
@@ -171,9 +183,13 @@ public class ServerCommunication {
         return List.of();
     }
 
+    /** Upvotes a question.
+     *
+     * @param id of the upvoted question
+     */
     public static void upvoteQuestion(UUID id) {
         try {
-            HttpResponse<String> response = upvoteQuestionHTTP(id.toString());
+            HttpResponse<String> response = upvoteQuestionHttp(id.toString());
 
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
@@ -183,10 +199,17 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Create a new room and returns access links.
+     *
+     * @param name the String title of the room to create.
+     * @return returns 2 links, one for staff one for student
+     */
+    //TODO: add alert to inform user of errors when creating room.
     public static List<String> createRoom(String name) {
         HttpResponse<String> response = null;
         try {
-            response = createRoomHTTP(name);
+            response = createRoomHttp(name);
 
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
@@ -201,9 +224,16 @@ public class ServerCommunication {
         return List.of();
     }
 
+    /**
+     * Join a room using the specified link, opens the appropriate window for the lecture.
+     *
+     * @param link the join link entered by the user.
+     */
+    //TODO: polling
+    //TODO: assign role and roleID to user
     public static void joinRoom(String link) {
         try {
-            HttpResponse<String> response = joinRoomHTTP(link);
+            HttpResponse<String> response = joinRoomHttp(link);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             } else {
@@ -224,10 +254,14 @@ public class ServerCommunication {
         }
     }
 
+    /** Closes the specified room, so no more questions can be added.
+     *
+     * @param roomId id of the room that needs to be closed
+     */
     public static void closeRoom(String roomId) {
         HttpResponse<String> response = null;
         try {
-            response = closeRoomHTTP(roomId);
+            response = closeRoomHttp(roomId);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
@@ -236,6 +270,12 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Get the status of the current room.
+     *
+     * @param roomId parsed UUID of the lecture room to connect
+     * @return true iff the room exists and is open
+     */
     public static boolean getRoomStatus(String roomId) {
         if (roomId == null) {
             return false;
@@ -243,7 +283,7 @@ public class ServerCommunication {
 
         HttpResponse<String> response = null;
         try {
-            response = getRoomStatusHTTP(roomId);
+            response = getRoomStatusHttp(roomId);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
                 return false;

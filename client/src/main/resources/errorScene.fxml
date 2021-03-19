@@ -21,7 +21,7 @@
        <RowConstraints maxHeight="39.0" minHeight="0.0" prefHeight="8.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <Button fx:id="closeWindowBTN" mnemonicParsing="false" onAction="#closeWindow" prefHeight="26.0" prefWidth="113.0" styleClass="buttons" stylesheets="@mainSceneStyle.css" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+         <Button fx:id="closeWindowButton" mnemonicParsing="false" onAction="#closeWindow" prefHeight="26.0" prefWidth="113.0" styleClass="buttons" stylesheets="@mainSceneStyle.css" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label fx:id="roomName" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="2000.0" style="-fx-background-color: #141B2D; -fx-text-fill: #ffffff; -fx-font-size: 140%;" text="Error" textAlignment="CENTER" GridPane.columnSpan="3">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
