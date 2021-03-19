@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.demo.methods;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +10,7 @@ class TimeControlTest {
 
     @Test
     void getMilisecondsPassed() {
-        TimeControl.getMilisecondsPassed(LocalDateTime.now(ZoneOffset.UTC));
+        int mili = TimeControl.getMilisecondsPassed(ZonedDateTime.now());
+        assertTrue(mili < 10000);
     }
 }

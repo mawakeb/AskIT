@@ -48,7 +48,6 @@ public class SendingController {
         }
         if (room.isOpen()) {
             repo.save(userQuestion);
-            System.out.println(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             System.out.println(q);
         } else {
