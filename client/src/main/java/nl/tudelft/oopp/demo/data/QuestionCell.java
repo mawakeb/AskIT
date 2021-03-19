@@ -81,7 +81,9 @@ public class QuestionCell extends ListCell<Question> {
             HBox.setHgrow(center, Priority.ALWAYS);
 
             // create a creation timestamp
-            String creationTimeStamp = TimeControl.getPrettyTime(q.getCreateTime()); // this needs to be displayed
+
+            // this needs to be displayed
+            String creationTimeStamp = TimeControl.getPrettyTime(q.getCreateTime());
             System.out.println(creationTimeStamp);
 
             // create upvote button

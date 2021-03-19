@@ -30,7 +30,8 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(UUID id, String content, int upvotes, UUID roomId, UUID userId, int createTime) {
+    public Question(UUID id, String content, int upvotes,
+                    UUID roomId, UUID userId, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = upvotes;

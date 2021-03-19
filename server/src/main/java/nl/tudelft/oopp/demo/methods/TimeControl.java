@@ -9,7 +9,8 @@ public class TimeControl {
      * @return int milliseconds passed
      */
     public static int getMilisecondsPassed(ZonedDateTime roomTime) {
-        long temp = ZonedDateTime.now().toInstant().toEpochMilli() - roomTime.toInstant().toEpochMilli();
+        long temp = ZonedDateTime.now().toInstant().toEpochMilli()
+                - roomTime.toInstant().toEpochMilli();
         return (int)temp;
     }
 

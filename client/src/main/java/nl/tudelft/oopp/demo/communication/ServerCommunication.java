@@ -50,8 +50,10 @@ public class ServerCommunication {
      * @param roomId UUID of the lecture room to connect
      */
     // TODO: make a user object, so the ID doesnt need to be null
-    public static void sendQuestion(String text, String roomId, ZonedDateTime roomTime) throws ServiceConfigurationError {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null, TimeControl.getMilisecondsPassed(roomTime));
+    public static void sendQuestion(String text, String roomId, ZonedDateTime roomTime)
+            throws ServiceConfigurationError {
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId),
+                null, TimeControl.getMilisecondsPassed(roomTime));
         String parsedQuestion = gson.toJson(userQuestion);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))
