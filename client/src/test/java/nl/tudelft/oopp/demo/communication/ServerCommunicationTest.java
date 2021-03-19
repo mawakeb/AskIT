@@ -108,7 +108,7 @@ public class ServerCommunicationTest {
 
         UUID testId = UUID.randomUUID();
 
-        ServerCommunication.sendQuestion(text, testId.toString(), LocalDateTime.now());
+        ServerCommunication.sendQuestion(text, testId.toString(), ZonedDateTime.now());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
@@ -154,7 +154,6 @@ public class ServerCommunicationTest {
         // check if a bodyPublisher was successfully included to transfer the room name
         assertTrue(request.bodyPublisher().isPresent());
 
-        int length = name.length() + time.toString().length() + 1;
         // bodyPublisher does not expose the contents directly, only length can be measured here
         // 3 is for the '!@#' added
         int length = name.length() + time.toString().length() + 3;

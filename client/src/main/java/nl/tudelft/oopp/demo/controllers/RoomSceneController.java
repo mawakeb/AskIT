@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -63,7 +62,7 @@ public class RoomSceneController {
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            ServerCommunication.sendQuestion(question.getText(),roomId, roomTime);
+            ServerCommunication.sendQuestion(question.getText(),roomId, openTime);
         }
         updateAll();
         question.clear();

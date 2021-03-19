@@ -25,8 +25,6 @@ public class RoomSceneStaffController {
     private ZonedDateTime openTime;
     private DateTimeFormatter formatter;
 
-    private LocalDateTime roomTime;
-
     /**
      * Use @FXML initialize() instead of constructor.
      * This method is called after linking the @FXML elements.
