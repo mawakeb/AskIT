@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ public class RoomSceneStaffController {
     private Label roomName;
 
     private String roomId;
+    private ZonedDateTime openTime;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -41,10 +43,13 @@ public class RoomSceneStaffController {
      *
      * @param roomId - UUID of the room
      * @param roomName - Name of the room
+     * @param stringTime - openTime of the room in Sting
      */
-    public void setRoomInfo(String roomId, String roomName) {
+    public void setRoomInfo(String roomId, String roomName, String stringTime) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
+        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime);
+        this.openTime = zonedTime;
         updateAll();
     }
 
