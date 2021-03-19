@@ -35,8 +35,9 @@ class SendingControllerTest {
 
     @BeforeEach
     void setUp() {
-        question = new Question("test",UUID.randomUUID(),UUID.randomUUID(), 5);
-        room = new Room("name","staf","sd", ZonedDateTime.now());
+        UUID roomId = UUID.randomUUID();
+        question = new Question("test",roomId,UUID.randomUUID(), 5);
+        room = new Room(roomId,"name","staf","sd", ZonedDateTime.now());
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingController(repo, roomRepo);
@@ -51,7 +52,7 @@ class SendingControllerTest {
 
     @Test
     void sendQuestionRoomClosed() {
-        when(room.isOpen()).thenReturn(false);
+        room.close();
         String parsed = gson.toJson(question);
         sc.sendQuestion(parsed);
         verify(repo, times(0)).save(any(Question.class));
