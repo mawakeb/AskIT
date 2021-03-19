@@ -58,7 +58,7 @@ public class Room {
      * @param staff   room access code for the staff role.
      * @param student room acces code for the student role.
      */
-    public Room(String name, String staff, String student, LocalDateTime openTime) {
+    public Room(String name, String staff, String student, ZonedDateTime openTime) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.staff = staff;
