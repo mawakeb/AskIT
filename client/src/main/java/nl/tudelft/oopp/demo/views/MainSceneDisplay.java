@@ -26,7 +26,6 @@ public class MainSceneDisplay extends Application {
             primaryStage.setScene(new Scene(root));
             primaryStage.setTitle("AskIT");
             primaryStage.show();
-            ErrorDisplay.open("Too epic", "trace");
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException();
