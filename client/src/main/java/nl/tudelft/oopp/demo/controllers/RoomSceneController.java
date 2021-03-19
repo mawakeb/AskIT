@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.TimeZone;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,16 +17,14 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 
 public class RoomSceneController {
-    @FXML
-    private TextArea question;
-    @FXML
-    private ListView<Question> questionList;
-    @FXML
-    private Button sendButton;
-    @FXML
-    private Label roomName;
+    @FXML private TextArea question;
+    @FXML private ListView<Question> questionList;
+    @FXML private Button sendButton;
+    @FXML private Label roomName;
+    @FXML private Label timeLabel;
 
     private String roomId;
+    private ZonedDateTime openTime;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -43,10 +44,14 @@ public class RoomSceneController {
      *
      * @param roomId - UUID of the room
      * @param roomName - Name of the room
+     * @param stringTime - openTime of the room in Sting
      */
-    public void setRoomInfo(String roomId, String roomName) {
+    public void setRoomInfo(String roomId, String roomName, String stringTime) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
+        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime)
+                .withZoneSameInstant(TimeZone.getDefault().toZoneId());
+        this.openTime = zonedTime;
         updateAll();
     }
 
@@ -72,6 +77,24 @@ public class RoomSceneController {
     }
 
     /**
+     * Shows openTime if the room is not open because it's not the scheduled time yet.
+     */
+    public void checkOpenTime() {
+
+        if (!timeLabel.isVisible()) {
+            return;
+        }
+
+        if (openTime.isAfter(ZonedDateTime.now())) {
+            timeLabel.setVisible(true);
+            String time = "Room opens at " + openTime.truncatedTo(ChronoUnit.MINUTES).toString();
+            timeLabel.setText(time);
+        } else {
+            timeLabel.setVisible(false);
+        }
+    }
+
+    /**
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
@@ -92,5 +115,6 @@ public class RoomSceneController {
     public void updateAll() {
         updateQuestionList();
         updateRoomStatus();
+        checkOpenTime();
     }
 }

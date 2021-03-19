@@ -54,12 +54,12 @@ public class JoinController {
             if (role.equals(room.getStudent())) {
                 System.out.println("You are a student");
                 System.out.println("Successfully joined");
-                return List.of(room.getName(), "student");
+                return List.of(room.getName(),"student", room.getOpenTime().toString());
             }
             if (role.equals(room.getStaff())) {
                 System.out.println("You are a staff");
                 System.out.println("Successfully joined");
-                return List.of(room.getName(), "staff");
+                return List.of(room.getName(),"staff", room.getOpenTime().toString());
             }
 
             System.out.println("Incorrect role code");

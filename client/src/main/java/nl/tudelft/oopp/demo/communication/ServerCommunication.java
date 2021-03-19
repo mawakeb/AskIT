@@ -252,10 +252,11 @@ public class ServerCommunication {
                 String[] links = link.split("/");
                 String roomId = links[0];
                 String roomName = responseList.get(0);
+                String openTime = responseList.get(2);
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, openTime);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, openTime);
                 }
             }
         } catch (Exception e) {
