@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.controllers.ErrorController;
 
 public class ErrorDisplay {
 
@@ -18,6 +19,9 @@ public class ErrorDisplay {
             URL xmlUrl = RoomSceneDisplay.class.getResource("/errorScene.fxml");
             loader.setLocation(xmlUrl);
             Parent root = loader.load();
+
+            ErrorController controller = loader.getController();
+            controller.setErrorInfo(errorName,stackTrace);
 
 
             Stage roomStage = new Stage();

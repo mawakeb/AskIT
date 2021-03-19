@@ -29,8 +29,8 @@
             <Insets top="5.0" />
         </padding>
     </GridPane>
-   <DialogPane fx:id="errorTitle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="400.0" />
-   <DialogPane fx:id="errorDescription" prefHeight="138.0" prefWidth="400.0">
+   <DialogPane fx:id="errorTitle" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="400.0" />
+   <DialogPane fx:id="errorDescription" prefHeight="49.0" prefWidth="400.0">
       <VBox.margin>
          <Insets top="5.0" />
       </VBox.margin></DialogPane>
