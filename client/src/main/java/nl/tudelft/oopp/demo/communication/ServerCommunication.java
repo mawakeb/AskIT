@@ -13,6 +13,7 @@ import java.util.UUID;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.views.ErrorDisplay;
 import nl.tudelft.oopp.demo.views.RoomSceneDisplay;
+import org.json.JSONObject;
 
 
 public class ServerCommunication {
@@ -144,9 +145,10 @@ public class ServerCommunication {
         return getStringHttpResponse(request);
     }
 
-    /** Sends a question to server.
+    /**
+     * Sends a question to server.
      *
-     * @param text String that represents the question
+     * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
      */
     // TODO: make a user object, so the ID doesnt need to be null.
@@ -163,7 +165,8 @@ public class ServerCommunication {
         }
     }
 
-    /** Gets questions from server.
+    /**
+     * Gets questions from server.
      *
      * @param roomId room that holds the wanted questions
      * @return list of two strings, containing join links for staff and student respectively.
@@ -183,7 +186,8 @@ public class ServerCommunication {
         return List.of();
     }
 
-    /** Upvotes a question.
+    /**
+     * Upvotes a question.
      *
      * @param id of the upvoted question
      */
@@ -235,7 +239,9 @@ public class ServerCommunication {
         try {
             HttpResponse<String> response = joinRoomHttp(link);
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(), json.get("message").toString());
+
             } else {
                 List<String> responseList = gson.fromJson(response.body(),
                         new TypeToken<List<String>>() {
@@ -254,7 +260,8 @@ public class ServerCommunication {
         }
     }
 
-    /** Closes the specified room, so no more questions can be added.
+    /**
+     * Closes the specified room, so no more questions can be added.
      *
      * @param roomId id of the room that needs to be closed
      */
