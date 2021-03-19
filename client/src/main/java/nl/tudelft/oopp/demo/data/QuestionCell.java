@@ -14,6 +14,7 @@ import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
 import nl.tudelft.oopp.demo.controllers.RoomSceneStaffController;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 
 /**
  * Class that forms an entry in the question listview.
@@ -78,6 +79,10 @@ public class QuestionCell extends ListCell<Question> {
             // expanding region that pushes elements to the sides
             Region center = new Region();
             HBox.setHgrow(center, Priority.ALWAYS);
+
+            // create a creation timestamp
+            String creationTimeStamp = TimeControl.getPrettyTime(q.getCreateTime()); // this needs to be displayed
+            System.out.println(creationTimeStamp);
 
             // create upvote button
             Button upvoteBtn = new Button("");
