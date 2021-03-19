@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.TimeZone;
@@ -25,6 +26,7 @@ public class RoomSceneController {
 
     private String roomId;
     private ZonedDateTime openTime;
+    private DateTimeFormatter formatter;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -37,6 +39,7 @@ public class RoomSceneController {
         questionList.setCellFactory((Callback<ListView<Question>, ListCell<Question>>) params -> {
             return new QuestionCell(this);
         });
+        this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
     }
 
     /**
@@ -87,7 +90,7 @@ public class RoomSceneController {
 
         if (openTime.isAfter(ZonedDateTime.now())) {
             timeLabel.setVisible(true);
-            String time = "Room opens at " + openTime.truncatedTo(ChronoUnit.MINUTES).toString();
+            String time = "Room opens at " + openTime.format(formatter);
             timeLabel.setText(time);
         } else {
             timeLabel.setVisible(false);
