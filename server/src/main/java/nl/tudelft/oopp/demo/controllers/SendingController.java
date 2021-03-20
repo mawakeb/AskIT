@@ -35,32 +35,35 @@ public class SendingController {
     /**
      * Receive question sent by a student and store it in the repository.
      *
-     * @param q String containing only the question text content.
+     * @param q String containing the question object
+     * @return "SUCCESS", or a message describing what failed
      */
     
     @PostMapping("question") // for /send/question
     @ResponseBody
-    public void sendQuestion(@RequestBody String q) {
+    public String sendQuestion(@RequestBody String q) {
         Question userQuestion = gson.fromJson(q, Question.class);
         // Set question up-votes to 0, to avoid hackers
         userQuestion.setUpvotes(0);
 
         if (bannedUsers.contains(userQuestion.getUserId())) {
             System.out.println("Question rejected: user banned");
-            return;
+            return "You have been banned from sending questions";
         }
 
         Room room = roomRepo.findByid(userQuestion.getRoomId());
         if (room == null) {
             System.out.println("Question doesn't belong to a room");
-            return;
+            return "The room can't be found on the server";
         }
         if (room.isOpen()) {
             repo.save(userQuestion);
             System.out.println(q);
         } else {
             System.out.println("Question rejected: room closed");
+            return "The room has been closed by a staff member";
         }
+        return "SUCCESS";
     }
 
     /**

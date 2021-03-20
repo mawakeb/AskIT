@@ -177,6 +177,13 @@ public class ServerCommunication {
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
+
+            // handle responses where the request was received successfully,
+            // but logic on the server rejects storing the question for different reasons
+            if (!response.body().equals("SUCCESS")) {
+                // TODO: make message in UI that looks less severe than an error
+                ErrorDisplay.open("Question Rejected", response.body());
+            }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
