@@ -64,4 +64,14 @@ public class SendingController {
         question.addUpvote();
         repo.save(question);
     }
+
+    @PostMapping("answered")
+    @ResponseBody
+    public void answerQuestion(@RequestBody String id) {
+    	UUID uuid = UUID.fromString(id);
+        Question question = repo.findById(uuid);
+        question.setAnswered(true);
+        repo.save(question);
+    }
+    
 }
