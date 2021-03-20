@@ -107,14 +107,15 @@ public class ServerCommunicationTest {
         String text = "Unit test question";
 
         UUID testId = UUID.randomUUID();
+        UUID testUserId = UUID.randomUUID();
 
-        ServerCommunication.sendQuestion(text, testId.toString());
+        ServerCommunication.sendQuestion(text, testId.toString(),testUserId);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, testId, null);
+        Question userQuestion = new Question(text, 0, testId, testUserId);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());

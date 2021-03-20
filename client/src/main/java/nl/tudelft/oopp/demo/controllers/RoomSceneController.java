@@ -58,7 +58,7 @@ public class RoomSceneController {
      * Handles clicking the button.
      */
     public void sendButtonClicked() {
-        ServerCommunication.sendQuestion(question.getText(),roomId);
+        ServerCommunication.sendQuestion(question.getText(),roomId, user.getId());
         updateAll();
         question.clear();
     }

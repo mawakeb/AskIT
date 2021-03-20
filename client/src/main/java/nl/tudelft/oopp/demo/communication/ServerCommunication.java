@@ -151,9 +151,8 @@ public class ServerCommunication {
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
      */
-    // TODO: make a user object, so the ID doesnt need to be null.
-    public static void sendQuestion(String text, String roomId) {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null);
+    public static void sendQuestion(String text, String roomId, UUID userId) {
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId);
         String parsedQuestion = gson.toJson(userQuestion);
         try {
             HttpResponse<String> response = sendQuestionHttp(parsedQuestion);
@@ -237,7 +236,6 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
-    //TODO: assign role and roleID to user
     public static void joinRoom(String link) {
         try {
             HttpResponse<String> response = joinRoomHttp(link);
