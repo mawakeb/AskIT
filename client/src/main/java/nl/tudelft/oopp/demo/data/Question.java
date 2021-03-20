@@ -19,6 +19,7 @@ public class Question {
     private int upvotes;
     private boolean deleted;
     private boolean edited;
+    private boolean answered;
 
     /**
      * Create a new Question instance.
@@ -36,6 +37,7 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.answered = false;
     }
 
     /**
@@ -53,6 +55,7 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.answered = false;
     }
 
     public UUID getId() {
@@ -99,6 +102,15 @@ public class Question {
         upvotes++;
     }
 
+    public boolean isAnswered() {
+    	return this.answered;
+    }
+    
+    public void setAnswered(boolean answered) {
+    	this.answered = answered;
+    }
+    
+
     @Override
     public String toString() {
         return getContent();
@@ -115,6 +127,7 @@ public class Question {
         Question question = (Question) o;
         return upvotes == question.upvotes
                 && deleted == question.deleted
+                && answered == question.answered
                 && edited == question.edited
                 && Objects.equals(id, question.id)
                 && Objects.equals(content, question.content)
@@ -124,6 +137,6 @@ public class Question {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, upvotes, roomId, userId, deleted, edited);
+        return Objects.hash(id, content, upvotes, roomId, userId, deleted, edited, answered);
     }
 }
