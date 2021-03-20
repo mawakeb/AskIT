@@ -65,6 +65,10 @@ public class SendingController {
         repo.save(question);
     }
 
+
+     /**
+     * Setting the question with the specified ID as answered.
+     */
     @PostMapping("answered")
     @ResponseBody
     public void answerQuestion(@RequestBody String id) {
