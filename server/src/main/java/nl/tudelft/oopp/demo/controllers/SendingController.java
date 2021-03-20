@@ -29,7 +29,7 @@ public class SendingController {
     public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
         this.repo = repo;
         this.roomRepo = roomRepo;
-        this.bannedUsers = new HashSet<UUID>();
+        this.bannedUsers = new HashSet<>();
     }
 
     /**
@@ -78,7 +78,7 @@ public class SendingController {
     /**
      * Prevent a user from sending new questions, using their id.
      */
-    @PostMapping("")
+    @PostMapping("ban")
     @ResponseBody
     public void banUser(@RequestBody String id) {
         UUID uuid = UUID.fromString(id);

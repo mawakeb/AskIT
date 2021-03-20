@@ -146,6 +146,24 @@ public class ServerCommunication {
     }
 
     /**
+     * Ban a user using their ID.
+     * @param userId UUID of the user to ban
+     */
+    public static void banUser(UUID userId) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(userId.toString()))
+                    .uri(URI.create("http://localhost:8080/send/ban")).build();
+            HttpResponse<String> response = getStringHttpResponse(request);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
      * Sends a question to server.
      *
      * @param text   String that represents the question
@@ -304,9 +322,5 @@ public class ServerCommunication {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
         return false;
-    }
-
-    public static void banUser(UUID userId) {
-        System.out.println("Banning user with id: " + userId.toString());
     }
 }
