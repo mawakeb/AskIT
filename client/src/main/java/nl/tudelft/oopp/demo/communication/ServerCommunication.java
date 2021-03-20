@@ -254,9 +254,9 @@ public class ServerCommunication {
                 String roomId = links[0];
                 String roomName = responseList.get(0);
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, links[1]);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName);
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, links[1]);
                 }
             }
         } catch (Exception e) {

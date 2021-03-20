@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.util.Callback;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
+import nl.tudelft.oopp.demo.data.User;
 
 public class RoomSceneStaffController {
 
@@ -22,6 +24,7 @@ public class RoomSceneStaffController {
     private Label roomName;
 
     private String roomId;
+    private User user;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -42,9 +45,10 @@ public class RoomSceneStaffController {
      * @param roomId - UUID of the room
      * @param roomName - Name of the room
      */
-    public void setRoomInfo(String roomId, String roomName) {
+    public void setRoomInfo(String roomId, String roomName, String roleId) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
+        this.user = new User(UUID.fromString(roomId),"staff","username default",roleId);
         updateAll();
     }
 
