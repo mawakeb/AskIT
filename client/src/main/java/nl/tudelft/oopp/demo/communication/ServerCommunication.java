@@ -217,15 +217,18 @@ public class ServerCommunication {
 
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
-                return List.of();
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("error").toString());
+
+                return List.of(json.get("error").toString());
             }
             return gson.fromJson(response.body(), new TypeToken<List<String>>() {
             }.getType());
         } catch (Exception e) {
             ErrorDisplay.open(e.toString(), e.getMessage());
+            return List.of(e.getMessage());
         }
-        return List.of();
     }
 
     /**
@@ -240,7 +243,8 @@ public class ServerCommunication {
             HttpResponse<String> response = joinRoomHttp(link);
             if (response.statusCode() != 200) {
                 JSONObject json = new JSONObject(response.body());
-                ErrorDisplay.open("Status code: " + response.statusCode(), json.get("message").toString());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
 
             } else {
                 List<String> responseList = gson.fromJson(response.body(),
