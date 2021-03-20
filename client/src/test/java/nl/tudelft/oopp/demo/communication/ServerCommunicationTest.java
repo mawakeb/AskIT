@@ -199,4 +199,20 @@ public class ServerCommunicationTest {
         when(response.body()).thenReturn(Boolean.FALSE.toString());
         assertFalse(ServerCommunication.getRoomStatus(testId.toString()));
     }
+
+    @Test
+    void banUser() {
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+
+        UUID userId = UUID.randomUUID();
+        ServerCommunication.closeRoom(userId.toString());
+        assertEquals("POST", request.method());
+
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
+
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(userId.toString().length(), request.bodyPublisher().get().contentLength());
+    }
 }

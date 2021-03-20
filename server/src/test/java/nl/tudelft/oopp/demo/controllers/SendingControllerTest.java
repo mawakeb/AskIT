@@ -1,12 +1,17 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
@@ -45,15 +50,29 @@ class SendingControllerTest {
     void sendQuestion() {
         when(room.isOpen()).thenReturn(true);
         String parsed = gson.toJson(question);
-        sc.sendQuestion(parsed);
+        assertEquals("SUCCESS",sc.sendQuestion(parsed));
         verify(repo, times(1)).save(any(Question.class));
+    }
+
+    @Test
+    void sendQuestionBannedUser() {
+        when(room.isOpen()).thenReturn(true);
+        String parsed = gson.toJson(question);
+
+        // configure bannedUsers, as if user supplying mock question was banned
+        Set<UUID> bannedUsers = new HashSet<>();
+        bannedUsers.add(question.getUserId());
+        sc.setBannedUsers(bannedUsers);
+
+        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
+        verify(repo, times(0)).save(any(Question.class));
     }
 
     @Test
     void sendQuestionRoomClosed() {
         when(room.isOpen()).thenReturn(false);
         String parsed = gson.toJson(question);
-        sc.sendQuestion(parsed);
+        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
@@ -65,5 +84,13 @@ class SendingControllerTest {
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());
+    }
+
+    @Test
+    void banUser() {
+        UUID uuidToBan = UUID.randomUUID();
+        assertFalse(sc.getBannedUsers().contains(uuidToBan));
+        sc.banUser(uuidToBan.toString());
+        assertTrue(sc.getBannedUsers().contains(uuidToBan));
     }
 }

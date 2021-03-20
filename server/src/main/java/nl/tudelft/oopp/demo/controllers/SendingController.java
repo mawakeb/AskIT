@@ -25,6 +25,11 @@ public class SendingController {
 
     private Set<UUID> bannedUsers;
 
+    /**
+     * Constructor for SendingController, autowired for JPA repositories.
+     * @param repo repository with all questions
+     * @param roomRepo repository with all rooms
+     */
     @Autowired
     public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
         this.repo = repo;
@@ -38,7 +43,7 @@ public class SendingController {
      * @param q String containing the question object
      * @return "SUCCESS", or a message describing what failed
      */
-    
+
     @PostMapping("question") // for /send/question
     @ResponseBody
     public String sendQuestion(@RequestBody String q) {
@@ -86,5 +91,13 @@ public class SendingController {
     public void banUser(@RequestBody String id) {
         UUID uuid = UUID.fromString(id);
         bannedUsers.add(uuid);
+    }
+
+    public void setBannedUsers(Set<UUID> set) {
+        this.bannedUsers = set;
+    }
+
+    public Set<UUID> getBannedUsers() {
+        return bannedUsers;
     }
 }
