@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import com.google.gson.Gson;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,6 +29,7 @@ public class SendingController {
     public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
         this.repo = repo;
         this.roomRepo = roomRepo;
+        this.bannedUsers = new HashSet<UUID>();
     }
 
     /**
