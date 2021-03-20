@@ -161,7 +161,7 @@ public class ServerCommunication {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
 
@@ -181,7 +181,7 @@ public class ServerCommunication {
             return gson.fromJson(response.body(), new TypeToken<List<Question>>() {
             }.getType());
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
         return List.of();
     }
@@ -199,7 +199,7 @@ public class ServerCommunication {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
 
@@ -226,7 +226,7 @@ public class ServerCommunication {
             return gson.fromJson(response.body(), new TypeToken<List<String>>() {
             }.getType());
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
             return List.of(e.getMessage());
         }
     }
@@ -260,7 +260,7 @@ public class ServerCommunication {
                 }
             }
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
 
@@ -277,7 +277,7 @@ public class ServerCommunication {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
             }
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
 
@@ -303,7 +303,7 @@ public class ServerCommunication {
                 return response.body().equals(Boolean.TRUE.toString());
             }
         } catch (Exception e) {
-            ErrorDisplay.open(e.toString(), e.getMessage());
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
         return false;
     }
