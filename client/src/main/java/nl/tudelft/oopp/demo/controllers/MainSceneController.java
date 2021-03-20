@@ -3,12 +3,11 @@ package nl.tudelft.oopp.demo.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.TimeZone;
@@ -22,8 +21,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.views.TimeSpinner;
 
@@ -77,7 +74,7 @@ public class MainSceneController {
     /**
      * Handles clicking the create button.
      */
-    public void createButtonClicked() {
+    public void createButtonClicked() throws IOException, InterruptedException {
         List<String> links = ServerCommunication.createRoom(userText.getText(),
                 ZonedDateTime.now());
         userText.clear();

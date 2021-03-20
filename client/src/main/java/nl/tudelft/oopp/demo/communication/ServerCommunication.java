@@ -96,7 +96,8 @@ public class ServerCommunication {
      * @param name the String title of the room to create.
      * @return HttpResponse object
      */
-    public static HttpResponse<String> createRoom(String name, LocalDateTime openTime) throws IOException, InterruptedException {
+    public static HttpResponse<String> createRoomHttp(String name, ZonedDateTime openTime)
+            throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime.toString()))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
@@ -150,7 +151,7 @@ public class ServerCommunication {
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
      */
-    // TODO: make a user object, so the ID doesnt need to be null.
+    // TODO: make a user object, so the ID doesn't need to be null.
     public static void sendQuestion(String text, String roomId) {
         Question userQuestion = new Question(text, 0, UUID.fromString(roomId), null);
         String parsedQuestion = gson.toJson(userQuestion);
@@ -208,11 +209,10 @@ public class ServerCommunication {
      * @param name the String title of the room to create.
      * @return returns 2 links, one for staff one for student
      */
-    //TODO: add alert to inform user of errors when creating room.
-    public static List<String> createRoomHttp(String name) {
+    public static List<String> createRoom(String name, ZonedDateTime openTime) {
         HttpResponse<String> response = null;
         try {
-            response = createRoomHttp(name);
+            response = createRoomHttp(name, openTime);
 
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());
