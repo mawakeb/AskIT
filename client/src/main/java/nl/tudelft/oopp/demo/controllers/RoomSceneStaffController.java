@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.TimeZone;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,7 +50,8 @@ public class RoomSceneStaffController {
     public void setRoomInfo(String roomId, String roomName, String stringTime) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
-        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime);
+        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime)
+                .withZoneSameInstant(TimeZone.getDefault().toZoneId());
         this.openTime = zonedTime;
         updateAll();
     }
