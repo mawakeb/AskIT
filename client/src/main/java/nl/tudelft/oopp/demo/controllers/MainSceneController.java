@@ -64,6 +64,7 @@ public class MainSceneController {
         timeSpinner.getStylesheets().add(getClass()
                 .getResource("/mainSceneStyle.css").toExternalForm());
         timeSpinner.setPrefHeight(30);
+        timeSpinner.setPrefWidth(80);
         timeSpinner.setVisible(false);
         timeSpinner.setDisable(true);
 
