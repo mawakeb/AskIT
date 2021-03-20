@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import com.google.gson.Gson;
+import java.util.Set;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
@@ -21,6 +22,8 @@ public class SendingController {
     private final QuestionRepository repo;
     private final RoomRepository roomRepo;
 
+    private Set<UUID> bannedUsers;
+
     @Autowired
     public SendingController(QuestionRepository repo, RoomRepository roomRepo) {
         this.repo = repo;
@@ -40,6 +43,11 @@ public class SendingController {
         // Set question up-votes to 0, to avoid hackers
         userQuestion.setUpvotes(0);
 
+        if (bannedUsers.contains(userQuestion.getUserId())) {
+            System.out.println("Question rejected: user banned");
+            return;
+        }
+
         Room room = roomRepo.findByid(userQuestion.getRoomId());
         if (room == null) {
             System.out.println("Question doesn't belong to a room");
@@ -49,7 +57,7 @@ public class SendingController {
             repo.save(userQuestion);
             System.out.println(q);
         } else {
-            System.out.println("Question rejected");
+            System.out.println("Question rejected: room closed");
         }
     }
 
@@ -63,5 +71,15 @@ public class SendingController {
         Question question = repo.findById(uuid);
         question.addUpvote();
         repo.save(question);
+    }
+
+    /**
+     * Prevent a user from sending new questions, using their id.
+     */
+    @PostMapping("")
+    @ResponseBody
+    public void banUser(@RequestBody String id) {
+        UUID uuid = UUID.fromString(id);
+        bannedUsers.add(uuid);
     }
 }
