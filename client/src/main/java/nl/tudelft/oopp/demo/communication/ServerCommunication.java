@@ -306,4 +306,7 @@ public class ServerCommunication {
         return false;
     }
 
+    public static void banUser(UUID userId) {
+        System.out.println("Banning user with id: " + userId.toString());
+    }
 }
