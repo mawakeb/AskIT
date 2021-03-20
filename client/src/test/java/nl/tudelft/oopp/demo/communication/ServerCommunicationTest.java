@@ -104,6 +104,7 @@ public class ServerCommunicationTest {
     @Test
     public void testSendQuestion() {
         when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn("SUCCESS");
         String text = "Unit test question";
 
         UUID testId = UUID.randomUUID();
