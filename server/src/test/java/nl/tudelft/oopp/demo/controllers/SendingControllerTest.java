@@ -57,7 +57,7 @@ class SendingControllerTest {
 
     @Test
     void sendQuestionBannedUser() {
-        when(room.isOpen()).thenReturn(true);
+
         String parsed = gson.toJson(question);
 
         // configure bannedUsers, as if user supplying mock question was banned
@@ -65,7 +65,7 @@ class SendingControllerTest {
         bannedUsers.add(question.getUserId());
         sc.setBannedUsers(bannedUsers);
 
-        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
+        assertEquals("You have been banned from sending questions",sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
