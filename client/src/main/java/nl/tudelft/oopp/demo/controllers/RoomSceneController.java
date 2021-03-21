@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
@@ -39,13 +42,26 @@ public class RoomSceneController {
      * so only at this point can ui elements be addressed from code.
      */
     @FXML
-
     public void initialize() {
         // initialize cellFactory, to have questions be rendered using the QuestionCell class
         questionList.setCellFactory(params -> {
             return new QuestionCell(this);
         });
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
+
+        question.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    keyEvent.consume();
+                    if (keyEvent.isShiftDown()) {
+                        question.appendText(System.getProperty("line.separator"));
+                    } else {
+                        sendButtonClicked();
+                    }
+                }
+            }
+        });
     }
 
     /**
