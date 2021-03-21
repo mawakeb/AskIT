@@ -172,8 +172,12 @@ public class ServerCommunication {
      * @param roomId id of the room that it's being sent to
      */
     // TODO: make a user object, so the ID doesn't need to be null.
-    public static void sendQuestion(String text, String roomId, UUID userId, ZonedDateTime roomTime) {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId, TimeControl.getMilisecondsPassed(roomTime));
+    public static void sendQuestion(String text, String roomId, UUID userId,
+                                    ZonedDateTime roomTime) {
+
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
+                TimeControl.getMilisecondsPassed(roomTime));
+
         String parsedQuestion = gson.toJson(userQuestion);
         try {
             HttpResponse<String> response = sendQuestionHttp(parsedQuestion);

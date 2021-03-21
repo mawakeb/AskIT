@@ -111,7 +111,7 @@ public class ServerCommunicationTest {
         UUID testId = UUID.randomUUID();
         UUID testUserId = UUID.randomUUID();
 
-        ServerCommunication.sendQuestion(text, testId.toString(),testUserId , ZonedDateTime.now());
+        ServerCommunication.sendQuestion(text, testId.toString(), testUserId, ZonedDateTime.now());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
