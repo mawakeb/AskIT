@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -114,22 +116,34 @@ public class QuestionCell extends ListCell<Question> {
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             upvoteText.getStyleClass().add("question");
 
+            //create menu button for question
+            MenuButton menuBtn = new MenuButton();
+            menuBtn.getStyleClass().add("menu");
+            menuBtn.getStylesheets().add(getClass()
+                    .getResource("/roomSceneStyle.css").toExternalForm());
+            menuBtn.setDisable(true);
+            menuBtn.setVisible(false);
+
+            //items for edit and delete (onclick method should be added)
+            MenuItem editItem = new MenuItem("Edit");
+            MenuItem deleteItem = new MenuItem("Delete");
+
+
             //create containers for nickname(in the future), timestamp and question
             HBox info = new HBox(10);
             VBox question = new VBox(0);
 
             info.getChildren().addAll(nickname, timestamp);
             question.getChildren().addAll(info, questionText);
-            box.getChildren().addAll(question, center, upvoteText, upvoteBtn);
+            box.getChildren().addAll(question, center, upvoteBtn,upvoteText,menuBtn);
 
-            // create ban button if created using RoomSceneStaffController
+            // show ban option in menu if you are staff
             if (staffRole) {
-                Button banBtn = new Button("Ban");
-                banBtn.setOnAction(event -> useBanBtn(event, q));
-                banBtn.getStyleClass().add("ban");
-                banBtn.getStylesheets().add(getClass()
-                        .getResource("/roomSceneStyle.css").toExternalForm());
-                box.getChildren().add(banBtn);
+                MenuItem banItem = new MenuItem("Ban User");
+                banItem.setOnAction(event -> useBanBtn(event, q));
+                menuBtn.getItems().addAll(editItem, deleteItem, banItem);
+                menuBtn.setVisible(true);
+                menuBtn.setDisable(false);
             }
 
             setText(null);
