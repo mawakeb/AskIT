@@ -64,7 +64,7 @@
             </TextField>
             <DatePicker fx:id="datePicker" disable="true" maxWidth="1.7976931348623157E308" prefHeight="35.0" styleClass="date-picker" stylesheets="@roomSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label fx:id="timeLabel" style="-fx-font-size: 120%; -fx-text-fill: #fff;" text="Select time : " GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Button fx:id="scheduleButton" alignment="CENTER" layoutX="437.0" layoutY="204.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scheduleButtonClicked" prefHeight="32.0" prefWidth="66.0" styleClass="buttons" stylesheets="@mainSceneStyle.css" text="Schedule" textFill="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Button fx:id="scheduleButton" alignment="CENTER" layoutX="437.0" layoutY="204.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scheduleButtonClicked" prefHeight="32.0" prefWidth="66.0" styleClass="buttons" stylesheets="@mainSceneStyle.css" text="Schedule" textFill="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
     </children>

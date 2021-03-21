@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -60,6 +61,7 @@ public class MainSceneController {
         timeSpinner.getStylesheets().add(getClass()
                 .getResource("/mainSceneStyle.css").toExternalForm());
         timeSpinner.setPrefHeight(30);
+        timeSpinner.setPrefWidth(80);
         timeSpinner.setVisible(false);
         timeSpinner.setDisable(true);
 
@@ -72,7 +74,7 @@ public class MainSceneController {
     /**
      * Handles clicking the create button.
      */
-    public void createButtonClicked() {
+    public void createButtonClicked() throws IOException, InterruptedException {
         List<String> links = ServerCommunication.createRoom(userText.getText(),
                 ZonedDateTime.now());
         userText.clear();

@@ -6,11 +6,13 @@ import java.util.UUID;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping({"join"})
@@ -30,7 +32,21 @@ public class JoinController {
     @ResponseBody
     public List<String> joinLink(@RequestParam String q) {
         String[] links = q.split("/");
-        UUID id = UUID.fromString(links[0]);
+
+        // Checks if format is correct
+        if (links.length != 2) {
+            System.out.println("Invalid link");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Invalid link");
+        }
+        // Checks if UUID is correct format
+        UUID id;
+        try {
+            id = UUID.fromString(links[0]);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Invalid link");
+        }
         String role = links[1];
         Room room = this.repo.findByid(id);
         if (room != null) {
@@ -47,12 +63,13 @@ public class JoinController {
             }
 
             System.out.println("Incorrect role code");
-
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Incorrect role code");
         } else {
             System.out.println("Room not found");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
         }
-        return null;
-
     }
 }
 

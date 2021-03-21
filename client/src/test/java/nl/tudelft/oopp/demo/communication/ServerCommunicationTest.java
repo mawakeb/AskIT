@@ -60,7 +60,7 @@ public class ServerCommunicationTest {
     }
 
     @Test
-    void getStringHttpResponse() {
+    void getStringHttpResponse() throws IOException, InterruptedException {
         // send an empty request
         HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
 
@@ -72,14 +72,15 @@ public class ServerCommunicationTest {
     @Test
     void getStringHttpResponseException() {
         // test the exception handling, getStringHttpResponse should not fail but just return null
+        HttpResponse<String> result = null;
         try {
             when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
                     .thenThrow(IOException.class);
+            result = ServerCommunication.getStringHttpResponse(mockRequest);
         } catch (Exception e) {
             // no exception should be thrown when initializing mock behaviour
         }
 
-        HttpResponse<String> result = ServerCommunication.getStringHttpResponse(mockRequest);
         assertNull(result);
     }
 
