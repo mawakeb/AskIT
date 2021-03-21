@@ -35,6 +35,7 @@ public class RoomSceneController {
     private ZonedDateTime openTime;
     private DateTimeFormatter formatter;
     private User user;
+    private boolean ban;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -48,6 +49,7 @@ public class RoomSceneController {
             return new QuestionCell(this);
         });
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
+        this.ban = false;
 
         question.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -86,7 +88,8 @@ public class RoomSceneController {
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            ServerCommunication.sendQuestion(question.getText(), roomId, user.getId(), openTime);
+            this.ban = ServerCommunication
+                    .sendQuestion(question.getText(), roomId, user.getId(), openTime);
         }
         updateAll();
         question.clear();
@@ -121,6 +124,17 @@ public class RoomSceneController {
     }
 
     /**
+     * Check if user was banned and disable sending a question if so.
+     */
+    public void checkBan() {
+        if (this.ban) {
+            question.setPromptText("You are banned from asking questions");
+            question.setDisable(true);
+            sendButton.setDisable(true);
+        }
+    }
+
+    /**
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
@@ -142,6 +156,7 @@ public class RoomSceneController {
         updateQuestionList();
         updateRoomStatus();
         checkOpenTime();
+        checkBan();
     }
 
     /**
