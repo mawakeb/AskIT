@@ -148,20 +148,44 @@ public class ServerCommunication {
     }
 
     /**
+     * Ban a user using their ID.
+     * @param userId UUID of the user to ban
+     */
+    public static void banUser(UUID userId) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(userId.toString()))
+                    .uri(URI.create("http://localhost:8080/send/ban")).build();
+            HttpResponse<String> response = getStringHttpResponse(request);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
      * Sends a question to server.
      *
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
      */
     // TODO: make a user object, so the ID doesn't need to be null.
-    public static void sendQuestion(String text, String roomId, ZonedDateTime roomTime) {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId),
-                null, TimeControl.getMilisecondsPassed(roomTime));
+    public static void sendQuestion(String text, String roomId, UUID userId, ZonedDateTime roomTime) {
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId, TimeControl.getMilisecondsPassed(roomTime));
         String parsedQuestion = gson.toJson(userQuestion);
         try {
             HttpResponse<String> response = sendQuestionHttp(parsedQuestion);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+
+            // handle responses where the request was received successfully,
+            // but logic on the server rejects storing the question for different reasons
+            if (!response.body().equals("SUCCESS")) {
+                // TODO: make message in UI that looks less severe than an error
+                ErrorDisplay.open("Question Rejected", response.body());
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
@@ -239,7 +263,6 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
-    //TODO: assign role and roleID to user
     public static void joinRoom(String link) {
         try {
             HttpResponse<String> response = joinRoomHttp(link);
@@ -257,9 +280,11 @@ public class ServerCommunication {
                 String roomName = responseList.get(0);
                 String openTime = responseList.get(2);
                 if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml", roomId, roomName, openTime);
+                    RoomSceneDisplay.open("/roomScene.fxml",
+                            roomId, roomName, openTime, links[1]);
                 } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml", roomId, roomName, openTime);
+                    RoomSceneDisplay.open("/roomSceneStaff.fxml",
+                            roomId, roomName, openTime, links[1]);
                 }
             }
         } catch (Exception e) {
@@ -310,5 +335,4 @@ public class ServerCommunication {
         }
         return false;
     }
-
 }

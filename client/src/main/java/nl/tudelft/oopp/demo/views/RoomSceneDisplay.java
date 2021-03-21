@@ -15,7 +15,8 @@ public class RoomSceneDisplay {
     /**
      * Opens the roomScene in a new window.
      */
-    public static void open(String roomScene, String roomId, String roomName, String openTime) {
+    public static void open(String roomScene, String roomId, String roomName,
+                            String openTime, String roleId) {
         try {
             FXMLLoader loader = new FXMLLoader();
             URL xmlUrl = RoomSceneDisplay.class.getResource(roomScene);
@@ -24,10 +25,10 @@ public class RoomSceneDisplay {
 
             if (roomScene.equals("/roomScene.fxml")) {
                 RoomSceneController controller = loader.getController();
-                controller.setRoomInfo(roomId,roomName,openTime);
+                controller.setRoomInfo(roomId, roomName, openTime, roleId);
             } else if (roomScene.equals("/roomSceneStaff.fxml")) {
                 RoomSceneStaffController controller = loader.getController();
-                controller.setRoomInfo(roomId,roomName,openTime);
+                controller.setRoomInfo(roomId, roomName, openTime, roleId);
             }
 
             Stage roomStage = new Stage();

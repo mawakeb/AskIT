@@ -29,6 +29,7 @@ public class QuestionCell extends ListCell<Question> {
 
     private RoomSceneController roomSceneController;
     private RoomSceneStaffController roomSceneStaffController;
+    private final boolean staffRole;
 
     /**
      * QuestionCell Constructor, passed as lambda function in SetCellFactory.
@@ -37,9 +38,11 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomSceneController roomSceneController) {
         this.roomSceneController = roomSceneController;
+        this.staffRole = false;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
+
     }
 
     /**
@@ -50,6 +53,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomSceneStaffController roomSceneStaffController) {
         this.roomSceneStaffController = roomSceneStaffController;
+        this.staffRole = true;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -117,9 +121,30 @@ public class QuestionCell extends ListCell<Question> {
             info.getChildren().addAll(nickname, timestamp);
             question.getChildren().addAll(info, questionText);
             box.getChildren().addAll(question, center, upvoteText, upvoteBtn);
+
+            // create ban button if created using RoomSceneStaffController
+            if (staffRole) {
+                Button banBtn = new Button("Ban");
+                banBtn.setOnAction(event -> useBanBtn(event, q));
+                banBtn.getStyleClass().add("ban");
+                banBtn.getStylesheets().add(getClass()
+                        .getResource("/roomSceneStyle.css").toExternalForm());
+                box.getChildren().add(banBtn);
+            }
+
             setText(null);
             setGraphic(box);
         }
+    }
+
+    /**
+     * Automatically Called when clicking the ban button.
+     *
+     * @param event JavaFx button press event
+     * @param q     question the button relates to
+     */
+    private void useBanBtn(ActionEvent event, Question q) {
+        ServerCommunication.banUser(q.getUserId());
     }
 
     /**
