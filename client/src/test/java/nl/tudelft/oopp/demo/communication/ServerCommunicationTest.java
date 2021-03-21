@@ -105,17 +105,19 @@ public class ServerCommunicationTest {
     @Test
     public void testSendQuestion() {
         when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn("SUCCESS");
         String text = "Unit test question";
 
         UUID testId = UUID.randomUUID();
+        UUID testUserId = UUID.randomUUID();
 
-        ServerCommunication.sendQuestion(text, testId.toString());
+        ServerCommunication.sendQuestion(text, testId.toString(),testUserId);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, testId, null);
+        Question userQuestion = new Question(text, 0, testId, testUserId);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
@@ -200,5 +202,21 @@ public class ServerCommunicationTest {
 
         when(response.body()).thenReturn(Boolean.FALSE.toString());
         assertFalse(ServerCommunication.getRoomStatus(testId.toString()));
+    }
+
+    @Test
+    void banUser() {
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+
+        UUID userId = UUID.randomUUID();
+        ServerCommunication.closeRoom(userId.toString());
+        assertEquals("POST", request.method());
+
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
+
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(userId.toString().length(), request.bodyPublisher().get().contentLength());
     }
 }

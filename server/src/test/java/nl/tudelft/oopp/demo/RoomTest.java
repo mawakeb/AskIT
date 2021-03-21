@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Room;
@@ -40,7 +41,9 @@ class RoomTest {
         name = "Room A";
         staff = "abc";
         student = "def";
-        time = ZonedDateTime.now();
+
+        // add offset time to prevent race condition in isOpen()
+        time = ZonedDateTime.now().minus(1, ChronoUnit.MINUTES);
 
         testRoomA = new Room(dupe, name, staff, student, time);
         testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf", time);
