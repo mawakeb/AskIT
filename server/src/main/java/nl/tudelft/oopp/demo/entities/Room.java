@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,25 +13,23 @@ import javax.persistence.Table;
 )
 public class Room {
     @Id
-    @Column(
-            name = "id"
-    )
+    @Column(name = "id")
     private UUID id;
-    @Column(
-            name = "name"
-    )
+
+    @Column(name = "name")
     private String name;
-    @Column(
-            name = "staffAccess"
-    )
+
+    @Column(name = "staffAccess")
     private String staff;
-    @Column(
-            name = "studentAccess"
-    )
+
+    @Column(name = "studentAccess")
     private String student;
 
     @Column(name = "isOpen")
     private boolean isOpen;
+
+    @Column(name = "openTime")
+    private ZonedDateTime openTime;
 
     public Room() {
     }
@@ -41,14 +40,15 @@ public class Room {
      * @param id      unique room UUID.
      * @param name    title of the room chosen by lecturer.
      * @param staff   room access code for the staff role.
-     * @param student room acces code for the student role.
+     * @param student room access code for the student role.
      */
-    public Room(UUID id, String name, String staff, String student) {
+    public Room(UUID id, String name, String staff, String student, ZonedDateTime openTime) {
         this.id = id;
         this.name = name;
         this.staff = staff;
         this.student = student;
         this.isOpen = true;
+        this.openTime = openTime;
     }
 
     /**
@@ -83,11 +83,15 @@ public class Room {
     }
 
     public boolean isOpen() {
-        return this.isOpen;
+        return this.isOpen && ZonedDateTime.now().isAfter(this.openTime);
     }
 
     public void close() {
         this.isOpen = false;
+    }
+
+    public ZonedDateTime getOpenTime() {
+        return this.openTime;
     }
 
     @Override

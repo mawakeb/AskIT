@@ -64,3 +64,58 @@
     -fx-background-color: #141B2D;
 }
 
+
+.date-picker .text-field,
+.spinner,
+.spinner .text-field{
+    -fx-background-color: #1F2940;
+    -fx-control-inner-background: #1F2940 ;
+    -fx-text-fill: #fff;
+    -fx-border-color: #1F2940;
+    -fx-background-radius: 5;
+}
+
+.date-picker,
+.spinner,
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button{
+    -fx-background-color: #1F2940;
+}
+
+.spinner .content {
+    -fx-background-color: #1F2940;
+    -fx-text-fill: #fff;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #fff;
+}
+
+.spinner .increment-arrow-button:hover .increment-arrow,
+.spinner .decrement-arrow-button:hover .decrement-arrow {
+    -fx-background-color: #21C5ED;
+}
+
+.date-picker-popup > * > .spinner {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-pref-width: -1;
+    -fx-pref-height: -1;
+}
+
+.date-picker:editable > .arrow-button > * {
+    -fx-background-color: #fff;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-color: #0000;
+    -fx-background-radius: 0;
+}
+
+.date-picker > .arrow-button:hover {
+    -fx-background-color: #21C5ED;
+}
+
+
