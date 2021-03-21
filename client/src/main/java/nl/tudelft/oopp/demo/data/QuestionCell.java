@@ -112,17 +112,23 @@ public class QuestionCell extends ListCell<Question> {
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.toString());
             questionText.getStyleClass().add("question");
-
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             upvoteText.getStyleClass().add("question");
+
+            //allow text wrapping of questions if a line is too long
+            if (roomSceneController != null) {
+                questionText.setMaxWidth(roomSceneController.getListWidth() * 0.65);
+            } else {
+                questionText.setMaxWidth(roomSceneStaffController.getListWidth() * 0.6);
+            }
+            questionText.setWrapText(true);
 
             //create menu button for question
             MenuButton menuBtn = new MenuButton();
             menuBtn.getStyleClass().add("menu");
             menuBtn.getStylesheets().add(getClass()
                     .getResource("/roomSceneStyle.css").toExternalForm());
-            menuBtn.setDisable(true);
-            menuBtn.setVisible(false);
+
 
             //items for edit and delete (onclick method should be added)
             MenuItem editItem = new MenuItem("Edit");
@@ -135,19 +141,20 @@ public class QuestionCell extends ListCell<Question> {
 
             info.getChildren().addAll(nickname, timestamp);
             question.getChildren().addAll(info, questionText);
-            box.getChildren().addAll(question, center, upvoteBtn,upvoteText,menuBtn);
+            box.getChildren().addAll(question, center, upvoteBtn,upvoteText);
 
             // show ban option in menu if you are staff
             if (staffRole) {
                 MenuItem banItem = new MenuItem("Ban User");
                 banItem.setOnAction(event -> useBanBtn(event, q));
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
-                menuBtn.setVisible(true);
-                menuBtn.setDisable(false);
+                box.getChildren().add(menuBtn);
+                box.setStyle("-fx-padding: 7 0 7 12");
             }
 
             setText(null);
             setGraphic(box);
+
         }
     }
 

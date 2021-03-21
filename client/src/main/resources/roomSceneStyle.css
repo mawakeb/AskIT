@@ -65,7 +65,7 @@
     -fx-background-radius: 5;
     -fx-text-fill: #fff;
     -fx-margin: 10 0 40 0;
-    -fx-padding: 7 0 7 12;
+    -fx-padding: 7 12;
 }
 
 .upvote {

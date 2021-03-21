@@ -127,4 +127,12 @@ public class RoomSceneController {
         updateRoomStatus();
         checkOpenTime();
     }
+
+    /**
+     * Returns width of questionList to estimate window size.
+     * @return with of questionList
+     */
+    public double getListWidth() {
+        return this.questionList.getWidth();
+    }
 }
