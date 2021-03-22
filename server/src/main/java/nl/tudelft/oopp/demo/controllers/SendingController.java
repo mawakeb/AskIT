@@ -86,6 +86,18 @@ public class SendingController {
     }
 
     /**
+     * Mark the question with the specified ID as answered.
+     */
+    @PostMapping("answer")
+    @ResponseBody
+    public void answerQuestion(@RequestBody String id) {
+        UUID uuid = UUID.fromString(id);
+        Question question = repo.findById(uuid);
+        question.setAnswered();
+        repo.save(question);
+    }
+
+    /**
      * Prevent a user from sending new questions, using their id.
      */
     @PostMapping("ban")

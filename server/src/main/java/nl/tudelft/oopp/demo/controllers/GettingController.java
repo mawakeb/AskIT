@@ -29,4 +29,11 @@ public class GettingController {
     public List<Question> getQuestions(@RequestParam String q) {
         return repo.getAllRoomQuestions(UUID.fromString(q));
     }
+
+    // Endpoint that returns a list containing all answered questions in the repository
+    @GetMapping("answered") // for /get/answered
+    @ResponseBody
+    public List<Question> getAnswered(@RequestParam String q) {
+        return repo.getAllAnsweredQuestions(UUID.fromString(q));
+    }
 }

@@ -48,6 +48,11 @@ public class RoomSceneController {
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
     }
 
+    @Scheduled(fixedRate = 1000)
+    public void scheduleUpdate() {
+        updateAll();
+     }
+
     /**
      * shows name of the room in the scene and sets value for roomId.
      *

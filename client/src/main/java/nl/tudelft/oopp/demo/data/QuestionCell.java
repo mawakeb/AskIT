@@ -129,7 +129,10 @@ public class QuestionCell extends ListCell<Question> {
                 banBtn.getStyleClass().add("ban");
                 banBtn.getStylesheets().add(getClass()
                         .getResource("/roomSceneStyle.css").toExternalForm());
-                box.getChildren().add(banBtn);
+
+                Button answerBtn = new Button("Answer");
+                banBtn.setOnAction(event -> useAnswerBtn(event, q));
+                box.getChildren().add(answerBtn);
             }
 
             setText(null);
@@ -145,6 +148,16 @@ public class QuestionCell extends ListCell<Question> {
      */
     private void useBanBtn(ActionEvent event, Question q) {
         ServerCommunication.banUser(q.getUserId());
+    }
+
+     /**
+     * Automatically Called when clicking the answer button.
+     *
+     * @param event JavaFx button press event
+     * @param q     question the button relates to
+     */
+    private void useAnswerBtn(ActionEvent event, Question q) {
+        ServerCommunication.answerQuestion(q.getId());
     }
 
     /**
