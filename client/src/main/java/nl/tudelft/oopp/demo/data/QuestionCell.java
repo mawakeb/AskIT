@@ -40,7 +40,7 @@ public class QuestionCell extends ListCell<Question> {
     public QuestionCell(RoomController roomController) {
         this.roomController = roomController;
         this.staffRole = false;
-        if (roomController instanceof RoomSceneStaffController){
+        if (roomController instanceof RoomSceneStaffController) {
             this.staffRole = true;
         }
         this.setStyle("-fx-background-color: #0000;"
@@ -156,7 +156,7 @@ public class QuestionCell extends ListCell<Question> {
         ServerCommunication.banUser(q.getUserId());
     }
 
-     /**
+    /**
      * Automatically Called when clicking the answer button.
      *
      * @param event JavaFx button press event

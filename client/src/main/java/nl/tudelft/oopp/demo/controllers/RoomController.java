@@ -12,7 +12,12 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 import nl.tudelft.oopp.demo.data.User;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
+@Configuration
+@EnableScheduling
 public abstract class RoomController {
 
     @FXML private ListView<Question> questionList;
@@ -56,6 +61,15 @@ public abstract class RoomController {
                 .withZoneSameInstant(TimeZone.getDefault().toZoneId());
         this.openTime = zonedTime;
         this.user = user;
+        updateAll();
+    }
+
+
+    /**
+     * calls updateAll() every second
+     */
+    @Scheduled(fixedRate = 1000)
+    public void scheduleUpdate() {
         updateAll();
     }
 
