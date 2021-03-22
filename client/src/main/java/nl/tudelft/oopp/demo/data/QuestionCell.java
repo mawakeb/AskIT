@@ -124,14 +124,15 @@ public class QuestionCell extends ListCell<Question> {
 
             // show ban option in menu if you are staff
             if (staffRole) {
+                MenuItem banItem = new MenuItem("Ban User");
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
                 box.setStyle("-fx-padding: 7 0 7 12");
                 box.getChildren().add(menuBtn);
                 banItem.setOnAction(event -> useBanBtn(event, q));
-                MenuItem banItem = new MenuItem("Ban User");
+
                 Button answerBtn = new Button("Answer");
-                banBtn.setOnAction(event -> useAnswerBtn(event, q));
-                box.getChildren().add(answerBtn);
+                answerBtn.setOnAction(event -> useAnswerBtn(event, q));
+                box.getChildren().addAll(answerBtn, menuBtn);
             }
 
             setText(null);

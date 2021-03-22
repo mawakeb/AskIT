@@ -53,11 +53,6 @@ public class RoomSceneController extends RoomController {
         });
     }
 
-    @Scheduled(fixedRate = 1000)
-    public void scheduleUpdate() {
-        updateAll();
-     }
-
     /**
      * Handles clicking the button.
      */
