@@ -13,6 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.controllers.RoomController;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
 import nl.tudelft.oopp.demo.controllers.RoomSceneStaffController;
 import nl.tudelft.oopp.demo.methods.TimeControl;
@@ -26,34 +27,17 @@ public class QuestionCell extends ListCell<Question> {
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
     private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
-
-    private RoomSceneController roomSceneController;
-    private RoomSceneStaffController roomSceneStaffController;
     private final boolean staffRole;
+    private RoomController roomController;
 
     /**
      * QuestionCell Constructor, passed as lambda function in SetCellFactory.
      *
-     * @param roomSceneController the RoomSceneController containing this ListView.
+     * @param roomController the RoomController containing this ListView.
      */
-    public QuestionCell(RoomSceneController roomSceneController) {
-        this.roomSceneController = roomSceneController;
+    public QuestionCell(RoomController roomController) {
+        this.roomController = roomController;
         this.staffRole = false;
-        this.setStyle("-fx-background-color: #0000;"
-                + "-fx-padding: 7 0 0 0;"
-                + "-fx-text-fill: #fff;");
-
-    }
-
-    /**
-     * QuestionCell Constructor, passed as lambda function in SetCellFactory.
-     * Separate constructor for roomSceneStaff
-     *
-     * @param roomSceneStaffController the RoomSceneController containing this ListView.
-     */
-    public QuestionCell(RoomSceneStaffController roomSceneStaffController) {
-        this.roomSceneStaffController = roomSceneStaffController;
-        this.staffRole = true;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -74,7 +58,6 @@ public class QuestionCell extends ListCell<Question> {
             setText(null);
             setGraphic(null);
         } else {
-
             HBox box = new HBox(10);
             box.setAlignment(Pos.CENTER_LEFT);
             box.getStyleClass().add("box");
@@ -97,7 +80,6 @@ public class QuestionCell extends ListCell<Question> {
             timestamp.setText(creationTimeStamp);
             timestamp.setStyle("-fx-text-fill: #9e9e9e;"
                     + "-fx-font-size: 70%;");
-
 
             // create upvote button
             Button upvoteBtn = new Button("");
@@ -155,11 +137,9 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-        if (roomSceneController != null) {
-            upvoteBtn.setDisable(true);
-            ServerCommunication.upvoteQuestion(q.getId());
-            upvotedQuestionIds.add(q.getId());
-            roomSceneController.updateQuestionList();
-        }
+        upvoteBtn.setDisable(true);
+        ServerCommunication.upvoteQuestion(q.getId());
+        upvotedQuestionIds.add(q.getId());
+        roomController.updateQuestionList();
     }
 }
