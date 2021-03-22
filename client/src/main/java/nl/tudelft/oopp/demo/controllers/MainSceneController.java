@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.User;
+import nl.tudelft.oopp.demo.views.RoomSceneDisplay;
 import nl.tudelft.oopp.demo.views.TimeSpinner;
 
 /**
@@ -104,8 +107,21 @@ public class MainSceneController {
      * Handles clicking the join button.
      */
     public void joinButtonClicked() {
-        ServerCommunication.joinRoom(userText.getText());
+        String link = userText.getText();
         userText.clear();
+
+        List<String> responseList = ServerCommunication.joinRoom(link);
+        if (responseList != null) {
+            String[] links = link.split("/");
+            String roomId = links[0];
+            String roomName = responseList.get(0);
+            String roleId = responseList.get(1);
+            String openTime = responseList.get(2);
+            String roomScene = roleId.equals("staff") ? "/roomSceneStaff.fxml" : "/roomScene.fxml";
+
+            User user = new User(UUID.fromString(roomId), roleId, username.getText(), links[1]);
+            RoomSceneDisplay.open(roomScene, roomId, roomName, openTime, user);
+        }
     }
 
     /**

@@ -14,7 +14,6 @@ import java.util.UUID;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.methods.TimeControl;
 import nl.tudelft.oopp.demo.views.ErrorDisplay;
-import nl.tudelft.oopp.demo.views.RoomSceneDisplay;
 import org.json.JSONObject;
 
 
@@ -178,6 +177,7 @@ public class ServerCommunication {
 
     /**
      * Ban a user using their ID.
+     *
      * @param userId UUID of the user to ban
      */
     public static void banUser(UUID userId) {
@@ -199,9 +199,9 @@ public class ServerCommunication {
      *
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
+     * @return boolean of whether the user is banned
      */
-    // TODO: make a user object, so the ID doesn't need to be null.
-    public static void sendQuestion(String text, String roomId, UUID userId,
+    public static boolean sendQuestion(String text, String roomId, UUID userId,
                                     ZonedDateTime roomTime) {
 
         Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
@@ -217,12 +217,12 @@ public class ServerCommunication {
             // handle responses where the request was received successfully,
             // but logic on the server rejects storing the question for different reasons
             if (!response.body().equals("SUCCESS")) {
-                // TODO: make message in UI that looks less severe than an error
-                ErrorDisplay.open("Question Rejected", response.body());
+                return true;
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
+        return false;
     }
 
     /**
@@ -334,7 +334,7 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
-    public static void joinRoom(String link) {
+    public static List<String> joinRoom(String link) {
         try {
             HttpResponse<String> response = joinRoomHttp(link);
             if (response.statusCode() != 200) {
@@ -343,24 +343,14 @@ public class ServerCommunication {
                         json.get("message").toString());
 
             } else {
-                List<String> responseList = gson.fromJson(response.body(),
+                return gson.fromJson(response.body(),
                         new TypeToken<List<String>>() {
                         }.getType());
-                String[] links = link.split("/");
-                String roomId = links[0];
-                String roomName = responseList.get(0);
-                String openTime = responseList.get(2);
-                if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml",
-                            roomId, roomName, openTime, links[1]);
-                } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml",
-                            roomId, roomName, openTime, links[1]);
-                }
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
+        return null;
     }
 
     /**
