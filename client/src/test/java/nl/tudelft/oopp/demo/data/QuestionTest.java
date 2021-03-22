@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -71,6 +72,14 @@ public class QuestionTest {
     }
 
     @Test
+    void setAnswered() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        question2.setAnswered(true);
+        assertTrue(question2.isAnswered());
+
+    }
+
+    @Test
     void getRoomId() {
         assertEquals(question.getRoomId(), roomId);
     }
@@ -83,6 +92,11 @@ public class QuestionTest {
     @Test
     void isDeleted() {
         assertEquals(question.isDeleted(), false);
+    }
+
+    @Test
+    void isAnswered() {
+        assertEquals(question.isAnswered(), false);
     }
 
     @Test

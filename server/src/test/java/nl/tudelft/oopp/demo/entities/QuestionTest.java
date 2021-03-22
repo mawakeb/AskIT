@@ -48,6 +48,11 @@ public class QuestionTest {
     }
 
     @Test
+    void isAnswered() {
+        assertEquals(question.isAnswered(), false);
+    }
+
+    @Test
     void testToString() {
         assertEquals(
                 question.toString(),
@@ -98,6 +103,12 @@ public class QuestionTest {
     void setUpvotes() {
         question.setUpvotes(4);
         assertEquals(question.getUpvotes(), 4);
+    }
+
+    @Test
+    void setAnswered() {
+        question.setAnswered(true);
+        assertEquals(question.isAnswered(), true);
     }
 
     @Test

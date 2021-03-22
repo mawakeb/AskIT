@@ -88,6 +88,16 @@ class SendingControllerTest {
     }
 
     @Test
+    void answerQuestion() {
+        UUID uuid = UUID.randomUUID();
+        UUID dupe = UUID.randomUUID();
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        when(repo.findById(uuid)).thenReturn(question);
+        sc.answerQuestion(uuid.toString());
+        assertEquals(true, question.isAnswered());
+    }
+
+    @Test
     void banUser() {
         UUID uuidToBan = UUID.randomUUID();
         assertFalse(sc.getBannedUsers().contains(uuidToBan));

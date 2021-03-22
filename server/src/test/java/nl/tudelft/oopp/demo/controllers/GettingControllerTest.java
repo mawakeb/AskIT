@@ -43,4 +43,10 @@ class GettingControllerTest {
         List<Question> actual = gc.getQuestions(dupe.toString());
         assertEquals(questionList, actual);
     }
+
+    @Test
+    void testGetAnsweredQuestions() {
+        List<Question> actual = gc.getAnswered(dupe.toString());
+        assertEquals(List.of(), actual);
+    }
 }
