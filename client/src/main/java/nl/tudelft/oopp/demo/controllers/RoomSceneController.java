@@ -7,6 +7,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.data.QuestionCell;
+import nl.tudelft.oopp.demo.data.User;
+import org.springframework.scheduling.annotation.Scheduled;
 
 
 public class RoomSceneController extends RoomController {
