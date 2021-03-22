@@ -164,6 +164,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     private void useAnswerBtn(ActionEvent event, Question q) {
         ServerCommunication.answerQuestion(q.getId());
+        roomController.updateAll();
     }
 
     /**

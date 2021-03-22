@@ -4,7 +4,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -12,12 +15,8 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 import nl.tudelft.oopp.demo.data.User;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
-@Configuration
-@EnableScheduling
+
 public abstract class RoomController {
 
     @FXML private ListView<Question> questionList;
@@ -29,6 +28,8 @@ public abstract class RoomController {
     private ZonedDateTime openTime;
     private DateTimeFormatter formatter;
     private User user;
+    private TimerTask update;
+    private Timer timer;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -45,6 +46,16 @@ public abstract class RoomController {
             return new QuestionCell(this);
         });
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
+
+        this.update = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    updateAll();
+                });
+            }
+        };
+        this.timer = new Timer();
     }
 
     /**
@@ -62,15 +73,7 @@ public abstract class RoomController {
         this.openTime = zonedTime;
         this.user = user;
         updateAll();
-    }
-
-
-    /**
-     * calls updateAll() every second.
-     */
-    @Scheduled(fixedRate = 1000)
-    public void scheduleUpdate() {
-        updateAll();
+        timer.scheduleAtFixedRate(update, 0, 10000);
     }
 
     /**
