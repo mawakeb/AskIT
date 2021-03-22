@@ -14,7 +14,6 @@ import java.util.UUID;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.methods.TimeControl;
 import nl.tudelft.oopp.demo.views.ErrorDisplay;
-import nl.tudelft.oopp.demo.views.RoomSceneDisplay;
 import org.json.JSONObject;
 
 
@@ -149,6 +148,7 @@ public class ServerCommunication {
 
     /**
      * Ban a user using their ID.
+     *
      * @param userId UUID of the user to ban
      */
     public static void banUser(UUID userId) {
@@ -267,7 +267,7 @@ public class ServerCommunication {
      * @param link the join link entered by the user.
      */
     //TODO: polling
-    public static void joinRoom(String link) {
+    public static List<String> joinRoom(String link) {
         try {
             HttpResponse<String> response = joinRoomHttp(link);
             if (response.statusCode() != 200) {
@@ -276,24 +276,14 @@ public class ServerCommunication {
                         json.get("message").toString());
 
             } else {
-                List<String> responseList = gson.fromJson(response.body(),
+                return gson.fromJson(response.body(),
                         new TypeToken<List<String>>() {
                         }.getType());
-                String[] links = link.split("/");
-                String roomId = links[0];
-                String roomName = responseList.get(0);
-                String openTime = responseList.get(2);
-                if (responseList.get(1).equals("student")) {
-                    RoomSceneDisplay.open("/roomScene.fxml",
-                            roomId, roomName, openTime, links[1]);
-                } else if (responseList.get(1).equals("staff")) {
-                    RoomSceneDisplay.open("/roomSceneStaff.fxml",
-                            roomId, roomName, openTime, links[1]);
-                }
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
+        return null;
     }
 
     /**

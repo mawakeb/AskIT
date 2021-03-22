@@ -19,22 +19,12 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 import nl.tudelft.oopp.demo.data.User;
 
-public class RoomSceneController {
+public class RoomSceneController extends RoomController {
     @FXML
     private TextArea question;
     @FXML
-    private ListView<Question> questionList;
-    @FXML
     private Button sendButton;
-    @FXML
-    private Label roomName;
-    @FXML
-    private Label timeLabel;
 
-    private String roomId;
-    private ZonedDateTime openTime;
-    private DateTimeFormatter formatter;
-    private User user;
     private boolean ban;
 
     /**
@@ -43,14 +33,11 @@ public class RoomSceneController {
      * so only at this point can ui elements be addressed from code.
      */
     @FXML
+    @Override
     public void initialize() {
-        // initialize cellFactory, to have questions be rendered using the QuestionCell class
-        questionList.setCellFactory(params -> {
-            return new QuestionCell(this);
-        });
-        this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
-        this.ban = false;
+        super.initialize();
 
+        this.ban = false;
         question.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -67,60 +54,15 @@ public class RoomSceneController {
     }
 
     /**
-     * shows name of the room in the scene and sets value for roomId.
-     *
-     * @param roomId     - UUID of the room
-     * @param roomName   - Name of the room
-     * @param stringTime - openTime of the room in Sting
-     */
-    public void setRoomInfo(String roomId, String roomName, String stringTime, String roleId) {
-        this.roomId = roomId;
-        this.roomName.setText(roomName);
-        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime)
-                .withZoneSameInstant(TimeZone.getDefault().toZoneId());
-        this.openTime = zonedTime;
-        this.user = new User(UUID.fromString(roomId), "student", "username default", roleId);
-        updateAll();
-    }
-
-    /**
      * Handles clicking the button.
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            this.ban = ServerCommunication
-                    .sendQuestion(question.getText(), roomId, user.getId(), openTime);
+            this.ban = ServerCommunication.sendQuestion(question.getText(),
+                    super.getRoomId(), super.getUser().getId(), super.getOpenTime());
         }
         updateAll();
         question.clear();
-    }
-
-    /**
-     * Fetches all questions from the server.
-     * Then updates the listview contents to display them.
-     */
-    public void updateQuestionList() {
-        List<Question> questions = ServerCommunication.getQuestions(roomId);
-        questionList.getItems().clear();
-        questionList.getItems().addAll(questions);
-    }
-
-    /**
-     * Shows openTime if the room is not open because it's not the scheduled time yet.
-     */
-    public void checkOpenTime() {
-
-        if (!timeLabel.isVisible()) {
-            return;
-        }
-
-        if (openTime.isAfter(ZonedDateTime.now())) {
-            timeLabel.setVisible(true);
-            String time = "Room opens at " + openTime.format(formatter);
-            timeLabel.setText(time);
-        } else {
-            timeLabel.setVisible(false);
-        }
     }
 
     /**
@@ -138,7 +80,7 @@ public class RoomSceneController {
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
-        boolean isOpen = ServerCommunication.getRoomStatus(roomId);
+        boolean isOpen = ServerCommunication.getRoomStatus(super.getRoomId());
         sendButton.setDisable(!isOpen);
         question.setDisable(!isOpen);
         if (!isOpen) {
@@ -157,13 +99,5 @@ public class RoomSceneController {
         updateRoomStatus();
         checkOpenTime();
         checkBan();
-    }
-
-    /**
-     * Returns width of questionList to estimate window size.
-     * @return with of questionList
-     */
-    public double getListWidth() {
-        return this.questionList.getWidth();
     }
 }
