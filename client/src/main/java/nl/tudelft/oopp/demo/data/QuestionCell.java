@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -110,9 +112,28 @@ public class QuestionCell extends ListCell<Question> {
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.toString());
             questionText.getStyleClass().add("question");
-
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             upvoteText.getStyleClass().add("question");
+
+            //allow text wrapping of questions if a line is too long
+            if (roomSceneController != null) {
+                questionText.setMaxWidth(roomSceneController.getListWidth() * 0.65);
+            } else {
+                questionText.setMaxWidth(roomSceneStaffController.getListWidth() * 0.6);
+            }
+            questionText.setWrapText(true);
+
+            //create menu button for question
+            MenuButton menuBtn = new MenuButton();
+            menuBtn.getStyleClass().add("menu");
+            menuBtn.getStylesheets().add(getClass()
+                    .getResource("/roomSceneStyle.css").toExternalForm());
+
+
+            //items for edit and delete (onclick method should be added)
+            MenuItem editItem = new MenuItem("Edit");
+            MenuItem deleteItem = new MenuItem("Delete");
+
 
             //create containers for nickname(in the future), timestamp and question
             HBox info = new HBox(10);
@@ -120,20 +141,20 @@ public class QuestionCell extends ListCell<Question> {
 
             info.getChildren().addAll(nickname, timestamp);
             question.getChildren().addAll(info, questionText);
-            box.getChildren().addAll(question, center, upvoteText, upvoteBtn);
+            box.getChildren().addAll(question, center, upvoteBtn,upvoteText);
 
-            // create ban button if created using RoomSceneStaffController
+            // show ban option in menu if you are staff
             if (staffRole) {
-                Button banBtn = new Button("Ban");
-                banBtn.setOnAction(event -> useBanBtn(event, q));
-                banBtn.getStyleClass().add("ban");
-                banBtn.getStylesheets().add(getClass()
-                        .getResource("/roomSceneStyle.css").toExternalForm());
-                box.getChildren().add(banBtn);
+                MenuItem banItem = new MenuItem("Ban User");
+                banItem.setOnAction(event -> useBanBtn(event, q));
+                menuBtn.getItems().addAll(editItem, deleteItem, banItem);
+                box.getChildren().add(menuBtn);
+                box.setStyle("-fx-padding: 7 0 7 12");
             }
 
             setText(null);
             setGraphic(box);
+
         }
     }
 

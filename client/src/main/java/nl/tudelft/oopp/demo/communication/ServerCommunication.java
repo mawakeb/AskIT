@@ -170,9 +170,9 @@ public class ServerCommunication {
      *
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
+     * @return boolean of whether the user is banned
      */
-    // TODO: make a user object, so the ID doesn't need to be null.
-    public static void sendQuestion(String text, String roomId, UUID userId,
+    public static boolean sendQuestion(String text, String roomId, UUID userId,
                                     ZonedDateTime roomTime) {
 
         Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
@@ -188,12 +188,12 @@ public class ServerCommunication {
             // handle responses where the request was received successfully,
             // but logic on the server rejects storing the question for different reasons
             if (!response.body().equals("SUCCESS")) {
-                // TODO: make message in UI that looks less severe than an error
-                ErrorDisplay.open("Question Rejected", response.body());
+                return true;
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
+        return false;
     }
 
     /**
