@@ -80,15 +80,9 @@ public class RoomSceneController extends RoomController {
         }
     }
 
-    /**
-     * Gets all possible updates from the server.
-     */
-    //TODO: Use some sort of polling to call this method, instead of from refresh/send
+    @Override
     public void updateAll() {
-        updateQuestionList();
-        updateRoomStatus();
-        checkOpenTime();
+        super.updateAll();
         checkBan();
-        updateAnsweredQuestionList();
     }
 }
