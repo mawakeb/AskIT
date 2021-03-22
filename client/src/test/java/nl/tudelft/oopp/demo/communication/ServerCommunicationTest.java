@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -110,14 +111,16 @@ public class ServerCommunicationTest {
 
         UUID testId = UUID.randomUUID();
         UUID testUserId = UUID.randomUUID();
+        ZonedDateTime roomTimeTest = ZonedDateTime.now();
 
-        ServerCommunication.sendQuestion(text, testId.toString(), testUserId, ZonedDateTime.now());
+        ServerCommunication.sendQuestion(text, testId.toString(), testUserId, roomTimeTest);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
         assertTrue(request.bodyPublisher().isPresent());
 
-        Question userQuestion = new Question(text, 0, testId, testUserId, 5);
+        Question userQuestion = new Question(text, 0, testId, testUserId,
+                TimeControl.getMilisecondsPassed(roomTimeTest));
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
