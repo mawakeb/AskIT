@@ -24,7 +24,7 @@
                     <Font name="Century Gothic" size="12.0" />
                 </font>
             </Label>
-            <Button fx:id="refreshBtn" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#updateQuestionList" prefHeight="28.0" prefWidth="38.0" styleClass="refreshButton" stylesheets="@roomSceneStyle.css" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Button fx:id="refreshBtn" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#updateAll" prefHeight="28.0" prefWidth="38.0" styleClass="refreshButton" stylesheets="@roomSceneStyle.css" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                 <GridPane.margin>
                     <Insets right="2.0" top="5.0" />
                 </GridPane.margin>
