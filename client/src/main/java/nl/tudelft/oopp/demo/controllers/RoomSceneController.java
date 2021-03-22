@@ -82,7 +82,10 @@ public class RoomSceneController extends RoomController {
 
     @Override
     public void updateAll() {
-        super.updateAll();
+        updateQuestionList();
+        updateRoomStatus();
+        checkOpenTime();
+        updateAnsweredQuestionList();
         checkBan();
     }
 }

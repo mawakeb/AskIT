@@ -66,7 +66,7 @@ public abstract class RoomController {
 
 
     /**
-     * calls updateAll() every second
+     * calls updateAll() every second.
      */
     @Scheduled(fixedRate = 1000)
     public void scheduleUpdate() {
@@ -120,7 +120,6 @@ public abstract class RoomController {
     /**
      * Gets all possible updates from the server.
      */
-    //TODO: Use some sort of polling to call this method, instead of from refresh/send
     public void updateAll() {
         updateQuestionList();
         updateRoomStatus();
