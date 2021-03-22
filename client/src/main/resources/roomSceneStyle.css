@@ -38,6 +38,11 @@
     -fx-font-size: 130%;
 }
 
+.questionText .corner,
+.questionList .corner{
+    -fx-background-color: #0000;
+}
+
 .questionText .content {
     -fx-background-radius: 0;
     -fx-background-color: #141B2D;

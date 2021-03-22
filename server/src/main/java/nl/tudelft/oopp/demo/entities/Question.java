@@ -26,6 +26,10 @@ public class Question {
     private boolean deleted;
     @Column(name = "edited")
     private boolean edited;
+    @Column(name = "createTime")
+    private int createTime;
+    @Column(name = "answerTime")
+    private int answerTime;
 
     /**
      * Create a new Question instance.
@@ -35,7 +39,7 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(UUID id, String content, UUID roomId, UUID userId) {
+    public Question(UUID id, String content, UUID roomId, UUID userId, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = 0;
@@ -43,6 +47,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
 
     /**
@@ -52,7 +58,7 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, UUID roomId, UUID userId) {
+    public Question(String content, UUID roomId, UUID userId, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = 0;
@@ -60,8 +66,9 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
-
 
     public Question() {
 
@@ -113,6 +120,22 @@ public class Question {
 
     public void addUpvote() {
         upvotes++;
+    }
+
+    public int getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(int createTime) {
+        this.createTime = Question.this.createTime;
+    }
+
+    public int getAnswerTime() {
+        return answerTime;
+    }
+
+    public void setAnswerTime(int answerTime) {
+        this.answerTime = answerTime;
     }
 
     @Override

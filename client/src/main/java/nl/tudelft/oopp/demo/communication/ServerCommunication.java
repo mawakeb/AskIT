@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.demo.data.Question;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 import nl.tudelft.oopp.demo.views.ErrorDisplay;
 import nl.tudelft.oopp.demo.views.RoomSceneDisplay;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ public class ServerCommunication {
     public static void setHttpClient(HttpClient client) {
         ServerCommunication.client = client;
     }
+
 
     /**
      * Tries to send specified request to server and catch any exceptions.
@@ -96,10 +98,10 @@ public class ServerCommunication {
      * @param name the String title of the room to create.
      * @return HttpResponse object
      */
-    public static HttpResponse<String> createRoomHttp(String name, ZonedDateTime openTime)
+    public static HttpResponse<String> createRoomHttp(String name, String openTime)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         return getStringHttpResponse(request);
     }
@@ -169,9 +171,13 @@ public class ServerCommunication {
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
      */
+    // TODO: make a user object, so the ID doesn't need to be null.
+    public static void sendQuestion(String text, String roomId, UUID userId,
+                                    ZonedDateTime roomTime) {
 
-    public static void sendQuestion(String text, String roomId, UUID userId) {
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId);
+        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
+                TimeControl.getMilisecondsPassed(roomTime));
+
         String parsedQuestion = gson.toJson(userQuestion);
         try {
             HttpResponse<String> response = sendQuestionHttp(parsedQuestion);
@@ -237,7 +243,7 @@ public class ServerCommunication {
     public static List<String> createRoom(String name, ZonedDateTime openTime) {
         HttpResponse<String> response = null;
         try {
-            response = createRoomHttp(name, openTime);
+            response = createRoomHttp(name, openTime.toString());
 
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());

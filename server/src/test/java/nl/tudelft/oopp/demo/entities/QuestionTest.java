@@ -20,12 +20,12 @@ public class QuestionTest {
     void setUp() {
         id = UUID.randomUUID();
         content = "test";
-        question = new Question(id, content, roomId, userId);
+        question = new Question(id, content, roomId, userId, 5);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, roomId, userId);
+        Question question1 = new Question(content, roomId, userId, 5);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -57,7 +57,7 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, roomId, userId);
+        Question question2 = new Question(id, content, roomId, userId, 5);
         assertEquals(question, question2);
     }
 
@@ -104,6 +104,18 @@ public class QuestionTest {
     void addUpvote() {
         question.addUpvote();
         assertEquals(question.getUpvotes(), 1);
+    }
+
+    @Test
+    void getAndSetCreateTime() {
+        question.setCreateTime(5);
+        assertEquals(question.getCreateTime(), 5);
+    }
+
+    @Test
+    void getAndSetAnswerTime() {
+        question.setAnswerTime(5);
+        assertEquals(5, question.getAnswerTime());
     }
 
 }

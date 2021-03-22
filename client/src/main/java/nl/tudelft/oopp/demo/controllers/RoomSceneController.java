@@ -70,7 +70,7 @@ public class RoomSceneController {
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            ServerCommunication.sendQuestion(question.getText(), roomId, user.getId());
+            ServerCommunication.sendQuestion(question.getText(), roomId, user.getId(), openTime);
         }
         updateAll();
         question.clear();

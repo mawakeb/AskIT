@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.demo.entities.Question;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 import nl.tudelft.oopp.demo.repositories.QuestionRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class SendingController {
     @ResponseBody
     public String sendQuestion(@RequestBody String q) {
         Question userQuestion = gson.fromJson(q, Question.class);
-        // Set question up-votes to 0, to avoid hackers
+        // Set question up-votes to 0, to avoid hackers.
         userQuestion.setUpvotes(0);
 
         if (bannedUsers.contains(userQuestion.getUserId())) {
@@ -62,6 +63,7 @@ public class SendingController {
             return "The room can't be found on the server";
         }
         if (room.isOpen()) {
+            userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             repo.save(userQuestion);
             System.out.println(q);
         } else {

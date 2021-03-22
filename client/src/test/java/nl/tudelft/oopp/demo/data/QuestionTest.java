@@ -24,12 +24,12 @@ public class QuestionTest {
         upvotes = 5;
         userId = UUID.randomUUID();
         roomId = UUID.randomUUID();
-        question = new Question(id, content, upvotes, roomId, userId);
+        question = new Question(id, content, upvotes, roomId, userId, 5);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, upvotes, roomId, userId);
+        Question question1 = new Question(content, upvotes, roomId, userId, 5);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -58,13 +58,13 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
         assertEquals(question, question2);
     }
 
     @Test
     void setUpvotes() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
         question2.setUpvotes(10);
         assertEquals(question2.getUpvotes(), 10);
 
@@ -87,7 +87,7 @@ public class QuestionTest {
 
     @Test
     void setDeleted() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
         question2.setDeleted(true);
         assertEquals(question2.isDeleted(), true);
     }
@@ -99,15 +99,27 @@ public class QuestionTest {
 
     @Test
     void setEdited() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
         question2.setEdited(true);
         assertEquals(question2.isEdited(), true);
     }
 
     @Test
     void addUpvote() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
         question2.addUpvote();
         assertEquals(question2.getUpvotes(), 6);
     }
+
+    @Test
+    void getCreateTime() {
+        assertEquals(question.getCreateTime(), 5);
+    }
+
+    @Test
+    void getAndSetAnswerTime() {
+        question.setAnswerTime(5);
+        assertEquals(5, question.getAnswerTime());
+    }
+
 }

@@ -11,9 +11,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
 import nl.tudelft.oopp.demo.controllers.RoomSceneStaffController;
+import nl.tudelft.oopp.demo.methods.TimeControl;
 
 /**
  * Class that forms an entry in the question listview.
@@ -83,6 +85,20 @@ public class QuestionCell extends ListCell<Question> {
             Region center = new Region();
             HBox.setHgrow(center, Priority.ALWAYS);
 
+            // nickname should be added when it is implemented
+            Label nickname = new Label();
+            nickname.setText("nickname");
+            nickname.setStyle("-fx-text-fill: #9e9e9e;"
+                    + "-fx-font-size: 80%;");
+
+            // create a creation timestamp
+            Label timestamp = new Label();
+            String creationTimeStamp = TimeControl.getPrettyTime(q.getCreateTime());
+            timestamp.setText(creationTimeStamp);
+            timestamp.setStyle("-fx-text-fill: #9e9e9e;"
+                    + "-fx-font-size: 70%;");
+
+
             // create upvote button
             Button upvoteBtn = new Button("");
             upvoteBtn.setDisable(upvotedQuestionIds.contains(q.getId()));
@@ -94,9 +110,17 @@ public class QuestionCell extends ListCell<Question> {
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.toString());
             questionText.getStyleClass().add("question");
+
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             upvoteText.getStyleClass().add("question");
-            box.getChildren().addAll(questionText, center, upvoteText, upvoteBtn);
+
+            //create containers for nickname(in the future), timestamp and question
+            HBox info = new HBox(10);
+            VBox question = new VBox(0);
+
+            info.getChildren().addAll(nickname, timestamp);
+            question.getChildren().addAll(info, questionText);
+            box.getChildren().addAll(question, center, upvoteText, upvoteBtn);
 
             // create ban button if created using RoomSceneStaffController
             if (staffRole) {

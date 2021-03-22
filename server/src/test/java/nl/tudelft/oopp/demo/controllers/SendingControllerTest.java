@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -33,14 +34,15 @@ class SendingControllerTest {
     @Mock
     private RoomRepository roomRepo;
 
-    @Mock
     private Room room;
 
     private Question question;
 
     @BeforeEach
     void setUp() {
-        question = new Question("test",UUID.randomUUID(),UUID.randomUUID());
+        UUID roomId = UUID.randomUUID();
+        question = new Question("test",roomId,UUID.randomUUID(), 5);
+        room = new Room(roomId,"name","staf","sd", ZonedDateTime.now());
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingController(repo, roomRepo);
@@ -48,7 +50,6 @@ class SendingControllerTest {
 
     @Test
     void sendQuestion() {
-        when(room.isOpen()).thenReturn(true);
         String parsed = gson.toJson(question);
         assertEquals("SUCCESS",sc.sendQuestion(parsed));
         verify(repo, times(1)).save(any(Question.class));
@@ -56,7 +57,7 @@ class SendingControllerTest {
 
     @Test
     void sendQuestionBannedUser() {
-        when(room.isOpen()).thenReturn(true);
+
         String parsed = gson.toJson(question);
 
         // configure bannedUsers, as if user supplying mock question was banned
@@ -64,13 +65,13 @@ class SendingControllerTest {
         bannedUsers.add(question.getUserId());
         sc.setBannedUsers(bannedUsers);
 
-        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
+        assertEquals("You have been banned from sending questions",sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
     @Test
     void sendQuestionRoomClosed() {
-        when(room.isOpen()).thenReturn(false);
+        room.close();
         String parsed = gson.toJson(question);
         assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
@@ -80,7 +81,7 @@ class SendingControllerTest {
     void upvoteQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());

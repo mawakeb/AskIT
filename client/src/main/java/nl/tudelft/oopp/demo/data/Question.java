@@ -19,6 +19,8 @@ public class Question {
     private int upvotes;
     private boolean deleted;
     private boolean edited;
+    private int createTime;
+    private int answerTime;
 
     /**
      * Create a new Question instance.
@@ -28,7 +30,8 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(UUID id, String content, int upvotes, UUID roomId, UUID userId) {
+    public Question(UUID id, String content, int upvotes,
+                    UUID roomId, UUID userId, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = upvotes;
@@ -36,6 +39,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
 
     /**
@@ -45,7 +50,7 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, int upvotes, UUID roomId, UUID userId) {
+    public Question(String content, int upvotes, UUID roomId, UUID userId, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = upvotes;
@@ -53,6 +58,8 @@ public class Question {
         this.userId = userId;
         this.deleted = false;
         this.edited = false;
+        this.createTime = createTime;
+        this.answerTime = 0;
     }
 
     public UUID getId() {
@@ -97,6 +104,18 @@ public class Question {
 
     public void addUpvote() {
         upvotes++;
+    }
+
+    public int getCreateTime() {
+        return createTime;
+    }
+
+    public int getAnswerTime() {
+        return answerTime;
+    }
+
+    public void setAnswerTime(int answerTime) {
+        this.answerTime = answerTime;
     }
 
     @Override
