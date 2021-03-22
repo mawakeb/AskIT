@@ -28,7 +28,7 @@ public class QuestionCell extends ListCell<Question> {
     // up voted this session, to prevent up voting multiple times
     private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
     private final boolean staffRole;
-    private RoomController roomController;
+    private final RoomController roomController;
 
     /**
      * QuestionCell Constructor, passed as lambda function in SetCellFactory.
