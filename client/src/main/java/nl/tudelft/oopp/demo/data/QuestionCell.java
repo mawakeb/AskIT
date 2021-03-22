@@ -29,7 +29,7 @@ public class QuestionCell extends ListCell<Question> {
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
     private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
-    private final boolean staffRole;
+    private boolean staffRole;
     private final RoomController roomController;
 
     /**
@@ -40,6 +40,9 @@ public class QuestionCell extends ListCell<Question> {
     public QuestionCell(RoomController roomController) {
         this.roomController = roomController;
         this.staffRole = false;
+        if (roomController instanceof RoomSceneStaffController){
+            this.staffRole = true;
+        }
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -127,12 +130,12 @@ public class QuestionCell extends ListCell<Question> {
                 MenuItem banItem = new MenuItem("Ban User");
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
                 box.setStyle("-fx-padding: 7 0 7 12");
-                box.getChildren().add(menuBtn);
                 banItem.setOnAction(event -> useBanBtn(event, q));
+                box.getChildren().add(menuBtn);
 
                 Button answerBtn = new Button("Answer");
                 answerBtn.setOnAction(event -> useAnswerBtn(event, q));
-                box.getChildren().addAll(answerBtn, menuBtn);
+                box.getChildren().add(answerBtn);
             }
 
             setText(null);

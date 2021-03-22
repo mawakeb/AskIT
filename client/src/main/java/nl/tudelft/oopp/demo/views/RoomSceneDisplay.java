@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.views;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,7 +33,7 @@ public class RoomSceneDisplay {
 
             Stage roomStage = new Stage();
             roomStage.setScene(new Scene(root));
-            roomStage.setTitle("AskIT");
+            roomStage.setTitle(roomName);
             roomStage.show();
 
         } catch (Exception e) {
