@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.controllers.RoomSceneController;
 import nl.tudelft.oopp.demo.controllers.RoomSceneStaffController;
+import nl.tudelft.oopp.demo.data.User;
 
 public class RoomSceneDisplay {
 
@@ -16,7 +17,7 @@ public class RoomSceneDisplay {
      * Opens the roomScene in a new window.
      */
     public static void open(String roomScene, String roomId, String roomName,
-                            String openTime, String roleId) {
+                            String openTime, User user) {
         try {
             FXMLLoader loader = new FXMLLoader();
             URL xmlUrl = RoomSceneDisplay.class.getResource(roomScene);
@@ -25,10 +26,10 @@ public class RoomSceneDisplay {
 
             if (roomScene.equals("/roomScene.fxml")) {
                 RoomSceneController controller = loader.getController();
-                controller.setRoomInfo(roomId, roomName, openTime, roleId);
+                controller.setRoomInfo(roomId, roomName, openTime, user);
             } else if (roomScene.equals("/roomSceneStaff.fxml")) {
                 RoomSceneStaffController controller = loader.getController();
-                controller.setRoomInfo(roomId, roomName, openTime, roleId);
+                controller.setRoomInfo(roomId, roomName, openTime, user);
             }
 
             Stage roomStage = new Stage();

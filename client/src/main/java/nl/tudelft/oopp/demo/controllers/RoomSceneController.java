@@ -55,13 +55,13 @@ public class RoomSceneController {
      * @param roomName   - Name of the room
      * @param stringTime - openTime of the room in Sting
      */
-    public void setRoomInfo(String roomId, String roomName, String stringTime, String roleId) {
+    public void setRoomInfo(String roomId, String roomName, String stringTime, User user) {
         this.roomId = roomId;
         this.roomName.setText(roomName);
         ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime)
                 .withZoneSameInstant(TimeZone.getDefault().toZoneId());
         this.openTime = zonedTime;
-        this.user = new User(UUID.fromString(roomId), "student", "username default", roleId);
+        this.user = user;
         updateAll();
     }
 
