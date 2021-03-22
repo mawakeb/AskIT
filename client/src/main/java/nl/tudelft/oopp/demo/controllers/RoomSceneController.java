@@ -15,6 +15,7 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 import nl.tudelft.oopp.demo.data.User;
+import org.springframework.scheduling.annotation.Scheduled;
 
 public class RoomSceneController {
     @FXML
