@@ -19,6 +19,7 @@ public class Question {
     private int upvotes;
     private boolean deleted;
     private boolean edited;
+    private boolean answered;
     private int createTime;
     private int answerTime;
 
@@ -41,6 +42,7 @@ public class Question {
         this.edited = false;
         this.createTime = createTime;
         this.answerTime = 0;
+        this.answered = false;
     }
 
     /**
@@ -60,6 +62,7 @@ public class Question {
         this.edited = false;
         this.createTime = createTime;
         this.answerTime = 0;
+        this.answered = false;
     }
 
     public UUID getId() {
@@ -96,6 +99,14 @@ public class Question {
 
     public boolean isEdited() {
         return edited;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
     public void setEdited(boolean edited) {

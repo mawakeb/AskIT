@@ -229,7 +229,7 @@ public class ServerCommunication {
      * Gets questions from server.
      *
      * @param roomId room that holds the wanted questions
-     * @return list of two strings, containing join links for staff and student respectively.
+     * @return list of questions
      */
     public static List<Question> getQuestions(String roomId) {
         try {
@@ -250,7 +250,7 @@ public class ServerCommunication {
      * Gets answered questions from server.
      *
      * @param roomId room that holds the wanted questions
-     * @return list of two strings, containing join links for staff and student respectively.
+     * @return list of questions
      */
     public static List<Question> getAnswered(String roomId) {
         try {

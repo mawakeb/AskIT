@@ -142,11 +142,11 @@ public class Question {
         this.answerTime = answerTime;
     }
 
-    public void setAnswered() {
-        this.answered = true;
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 
-    public boolean getAnswered() {
+    public boolean isAnswered() {
         return this.answered;
     }
 

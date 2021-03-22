@@ -133,9 +133,11 @@ public class QuestionCell extends ListCell<Question> {
                 banItem.setOnAction(event -> useBanBtn(event, q));
                 box.getChildren().add(menuBtn);
 
-                Button answerBtn = new Button("Answer");
-                answerBtn.setOnAction(event -> useAnswerBtn(event, q));
-                box.getChildren().add(answerBtn);
+                if (!q.isAnswered()) {
+                    MenuItem answerItem = new MenuItem("Answer");
+                    answerItem.setOnAction(event -> useAnswerBtn(event, q));
+                    menuBtn.getItems().add(answerItem);
+                }
             }
 
             setText(null);

@@ -16,6 +16,7 @@ import nl.tudelft.oopp.demo.data.User;
 public abstract class RoomController {
 
     @FXML private ListView<Question> questionList;
+    @FXML private ListView<Question> answeredQuestionList;
     @FXML private Label roomName;
     @FXML private Label timeLabel;
 
@@ -33,6 +34,9 @@ public abstract class RoomController {
     public void initialize() {
         // initialize cellFactory, to have questions be rendered using the QuestionCell class
         questionList.setCellFactory(params -> {
+            return new QuestionCell(this);
+        });
+        answeredQuestionList.setCellFactory(params -> {
             return new QuestionCell(this);
         });
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
@@ -63,6 +67,16 @@ public abstract class RoomController {
         List<Question> questions = ServerCommunication.getQuestions(roomId);
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
+    }
+
+    /**
+     * Fetches all answered questions from the server.
+     * Then updates the listview contents to display them.
+     */
+    public void updateAnsweredQuestionList() {
+        List<Question> questions = ServerCommunication.getAnswered(roomId);
+        answeredQuestionList.getItems().clear();
+        answeredQuestionList.getItems().addAll(questions);
     }
 
     /**
@@ -97,11 +111,12 @@ public abstract class RoomController {
         updateQuestionList();
         updateRoomStatus();
         checkOpenTime();
+        updateAnsweredQuestionList();
     }
 
     /**
      * Returns width of questionList to estimate window size.
-     * @return with of questionList
+     * @return width of questionList
      */
     public double getListWidth() {
         return this.questionList.getWidth();

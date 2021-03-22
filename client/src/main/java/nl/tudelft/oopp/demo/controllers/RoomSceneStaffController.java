@@ -1,21 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.util.Callback;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.QuestionCell;
-import nl.tudelft.oopp.demo.data.User;
 
 public class RoomSceneStaffController extends RoomController {
 
@@ -38,5 +25,16 @@ public class RoomSceneStaffController extends RoomController {
     public void updateRoomStatus() {
         boolean isOpen = ServerCommunication.getRoomStatus(super.getRoomId());
         closeRoomButton.setDisable(!isOpen);
+    }
+
+    /**
+     * Gets all possible updates from the server.
+     */
+    //TODO: Use some sort of polling to call this method, instead of from refresh/send
+    public void updateAll() {
+        updateQuestionList();
+        updateRoomStatus();
+        checkOpenTime();
+        updateAnsweredQuestionList();
     }
 }

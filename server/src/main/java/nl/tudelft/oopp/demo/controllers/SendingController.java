@@ -93,7 +93,7 @@ public class SendingController {
     public void answerQuestion(@RequestBody String id) {
         UUID uuid = UUID.fromString(id);
         Question question = repo.findById(uuid);
-        question.setAnswered();
+        question.setAnswered(true);
         repo.save(question);
     }
 
