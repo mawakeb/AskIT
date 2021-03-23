@@ -1,23 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.data.Question;
-import nl.tudelft.oopp.demo.data.QuestionCell;
-import nl.tudelft.oopp.demo.data.User;
+
 
 public class RoomSceneController extends RoomController {
     @FXML
@@ -90,14 +80,9 @@ public class RoomSceneController extends RoomController {
         }
     }
 
-    /**
-     * Gets all possible updates from the server.
-     */
-    //TODO: Use some sort of polling to call this method, instead of from refresh/send
+    @Override
     public void updateAll() {
-        updateQuestionList();
-        updateRoomStatus();
-        checkOpenTime();
+        super.updateAll();
         checkBan();
     }
 }

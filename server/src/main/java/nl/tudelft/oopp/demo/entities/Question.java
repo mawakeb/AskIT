@@ -28,6 +28,8 @@ public class Question {
     private boolean edited;
     @Column(name = "createTime")
     private int createTime;
+    @Column(name = "answered")
+    private boolean answered;
     @Column(name = "answerTime")
     private int answerTime;
 
@@ -49,6 +51,7 @@ public class Question {
         this.edited = false;
         this.createTime = createTime;
         this.answerTime = 0;
+        this.answered = false;
     }
 
     /**
@@ -68,6 +71,7 @@ public class Question {
         this.edited = false;
         this.createTime = createTime;
         this.answerTime = 0;
+        this.answered = false;
     }
 
     public Question() {
@@ -136,6 +140,14 @@ public class Question {
 
     public void setAnswerTime(int answerTime) {
         this.answerTime = answerTime;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
+    }
+
+    public boolean isAnswered() {
+        return this.answered;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class QuestionCell extends ListCell<Question> {
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
     private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
-    private final boolean staffRole;
+    private boolean staffRole;
     private final RoomController roomController;
 
     /**
@@ -40,6 +40,9 @@ public class QuestionCell extends ListCell<Question> {
     public QuestionCell(RoomController roomController) {
         this.roomController = roomController;
         this.staffRole = false;
+        if (roomController instanceof RoomSceneStaffController) {
+            this.staffRole = true;
+        }
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -125,10 +128,16 @@ public class QuestionCell extends ListCell<Question> {
             // show ban option in menu if you are staff
             if (staffRole) {
                 MenuItem banItem = new MenuItem("Ban User");
-                banItem.setOnAction(event -> useBanBtn(event, q));
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
-                box.getChildren().add(menuBtn);
                 box.setStyle("-fx-padding: 7 0 7 12");
+                banItem.setOnAction(event -> useBanBtn(event, q));
+                box.getChildren().add(menuBtn);
+
+                if (!q.isAnswered()) {
+                    MenuItem answerItem = new MenuItem("Answer");
+                    answerItem.setOnAction(event -> useAnswerBtn(event, q));
+                    menuBtn.getItems().add(answerItem);
+                }
             }
 
             setText(null);
@@ -145,6 +154,17 @@ public class QuestionCell extends ListCell<Question> {
      */
     private void useBanBtn(ActionEvent event, Question q) {
         ServerCommunication.banUser(q.getUserId());
+    }
+
+    /**
+     * Automatically Called when clicking the answer button.
+     *
+     * @param event JavaFx button press event
+     * @param q     question the button relates to
+     */
+    private void useAnswerBtn(ActionEvent event, Question q) {
+        ServerCommunication.answerQuestion(q.getId());
+        roomController.updateAll();
     }
 
     /**

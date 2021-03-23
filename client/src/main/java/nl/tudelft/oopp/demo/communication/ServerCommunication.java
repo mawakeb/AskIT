@@ -76,6 +76,19 @@ public class ServerCommunication {
     }
 
     /**
+     * get answered questions from server.
+     *
+     * @param roomId UUID of the lecture room to connect
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> getAnsweredHttp(String roomId)
+            throws IOException, InterruptedException {
+
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/answered?q=" + roomId)).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
      * Connects to the server endpoint to upvote a single question.
      * no verification prevents from calling multiple times on the same question.
      * that condition should be checked beforehand (assuming that situation is not wanted).
@@ -88,6 +101,22 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(id))
                 .uri(URI.create("http://localhost:8080/send/upvote")).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
+     * Connects to the server endpoint to answer a single question.
+     * no verification prevents from calling multiple times on the same question.
+     * that condition should be checked beforehand (assuming that situation is not wanted).
+     *
+     * @param id the ID of the question
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> answerQuestionHttp(String id)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .uri(URI.create("http://localhost:8080/send/answer")).build();
         return getStringHttpResponse(request);
     }
 
@@ -200,11 +229,32 @@ public class ServerCommunication {
      * Gets questions from server.
      *
      * @param roomId room that holds the wanted questions
-     * @return list of two strings, containing join links for staff and student respectively.
+     * @return list of questions
      */
     public static List<Question> getQuestions(String roomId) {
         try {
             HttpResponse<String> response = getQuestionsHttp(roomId);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                return List.of();
+            }
+            return gson.fromJson(response.body(), new TypeToken<List<Question>>() {
+            }.getType());
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+        return List.of();
+    }
+
+    /**
+     * Gets answered questions from server.
+     *
+     * @param roomId room that holds the wanted questions
+     * @return list of questions
+     */
+    public static List<Question> getAnswered(String roomId) {
+        try {
+            HttpResponse<String> response = getAnsweredHttp(roomId);
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
                 return List.of();
@@ -225,6 +275,23 @@ public class ServerCommunication {
     public static void upvoteQuestion(UUID id) {
         try {
             HttpResponse<String> response = upvoteQuestionHttp(id.toString());
+
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
+     * Answers a question.
+     *
+     * @param id of the answered question
+     */
+    public static void answerQuestion(UUID id) {
+        try {
+            HttpResponse<String> response = answerQuestionHttp(id.toString());
 
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());

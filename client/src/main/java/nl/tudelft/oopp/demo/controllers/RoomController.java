@@ -4,7 +4,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -13,9 +16,11 @@ import nl.tudelft.oopp.demo.data.Question;
 import nl.tudelft.oopp.demo.data.QuestionCell;
 import nl.tudelft.oopp.demo.data.User;
 
+
 public abstract class RoomController {
 
     @FXML private ListView<Question> questionList;
+    @FXML private ListView<Question> answeredQuestionList;
     @FXML private Label roomName;
     @FXML private Label timeLabel;
 
@@ -23,6 +28,8 @@ public abstract class RoomController {
     private ZonedDateTime openTime;
     private DateTimeFormatter formatter;
     private User user;
+    private TimerTask update;
+    private Timer timer;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -35,7 +42,20 @@ public abstract class RoomController {
         questionList.setCellFactory(params -> {
             return new QuestionCell(this);
         });
+        answeredQuestionList.setCellFactory(params -> {
+            return new QuestionCell(this);
+        });
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
+
+        this.update = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    updateAll();
+                });
+            }
+        };
+        this.timer = new Timer();
     }
 
     /**
@@ -53,6 +73,7 @@ public abstract class RoomController {
         this.openTime = zonedTime;
         this.user = user;
         updateAll();
+        timer.scheduleAtFixedRate(update, 0, 10000);
     }
 
     /**
@@ -63,6 +84,16 @@ public abstract class RoomController {
         List<Question> questions = ServerCommunication.getQuestions(roomId);
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
+    }
+
+    /**
+     * Fetches all answered questions from the server.
+     * Then updates the listview contents to display them.
+     */
+    public void updateAnsweredQuestionList() {
+        List<Question> questions = ServerCommunication.getAnswered(roomId);
+        answeredQuestionList.getItems().clear();
+        answeredQuestionList.getItems().addAll(questions);
     }
 
     /**
@@ -92,16 +123,16 @@ public abstract class RoomController {
     /**
      * Gets all possible updates from the server.
      */
-    //TODO: Use some sort of polling to call this method, instead of from refresh/send
     public void updateAll() {
         updateQuestionList();
         updateRoomStatus();
         checkOpenTime();
+        updateAnsweredQuestionList();
     }
 
     /**
      * Returns width of questionList to estimate window size.
-     * @return with of questionList
+     * @return width of questionList
      */
     public double getListWidth() {
         return this.questionList.getWidth();
