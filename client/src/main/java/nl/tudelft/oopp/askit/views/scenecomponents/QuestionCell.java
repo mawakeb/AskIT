@@ -96,7 +96,7 @@ public class QuestionCell extends ListCell<Question> {
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
 
             // combine elements in box and set the cell display to it
-            Label questionText = new Label(q.toString());
+            Label questionText = new Label(q.getContent());
             questionText.getStyleClass().add("question");
             Label upvoteText = new Label(Integer.toString(q.getUpvotes()));
             upvoteText.getStyleClass().add("question");

@@ -54,7 +54,7 @@ public class QuestionTest {
 
     @Test
     void testToString() {
-        assertEquals(question.toString(), content);
+        assertEquals(question.getContent(), content);
     }
 
     @Test
@@ -136,4 +136,12 @@ public class QuestionTest {
         assertEquals(5, question.getAnswerTime());
     }
 
+    @Test
+    void testToString1() {
+        assertEquals("Question{id=" + id + ", "
+                + "content='test', roomId=" + roomId + ", "
+                + "userId=" + userId + ", upvotes=5, "
+                + "deleted=false, edited=false, answered=false, "
+                + "createTime=5, answerTime=0}", question.toString());
+    }
 }

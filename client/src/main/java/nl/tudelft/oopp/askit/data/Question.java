@@ -131,7 +131,19 @@ public class Question {
 
     @Override
     public String toString() {
-        return getContent();
+        return "Question{"
+                + "id=" + id
+                + ", content='"
+                + content + '\'' + ", roomId="
+                + roomId + ", userId="
+                + userId + ", upvotes="
+                + upvotes + ", deleted="
+                + deleted + ", edited="
+                + edited + ", answered="
+                + answered + ", createTime="
+                + createTime + ", answerTime="
+                + answerTime
+                + '}';
     }
 
     @Override
