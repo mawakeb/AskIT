@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.askit.controllers.abstractClasses;
+package nl.tudelft.oopp.askit.controllers.abstractclasses;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,10 +11,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import nl.tudelft.oopp.askit.communicationLogic.QuestionLogic;
+import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.User;
-import nl.tudelft.oopp.askit.views.sceneComponents.QuestionCell;
+import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
 
 
 public abstract class RoomController {

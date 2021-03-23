@@ -2,8 +2,8 @@ package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import nl.tudelft.oopp.askit.communicationLogic.RoomLogic;
-import nl.tudelft.oopp.askit.controllers.abstractClasses.RoomController;
+import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 public class RoomSceneStaffController extends RoomController {
 

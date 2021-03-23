@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.askit.communicationLogic;
+package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

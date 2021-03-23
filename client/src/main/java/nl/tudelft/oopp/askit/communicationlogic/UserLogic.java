@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.askit.communicationLogic;
+package nl.tudelft.oopp.askit.communicationlogic;
 
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.banUserHttp;
 

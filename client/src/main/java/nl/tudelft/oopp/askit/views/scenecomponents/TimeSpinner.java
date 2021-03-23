@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.askit.views.sceneComponents;
+package nl.tudelft.oopp.askit.views.scenecomponents;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

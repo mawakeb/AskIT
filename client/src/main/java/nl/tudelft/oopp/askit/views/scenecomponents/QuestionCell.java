@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.askit.views.sceneComponents;
+package nl.tudelft.oopp.askit.views.scenecomponents;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -14,10 +14,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.askit.communicationLogic.QuestionLogic;
-import nl.tudelft.oopp.askit.communicationLogic.UserLogic;
+import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
+import nl.tudelft.oopp.askit.communicationlogic.UserLogic;
 import nl.tudelft.oopp.askit.controllers.RoomSceneStaffController;
-import nl.tudelft.oopp.askit.controllers.abstractClasses.RoomController;
+import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 

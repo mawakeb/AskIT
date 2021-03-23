@@ -22,10 +22,10 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
-import nl.tudelft.oopp.askit.communicationLogic.RoomLogic;
+import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.User;
 import nl.tudelft.oopp.askit.views.RoomSceneDisplay;
-import nl.tudelft.oopp.askit.views.sceneComponents.TimeSpinner;
+import nl.tudelft.oopp.askit.views.scenecomponents.TimeSpinner;
 
 /**
  * Controller for mainScene.fxml.

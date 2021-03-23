@@ -6,9 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import nl.tudelft.oopp.askit.communicationLogic.QuestionLogic;
-import nl.tudelft.oopp.askit.communicationLogic.RoomLogic;
-import nl.tudelft.oopp.askit.controllers.abstractClasses.RoomController;
+import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
+import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 
 public class RoomSceneController extends RoomController {
