@@ -1,0 +1,157 @@
+.tabPane {
+    -fx-background-color: #141B2D;
+    -fx-background-insets: 0 0;
+    -fx-border: -1;
+}
+
+.tab, .tab-header-background {
+    -fx-background-color: #1F2940;
+    -fx-background-radius: 0;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #9e9e9e;
+    -fx-padding: 1 40;
+    -fx-font-size: 120%;
+    -fx-background-color: #0000;
+}
+
+.tab:selected .tab-label {
+    -fx-background-color: #141B2D;
+    -fx-text-fill: linear-gradient(to bottom, #21C5ED, #28cf87);
+}
+
+.questionList {
+    -fx-background-color: linear-gradient(to bottom, #141B2D, #00355f);
+    -fx-text-fill: #fff;
+    -fx-font-size: 140%;
+}
+
+.questionList-cell {
+    -fx-text-fill: #fff;
+}
+
+
+.questionText {
+    -fx-background-radius: 0;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 130%;
+}
+
+.questionText .corner,
+.questionList .corner{
+    -fx-background-color: #0000;
+}
+
+.questionText .content {
+    -fx-background-radius: 0;
+    -fx-background-color: #141B2D;
+    -fx-padding: 10;
+}
+
+.scroll-bar {
+    -fx-opacity: 0.1;
+    -fx-background-color: #0000;
+    -fx-padding: 0 0 0 7;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-opacity: 0;
+}
+
+.box {
+    -fx-background-color: #003f71;
+    -fx-background-radius: 5;
+    -fx-text-fill: #fff;
+    -fx-margin: 10 0 40 0;
+    -fx-padding: 7 12;
+}
+
+.upvote {
+    -fx-background-color: #0000;
+    -fx-background-image: url("../images/upvoteIcon.png");
+    -fx-background-size: 20;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.upvote :disabled,
+.sendButton :disabled{
+    -fx-opacity: 0.5;
+}
+
+.question {
+    -fx-text-fill: #dfdfdf;
+}
+
+.sendButton {
+    -fx-background-color: #0000;
+    -fx-background-image: url("../images/sendIcon.png");
+    -fx-background-size: 35;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.sendButton: disabled {
+    -fx-opacity: 0.5;
+}
+
+.closeButton {
+    -fx-background-color: #0000;
+    -fx-font-size: 150%;
+    -fx-text-fill: #21C5ED;
+    -fx-border-width: 3px;
+    -fx-border-color: #21C5ED;
+    -fx-border-radius: 3;
+}
+
+.closeButton:hover {
+    -fx-text-fill: #fff;
+    -fx-background-color: #21C5ED;
+}
+
+.closeButton:disabled {
+    -fx-opacity: 0;
+    -fx-border-width: 0;
+}
+
+.refreshButton {
+    -fx-background-color: #0000;
+    -fx-background-image: url("../images/refreshIcon.png");
+    -fx-background-size: 25;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.menu-button{
+    -fx-background-color: #0000;
+    -fx-background-image: url("../images/menuIcon.png");
+    -fx-opacity: 0.5;
+    -fx-background-size: 13;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: top;
+    -fx-max-width: 2;
+    -fx-padding: 0;
+}
+
+.menu-button:hover {
+    -fx-opacity: 1;
+}
+
+.menu-button .arrow {
+    -fx-background-color: transparent;
+}
+
+.menu-item .label{
+    -fx-text-fill: #9e9e9e;
+}
+
+.menu-item:focused {
+     -fx-background-color: #1F2940;
+}
+
+.context-menu {
+    -fx-background-color: #141B2D;
+    -fx-background-radius: 5;
+}

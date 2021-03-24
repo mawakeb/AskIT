@@ -10,8 +10,15 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '20210307'
+
     // 3.8 is the latest version, but using 3.1 to be the same consistent with server
     implementation 'org.mockito:mockito-core:3.1.0'
+
+    // https://mvnrepository.com/artifact/org.springframework/spring-context
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.4'
+
 }
 
 javafx {
