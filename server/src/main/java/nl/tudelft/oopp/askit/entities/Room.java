@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(
@@ -19,9 +20,11 @@ public class Room {
     @Column(name = "name")
     private String name;
 
+    @Transient
     @Column(name = "staffAccess")
     private String staff;
 
+    @Transient
     @Column(name = "studentAccess")
     private String student;
 
@@ -30,6 +33,9 @@ public class Room {
 
     @Column(name = "openTime")
     private ZonedDateTime openTime;
+
+    @Column(name = "slowModeSeconds")
+    private int slowModeSeconds;
 
     public Room() {
     }
@@ -49,23 +55,7 @@ public class Room {
         this.student = student;
         this.isOpen = true;
         this.openTime = openTime;
-    }
-
-    /**
-     * Constructor for the Room class without specifying id.
-     *
-     * @param name    title of the room chosen by lecturer.
-     * @param staff   room access code for the staff role.
-     * @param student room acces code for the student role.
-     */
-    public Room(String name, String staff, String student, ZonedDateTime openTime) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.staff = staff;
-        this.student = student;
-        this.isOpen = true;
-        this.openTime = openTime;
-
+        this.slowModeSeconds = 0;
     }
 
     public UUID getId() {
@@ -94,6 +84,14 @@ public class Room {
 
     public ZonedDateTime getOpenTime() {
         return this.openTime;
+    }
+
+    public void setSlowModeSeconds(int slowModeSeconds) {
+        this.slowModeSeconds = slowModeSeconds;
+    }
+
+    public int getSlowModeSeconds() {
+        return slowModeSeconds;
     }
 
     @Override
