@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
@@ -9,6 +10,8 @@ public class RoomSceneStaffController extends RoomController {
 
     @FXML
     private Button closeRoomButton;
+    @FXML
+    private CheckBox slowModeToggle;
 
     /**
      * Closes the current room through the server.
@@ -26,5 +29,14 @@ public class RoomSceneStaffController extends RoomController {
     public void updateRoomStatus() {
         boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
         closeRoomButton.setDisable(!isOpen);
+    }
+
+    /**
+     * Either enable or disable slow mode depending on checkbox value.
+     * Called in both cases through JavaFX onAction attribute of checkbox.
+     */
+    public void setSlowMode() {
+        boolean slowMode = slowModeToggle.isSelected();
+        System.out.println("Slow mode = " + slowMode);
     }
 }

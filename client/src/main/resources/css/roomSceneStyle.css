@@ -93,11 +93,20 @@
     -fx-background-position: center;
 }
 
-.sendButton: disabled {
+.sendButton:disabled {
     -fx-opacity: 0.5;
 }
 
 .closeButton {
+    -fx-background-color: #0000;
+    -fx-font-size: 150%;
+    -fx-text-fill: #21C5ED;
+    -fx-border-width: 3px;
+    -fx-border-color: #21C5ED;
+    -fx-border-radius: 3;
+}
+
+.slowModeToggle {
     -fx-background-color: #0000;
     -fx-font-size: 150%;
     -fx-text-fill: #21C5ED;
