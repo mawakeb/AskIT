@@ -3,7 +3,9 @@ package nl.tudelft.oopp.askit.controllers;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
@@ -16,6 +18,10 @@ public class RoomSceneController extends RoomController {
     private TextArea question;
     @FXML
     private Button sendButton;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
 
     private boolean ban;
 
@@ -77,6 +83,10 @@ public class RoomSceneController extends RoomController {
         question.setDisable(!isOpen);
         if (!isOpen) {
             question.setPromptText("The room is closed.");
+            slider.setDisable(true);
+            slider.setVisible(false);
+            speedButton.setDisable(true);
+            speedButton.setVisible(false);
         } else {
             question.setPromptText("Ask a question...");
         }
