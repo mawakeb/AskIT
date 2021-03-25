@@ -17,6 +17,7 @@ public class RoomSceneController extends RoomController {
     private Button sendButton;
 
     private boolean ban;
+    private String questionStatus;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -49,7 +50,7 @@ public class RoomSceneController extends RoomController {
      */
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
-            this.ban = QuestionLogic.sendQuestion(question.getText(),
+            questionStatus = QuestionLogic.sendQuestion(question.getText(),
                     super.getRoom().getId(),
                     super.getUser().getId(),
                     super.getRoom().getOpenTime());

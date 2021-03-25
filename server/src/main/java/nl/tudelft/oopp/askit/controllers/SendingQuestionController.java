@@ -51,14 +51,14 @@ public class SendingQuestionController {
         if (UserController.getBannedUsers().contains(userQuestion.getUserId())) {
             System.out.println("Question rejected: user banned");
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "You have been banned from sending questions");
+                    HttpStatus.FORBIDDEN, "BANNED");
         }
 
         Room room = roomRepo.findByid(userQuestion.getRoomId());
         if (room == null) {
             System.out.println("Question doesn't belong to a room");
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "The room can't be found on the server");
+                    HttpStatus.NOT_FOUND, "ROOM_NOT_FOUND");
         }
 
         if (room.isOpen()) {
@@ -68,7 +68,7 @@ public class SendingQuestionController {
         } else {
             System.out.println("Question rejected: room closed");
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "The room has been closed by a staff member");
+                    HttpStatus.FORBIDDEN, "ROOM_CLOSED");
         }
     }
 
