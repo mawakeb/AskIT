@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,6 +17,7 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.askit.communication.ServerCommunication;
 import nl.tudelft.oopp.askit.data.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,7 +26,7 @@ import org.mockito.invocation.InvocationOnMock;
 
 class RoomLogicTest {
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     @Mock
     private HttpClient client;
@@ -105,7 +105,7 @@ class RoomLogicTest {
     }
 
     @Test
-    void getNotInitializedRoomStatus() {
+    void getNonExistentRoomStatus() {
         // mock boolean endpoint
         when(response.statusCode()).thenReturn(200);
 

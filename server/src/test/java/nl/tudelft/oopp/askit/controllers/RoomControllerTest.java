@@ -1,19 +1,19 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.gson.Gson;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,8 @@ class RoomControllerTest {
     private UUID id;
 
     private RoomController rc;
+
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     @BeforeEach
     void setUp() {
@@ -81,7 +83,7 @@ class RoomControllerTest {
 
         // note that non-transient attributes have been lost
         // this should not matter, as room.equals() only compares ID
-        assertEquals(room, rc.getRoomStatus(id.toString()));
+        assertEquals(gson.toJson(room), rc.getRoomStatus(id.toString()));
     }
 
     @Test

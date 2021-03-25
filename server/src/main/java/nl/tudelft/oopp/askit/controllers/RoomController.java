@@ -2,12 +2,14 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static nl.tudelft.oopp.askit.methods.GenerationMethods.randomString;
 
+import com.google.gson.Gson;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 @RequestMapping("room")
 public class RoomController {
+
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     private RoomRepository repo;
 
@@ -142,13 +146,13 @@ public class RoomController {
      */
     @GetMapping("status")
     @ResponseBody
-    public Room getRoomStatus(@RequestParam String id) {
+    public String getRoomStatus(@RequestParam String id) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
-        return room;
+        return gson.toJson(room);
     }
 }

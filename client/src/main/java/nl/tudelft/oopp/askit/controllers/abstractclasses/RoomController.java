@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.controllers.abstractclasses;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 

@@ -7,7 +7,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
-import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 

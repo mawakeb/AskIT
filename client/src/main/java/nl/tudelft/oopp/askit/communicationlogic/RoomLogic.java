@@ -12,11 +12,13 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import nl.tudelft.oopp.askit.data.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
 import org.json.JSONObject;
 
 public class RoomLogic {
-    private static final Gson gson = new Gson();
+
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     /**
      * Create a new room and returns access links.
@@ -105,7 +107,7 @@ public class RoomLogic {
                 return null;
             } else {
                 // extract boolean value from string
-                return gson.fromJson(response.body(),Room.class);
+                return gson.fromJson(response.body(), Room.class);
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
