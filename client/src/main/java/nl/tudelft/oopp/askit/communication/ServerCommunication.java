@@ -177,4 +177,12 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/send/ban")).build();
         return getStringHttpResponse(request);
     }
+
+    public static HttpResponse<String> sendSpeedHttp(String speed)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/speed/send?s=" + speed)).build();
+        System.out.println("http://localhost:8080/speed/send?s=" + speed);
+        return getStringHttpResponse(request);
+    }
 }

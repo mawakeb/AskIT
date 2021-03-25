@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 
@@ -47,6 +48,13 @@ public class RoomSceneController extends RoomController {
                         sendButtonClicked();
                     }
                 }
+            }
+        });
+
+        this.slider.valueChangingProperty().addListener((observableValue, wasChanging, changing) -> {
+            if (!changing) {
+                int value = (int) Math.round(slider.getValue());
+                SpeedLogic.sendSpeed(value);
             }
         });
     }
