@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.askit.controllers;
 
+import static nl.tudelft.oopp.askit.methods.SpeedMethods.roomSpeedWeighted;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.util.HashMap;
@@ -14,9 +16,11 @@ import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,7 +35,7 @@ public class SpeedController {
     private static HashMap<UUID, List<Integer>> roomSpeed = new HashMap<>();
 
     /**
-     * Constructor for UserController, autowired for JPA repositories.
+     * Constructor for SpeedController, autowired for JPA repositories.
      *
      * @param repo     repository with all questions
      * @param roomRepo repository with all rooms
@@ -42,6 +46,40 @@ public class SpeedController {
         this.roomRepo = roomRepo;
     }
 
+    /**
+     * Returns the rooms speed.
+     *
+     * @param id UUID of the room
+     * @return the most voted speed. If no one has voted or not
+     *          enough votes, return default speed (2)
+     */
+    @GetMapping("get")
+    @ResponseBody
+    public int getSpeed(@RequestParam String id) {
+        UUID roomId = UUID.fromString(id);
+
+        Room room;
+        try {
+            room = roomRepo.findByid(roomId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
+        }
+        int size = room.getSize();
+        List<Integer> speedList = roomSpeed.get(roomId);
+        if (speedList == null) {
+            return 2;
+        }
+        // Returns the changed speed if it passes 10% of the student count size threshold.
+        int weightedSpeed = roomSpeedWeighted(size, 0.1, speedList);
+        System.out.println(weightedSpeed);
+        return weightedSpeed;
+    }
+
+    /** Updates the vote for what speed the user chooses.
+     *
+     * @param s List that contains int speed, UUID userId, UUID roomId
+     */
     @PostMapping("send")
     @ResponseBody
     public void sendSpeed(@RequestBody String s) {
@@ -59,6 +97,7 @@ public class SpeedController {
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
 
+        // Checks if user voted before
         if (userVote.containsKey(userId)) {
             // Checks if the previous value isn't null
             int previousSpeed = Objects.requireNonNullElse(userVote.put(userId, speed), 2);
@@ -73,7 +112,7 @@ public class SpeedController {
             }
             speedList.set(previousSpeed, previous);
 
-            // Adds the new vote
+            // Adds the new vote by incrementing speed
             previous = speedList.get(speed);
             previous++;
             roomSpeed.get(roomId).set(speed, previous);

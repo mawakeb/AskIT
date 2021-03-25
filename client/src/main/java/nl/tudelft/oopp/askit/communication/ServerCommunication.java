@@ -178,11 +178,30 @@ public class ServerCommunication {
         return getStringHttpResponse(request);
     }
 
+    /**
+     * Sends users opinion on speed.
+     *
+     * @param parsedList parsed list of int speed, UUID userId, UUID roomId
+     * @return HttpResponse object
+     */
     public static HttpResponse<String> sendSpeedHttp(String parsedList)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedList))
                 .uri(URI.create("http://localhost:8080/speed/send")).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
+     * Gets user opinion on speed.
+     *
+     * @param roomId parsed room UUID
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> getSpeedHttp(String roomId)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/speed/get?id=" + roomId)).build();
         return getStringHttpResponse(request);
     }
 }
