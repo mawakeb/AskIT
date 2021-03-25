@@ -28,10 +28,10 @@ public class QuestionLogic {
      * @param roomId id of the room that it's being sent to
      * @return "SUCCESS" if the question was sent successfully, a status why not otherwise
      */
-    public static String sendQuestion(String text, UUID roomId, UUID userId,
+    public static String sendQuestion(String text, UUID roomId, UUID userId, String username,
                                       ZonedDateTime roomTime) {
 
-        Question userQuestion = new Question(text, 0, roomId, userId,
+        Question userQuestion = new Question(text, 0, roomId, userId, username,
                 TimeControl.getMilisecondsPassed(roomTime));
 
         String parsedQuestion = gson.toJson(userQuestion);

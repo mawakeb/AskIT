@@ -63,6 +63,7 @@ public class RoomSceneController extends RoomController {
             String questionStatus = QuestionLogic.sendQuestion(question.getText(),
                     super.getRoom().getId(),
                     super.getUser().getId(),
+                    super.getUser().getName(),
                     super.getRoom().getOpenTime());
             ban = questionStatus.equals("BANNED");
         }
