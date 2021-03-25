@@ -39,5 +39,9 @@ public class RoomSceneStaffController extends RoomController {
     public void setSlowMode() {
         boolean slowMode = slowModeToggle.isSelected();
         System.out.println("Slow mode = " + slowMode);
+
+        // Slow mode is hard coded to a fixed question interval of 20 seconds
+        int slowModeSeconds = slowMode ? 20 : 0;
+        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
     }
 }

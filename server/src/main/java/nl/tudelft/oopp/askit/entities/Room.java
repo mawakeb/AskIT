@@ -1,12 +1,12 @@
 package nl.tudelft.oopp.askit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(
@@ -20,11 +20,11 @@ public class Room {
     @Column(name = "name")
     private String name;
 
-    @Transient
+    @JsonIgnore
     @Column(name = "staffAccess")
     private String staff;
 
-    @Transient
+    @JsonIgnore
     @Column(name = "studentAccess")
     private String student;
 

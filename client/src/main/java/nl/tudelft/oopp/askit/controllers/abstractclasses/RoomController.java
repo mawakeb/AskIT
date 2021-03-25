@@ -78,7 +78,7 @@ public abstract class RoomController {
      * Then updates the listview contents to display them.
      */
     public void updateQuestionList() {
-        List<Question> questions = QuestionLogic.getQuestions(roomId);
+        List<Question> questions = QuestionLogic.getQuestions(room.getId().toString());
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
@@ -88,7 +88,7 @@ public abstract class RoomController {
      * Then updates the listview contents to display them.
      */
     public void updateAnsweredQuestionList() {
-        List<Question> questions = QuestionLogic.getAnswered(roomId);
+        List<Question> questions = QuestionLogic.getAnswered(room.getId().toString());
         answeredQuestionList.getItems().clear();
         answeredQuestionList.getItems().addAll(questions);
     }
