@@ -198,4 +198,25 @@ public class ServerCommunication {
                 )).build();
         return getStringHttpResponse(request);
     }
+
+    /**
+     * Get how long a user has to wait before asking a new question (regarding slow mode).
+     *
+     * @param userId user ID
+     * @param roomId ID of the room the user belongs to
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> getTimeLeftHttp(String userId, String roomId)
+            throws IOException, InterruptedException {
+
+        // creates POST with empty body
+        // it's easier to pass multiple parameters in url
+        // while the functionality of the method is still best described with POST
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/room/timeleft"
+                        + "?uid=" + userId + "&rid=" + roomId
+                )).build();
+        return getStringHttpResponse(request);
+    }
 }

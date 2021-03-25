@@ -85,9 +85,21 @@ public class RoomSceneController extends RoomController {
         }
     }
 
+    /**
+     * Updates when the user is able to send questions (regarding slow mode).
+     * Displays a message with the time left to wait.
+     */
+    public void updateSlowModeWaitTime() {
+        int millisLeft = QuestionLogic.getTimeLeft(
+                super.getUser().getId().toString(),
+                super.getRoom().getId().toString());
+        System.out.println(millisLeft);
+    }
+
     @Override
     public void updateAll() {
         super.updateAll();
+        updateSlowModeWaitTime();
         checkBan();
     }
 }

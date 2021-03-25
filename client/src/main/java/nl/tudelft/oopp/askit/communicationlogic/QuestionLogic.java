@@ -3,6 +3,7 @@ package nl.tudelft.oopp.askit.communicationlogic;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.answerQuestionHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getAnsweredHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getQuestionsHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.getTimeLeftHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.sendQuestionHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.upvoteQuestionHttp;
 
@@ -28,7 +29,7 @@ public class QuestionLogic {
      * @return "SUCCESS" if the question was sent successfully, a status why not otherwise
      */
     public static String sendQuestion(String text, UUID roomId, UUID userId,
-                                       ZonedDateTime roomTime) {
+                                      ZonedDateTime roomTime) {
 
         Question userQuestion = new Question(text, 0, roomId, userId,
                 TimeControl.getMilisecondsPassed(roomTime));
@@ -127,6 +128,27 @@ public class QuestionLogic {
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
+     * Get how long a user has to wait before asking a new question (regarding slow mode).
+     *
+     * @param userId user ID
+     * @param roomId ID of the room the user belongs to
+     * @return amount of milliseconds left to wait, might be negative
+     */
+    public static int getTimeLeft(String userId, String roomId) {
+        try {
+            HttpResponse<String> response = getTimeLeftHttp(userId,roomId);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                return 0;
+            }
+            return Integer.parseInt(response.body());
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+            return 0;
         }
     }
 }
