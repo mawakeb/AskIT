@@ -43,7 +43,7 @@ class SendingQuestionControllerTest {
     @BeforeEach
     void setUp() {
         UUID roomId = UUID.randomUUID();
-        question = new Question("test",roomId,UUID.randomUUID(), 5);
+        question = new Question("test",roomId,UUID.randomUUID(), "nickname", 5);
         room = new Room(roomId,"name","staf","sd",
                 ZonedDateTime.now().minus(1, ChronoUnit.MINUTES)
         );
@@ -85,7 +85,7 @@ class SendingQuestionControllerTest {
     void upvoteQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());
@@ -95,7 +95,7 @@ class SendingQuestionControllerTest {
     void answerQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.answerQuestion(uuid.toString());
         assertTrue(question.isAnswered());
