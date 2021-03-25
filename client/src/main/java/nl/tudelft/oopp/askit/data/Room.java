@@ -1,26 +1,29 @@
 package nl.tudelft.oopp.askit.data;
 
 import java.time.ZonedDateTime;
+import java.util.Objects;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class Room {
 
-    private UUID id;
+    private final UUID id;
 
-    private String name;
+    private final String name;
 
-    private boolean isOpen;
+    private final boolean isOpen;
 
-    private ZonedDateTime openTime;
+    private final ZonedDateTime openTime;
 
-    private int slowModeSeconds;
+    private final int slowModeSeconds;
 
     /**
      * Constructor for the room class.
-     * @param id UUID of the room
-     * @param name Name of the room chosen by creator
-     * @param isOpen False if the room has been closed manually, true otherwise
-     * @param openTime Scheduled time after which the room opens
+     *
+     * @param id              UUID of the room
+     * @param name            Name of the room chosen by creator
+     * @param isOpen          False if the room has been closed manually, true otherwise
+     * @param openTime        Scheduled time after which the room opens
      * @param slowModeSeconds Min. amount of seconds between questions per student
      */
     public Room(UUID id, String name, boolean isOpen, ZonedDateTime openTime, int slowModeSeconds) {
@@ -47,7 +50,27 @@ public class Room {
         return openTime;
     }
 
+    public ZonedDateTime getLocalOpenTime() {
+        return openTime.withZoneSameInstant(TimeZone.getDefault().toZoneId());
+    }
+
     public int getSlowModeSeconds() {
         return slowModeSeconds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Room room = (Room) o;
+        return isOpen == room.isOpen
+                && slowModeSeconds == room.slowModeSeconds
+                && Objects.equals(id, room.id)
+                && Objects.equals(name, room.name)
+                && Objects.equals(openTime, room.openTime);
     }
 }

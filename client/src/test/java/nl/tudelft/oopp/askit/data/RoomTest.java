@@ -3,6 +3,7 @@ package nl.tudelft.oopp.askit.data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,10 @@ class RoomTest {
         id = UUID.randomUUID();
         name = "Room Name";
         isOpen = true;
-        openTime = ZonedDateTime.now();
+
+        // add offset time to prevent race condition in isOpen()
+        openTime = ZonedDateTime.now().minus(1, ChronoUnit.MINUTES);
+
         slowModeSeconds = 5;
         room = new Room(id, name, isOpen, openTime, slowModeSeconds);
     }
@@ -44,7 +48,7 @@ class RoomTest {
 
     @Test
     void getOpenTime() {
-        assertEquals(openTime, room.getOpenTime());
+        assertEquals(openTime, room.getLocalOpenTime());
     }
 
     @Test

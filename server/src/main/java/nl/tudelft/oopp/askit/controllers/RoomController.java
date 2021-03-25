@@ -135,20 +135,20 @@ public class RoomController {
     }
 
     /**
-     * Get the status of a room by ID.
+     * Get a room object by ID.
      *
      * @param id the request body containing room ID in string form
-     * @return a boolean, true iff the room is open for new questions,
-     *           also returns false if the room can't be found.
+     * @return the room object with all non-transient attributes
      */
     @GetMapping("status")
     @ResponseBody
-    public boolean getRoomStatus(@RequestParam String id) {
+    public Room getRoomStatus(@RequestParam String id) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {
-            return false;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
         }
-        return room.isOpen();
+        return room;
     }
 }

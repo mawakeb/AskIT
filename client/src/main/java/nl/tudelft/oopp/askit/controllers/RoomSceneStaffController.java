@@ -27,7 +27,8 @@ public class RoomSceneStaffController extends RoomController {
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
-        boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
+        super.updateRoomStatus();
+        boolean isOpen = super.getRoom().isOpen();
         closeRoomButton.setDisable(!isOpen);
     }
 

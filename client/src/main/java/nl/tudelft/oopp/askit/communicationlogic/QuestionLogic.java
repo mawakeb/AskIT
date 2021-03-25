@@ -27,10 +27,10 @@ public class QuestionLogic {
      * @param roomId id of the room that it's being sent to
      * @return boolean of whether the user is banned
      */
-    public static boolean sendQuestion(String text, String roomId, UUID userId,
+    public static boolean sendQuestion(String text, UUID roomId, UUID userId,
                                        ZonedDateTime roomTime) {
 
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
+        Question userQuestion = new Question(text, 0, roomId, userId,
                 TimeControl.getMilisecondsPassed(roomTime));
 
         String parsedQuestion = gson.toJson(userQuestion);

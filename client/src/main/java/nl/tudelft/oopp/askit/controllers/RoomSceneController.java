@@ -51,7 +51,9 @@ public class RoomSceneController extends RoomController {
     public void sendButtonClicked() {
         if (!question.getText().trim().equals("")) {
             this.ban = QuestionLogic.sendQuestion(question.getText(),
-                    super.getRoomId(), super.getUser().getId(), super.getOpenTime());
+                    super.getRoom().getId(),
+                    super.getUser().getId(),
+                    super.getRoom().getOpenTime());
         }
         updateAll();
         question.clear();
@@ -72,7 +74,8 @@ public class RoomSceneController extends RoomController {
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
-        boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
+        super.updateRoomStatus();
+        boolean isOpen = super.getRoom().isOpen();
         sendButton.setDisable(!isOpen);
         question.setDisable(!isOpen);
         if (!isOpen) {
