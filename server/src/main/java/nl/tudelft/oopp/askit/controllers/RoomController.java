@@ -142,7 +142,7 @@ public class RoomController {
      * Get a room object by ID.
      *
      * @param id the request body containing room ID in string form
-     * @return the room object with all non-transient attributes
+     * @return string form of room object with all non-transient attributes
      */
     @GetMapping("status")
     @ResponseBody
@@ -154,5 +154,21 @@ public class RoomController {
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
         return gson.toJson(room);
+    }
+
+    /**
+     * Set the slowMode for a specific room.
+     * @param id the id of the room
+     * @param seconds the amount of seconds between questions, 0 to disable slow mode
+     */
+    public void setSlowMode(@RequestParam String id, @RequestParam int seconds) {
+        UUID uuid = UUID.fromString(id);
+        Room room = repo.findByid(uuid);
+        if (room == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
+        }
+        room.setSlowModeSeconds(seconds);
+        repo.save(room);
     }
 }

@@ -92,4 +92,14 @@ class RoomControllerTest {
         when(roomRepository.findByid(id)).thenReturn(null);
         assertThrows(ResponseStatusException.class,() -> rc.getRoomStatus(id.toString()));
     }
+
+    @Test
+    void setSlowMode() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        int seconds = 5;
+        rc.setSlowMode(id.toString(),seconds);
+        verify(roomRepository,times(1)).save(room);
+    }
 }
