@@ -4,6 +4,7 @@ import static nl.tudelft.oopp.askit.communication.ServerCommunication.closeRoomH
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.createRoomHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getRoomStatusHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.joinRoomHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.setSlowModeHttp;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -112,6 +113,27 @@ public class RoomLogic {
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
             return null;
+        }
+    }
+
+    /**
+     * Set the slow mode of a room.
+     *
+     * @param roomId parsed UUID of the User
+     * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     */
+    public static void setSlowMode(String roomId, int seconds) {
+        if (roomId == null) {
+            return;
+        }
+
+        try {
+            HttpResponse<String> response = setSlowModeHttp(roomId, seconds);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
 }

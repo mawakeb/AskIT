@@ -161,6 +161,8 @@ public class RoomController {
      * @param id the id of the room
      * @param seconds the amount of seconds between questions, 0 to disable slow mode
      */
+    @PostMapping("slow")
+    @ResponseBody
     public void setSlowMode(@RequestParam String id, @RequestParam int seconds) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);

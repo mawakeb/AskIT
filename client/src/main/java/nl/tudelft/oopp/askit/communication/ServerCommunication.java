@@ -177,4 +177,25 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/send/ban")).build();
         return getStringHttpResponse(request);
     }
+
+    /**
+     * Set the slow mode of a room.
+     *
+     * @param roomId parsed UUID of the User
+     * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds)
+            throws IOException, InterruptedException {
+
+        // creates POST with empty body
+        // it's easier to pass multiple parameters in url
+        // while the functionality of the method is still best described with POST
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/room/slow"
+                        + "?id=" + roomId + "&seconds=" + Integer.toString(seconds)
+                )).build();
+        return getStringHttpResponse(request);
+    }
 }
