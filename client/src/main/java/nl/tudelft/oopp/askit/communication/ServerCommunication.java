@@ -213,8 +213,7 @@ public class ServerCommunication {
         // it's easier to pass multiple parameters in url
         // while the functionality of the method is still best described with POST
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(""))
-                .uri(URI.create("http://localhost:8080/room/timeleft"
+                .GET().uri(URI.create("http://localhost:8080/send/timeleft"
                         + "?uid=" + userId + "&rid=" + roomId
                 )).build();
         return getStringHttpResponse(request);

@@ -113,7 +113,12 @@ public class SendingQuestionController {
 
         // find when this user has last sent a question, relative to room creation
         UUID userId = UUID.fromString(uid);
-        int lastQuestionTime = repo.getLastQuestionTimeOfUser(userId);
+        Integer lastQuestionTime = repo.getLastQuestionTimeOfUser(userId);
+        if (lastQuestionTime == null) {
+            // if a user has not sent questions so far, they should not have to wait
+            // negative wait time means that they can send a question
+            return -1;
+        }
 
         // use the room creation time to get the actual time passed
         UUID roomId = UUID.fromString(rid);

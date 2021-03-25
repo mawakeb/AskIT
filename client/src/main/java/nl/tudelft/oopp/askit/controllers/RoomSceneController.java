@@ -3,6 +3,7 @@ package nl.tudelft.oopp.askit.controllers;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,9 +16,11 @@ public class RoomSceneController extends RoomController {
     private TextArea question;
     @FXML
     private Button sendButton;
+    @FXML
+    private Label slowModeLabel;
 
     private boolean ban;
-    private String questionStatus;
+    private int millisLeftForSlowMode;
 
     /**
      * Use @FXML initialize() instead of constructor.
@@ -30,6 +33,7 @@ public class RoomSceneController extends RoomController {
         super.initialize();
 
         this.ban = false;
+        slowModeLabel.setVisible(false);
         question.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -49,11 +53,17 @@ public class RoomSceneController extends RoomController {
      * Handles clicking the button.
      */
     public void sendButtonClicked() {
+        updateSlowModeWaitTime();
+        if (millisLeftForSlowMode > 0) {
+            return;
+        }
+
         if (!question.getText().trim().equals("")) {
-            questionStatus = QuestionLogic.sendQuestion(question.getText(),
+            String questionStatus = QuestionLogic.sendQuestion(question.getText(),
                     super.getRoom().getId(),
                     super.getUser().getId(),
                     super.getRoom().getOpenTime());
+            ban = questionStatus.equals("BANNED");
         }
         updateAll();
         question.clear();
@@ -63,7 +73,7 @@ public class RoomSceneController extends RoomController {
      * Check if user was banned and disable sending a question if so.
      */
     public void checkBan() {
-        if (questionStatus != null && questionStatus.equals("BANNED")) {
+        if (this.ban) {
             question.setPromptText("You are banned from asking questions");
             question.setDisable(true);
             sendButton.setDisable(true);
@@ -90,16 +100,25 @@ public class RoomSceneController extends RoomController {
      * Displays a message with the time left to wait.
      */
     public void updateSlowModeWaitTime() {
-        int millisLeft = QuestionLogic.getTimeLeft(
+        millisLeftForSlowMode = QuestionLogic.getTimeLeft(
                 super.getUser().getId().toString(),
                 super.getRoom().getId().toString());
-        System.out.println(millisLeft);
+        if (millisLeftForSlowMode > 0) {
+            String timeString = millisLeftForSlowMode / 1000 + " seconds";
+            slowModeLabel.setText(
+                    "Slow Mode: Wait " + timeString + " before asking a new question");
+            slowModeLabel.setVisible(true);
+        } else {
+            slowModeLabel.setVisible(false);
+        }
     }
 
     @Override
     public void updateAll() {
         super.updateAll();
-        updateSlowModeWaitTime();
+        if (millisLeftForSlowMode > 0) {
+            updateSlowModeWaitTime();
+        }
         checkBan();
     }
 }

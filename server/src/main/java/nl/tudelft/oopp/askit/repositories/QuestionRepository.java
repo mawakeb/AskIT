@@ -22,5 +22,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findAll();
 
     @Query("SELECT MAX(createTime) FROM Question WHERE userId = ?1")
-    int getLastQuestionTimeOfUser(UUID userId);
+    Integer getLastQuestionTimeOfUser(UUID userId);
 }

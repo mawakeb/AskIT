@@ -142,7 +142,7 @@ public class QuestionLogic {
         try {
             HttpResponse<String> response = getTimeLeftHttp(userId,roomId);
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                ErrorDisplay.open(response);
                 return 0;
             }
             return Integer.parseInt(response.body());

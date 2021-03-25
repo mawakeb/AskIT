@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.views;
 
 import java.net.URL;
+import java.net.http.HttpResponse;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ import nl.tudelft.oopp.askit.controllers.ErrorController;
 public class ErrorDisplay {
 
     /**
-     * Opens the roomScene in a new window.
+     * Opens the errorDisplay in a new window.
      */
     public static void open(String errorName, String stackTrace) {
         try {
@@ -32,5 +33,14 @@ public class ErrorDisplay {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Opens the errorDisplay for errors over http.
+     */
+    public static void open(HttpResponse<String> response) {
+        String errorName = "Response code: " + response.statusCode();
+        String stackTrace = response.body();
+        open(errorName,stackTrace);
     }
 }
