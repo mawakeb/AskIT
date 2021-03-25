@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import com.google.gson.Gson;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Question;
@@ -11,9 +12,11 @@ import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -94,5 +97,35 @@ public class SendingQuestionController {
         Question question = repo.findById(uuid);
         question.setAnswered(true);
         repo.save(question);
+    }
+
+
+    /**
+     * Get how long a user has to wait before asking a new question (regarding slow mode).
+     *
+     * @param uid user ID
+     * @param rid ID of the room the user belongs to
+     * @return the amount of millis left wait, can be negative
+     */
+    @GetMapping("timeleft")
+    @ResponseBody
+    public int getTimeLeft(@RequestParam String uid, @RequestParam String rid) {
+
+        // find when this user has last sent a question, relative to room creation
+        UUID userId = UUID.fromString(uid);
+        int lastQuestionTime = repo.getLastQuestionTimeOfUser(userId);
+
+        // use the room creation time to get the actual time passed
+        UUID roomId = UUID.fromString(rid);
+        Room room = roomRepo.findByid(roomId);
+        if (room == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ROOM_NOT_FOUND");
+        }
+        ZonedDateTime roomCreation = room.getOpenTime();
+        int currentRoomTime = TimeControl.getMilisecondsPassed(roomCreation);
+        int timePassed = currentRoomTime - lastQuestionTime;
+
+        return room.getSlowModeSeconds() * 1000 - timePassed;
     }
 }

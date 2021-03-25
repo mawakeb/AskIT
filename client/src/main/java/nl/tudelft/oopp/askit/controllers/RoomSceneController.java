@@ -63,7 +63,7 @@ public class RoomSceneController extends RoomController {
      * Check if user was banned and disable sending a question if so.
      */
     public void checkBan() {
-        if (this.ban) {
+        if (questionStatus != null && questionStatus.equals("BANNED")) {
             question.setPromptText("You are banned from asking questions");
             question.setDisable(true);
             sendButton.setDisable(true);
