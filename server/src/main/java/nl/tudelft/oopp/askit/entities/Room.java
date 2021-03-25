@@ -31,6 +31,9 @@ public class Room {
     @Column(name = "openTime")
     private ZonedDateTime openTime;
 
+    @Column(name = "studentSize")
+    private int studentSize;
+
     public Room() {
     }
 
@@ -49,6 +52,7 @@ public class Room {
         this.student = student;
         this.isOpen = true;
         this.openTime = openTime;
+        this.studentSize = 0;
     }
 
     /**
@@ -65,7 +69,15 @@ public class Room {
         this.student = student;
         this.isOpen = true;
         this.openTime = openTime;
+        this.studentSize = 0;
+    }
 
+    public int getSize() {
+        return studentSize;
+    }
+
+    public void incrementSize() {
+        this.studentSize++;
     }
 
     public UUID getId() {

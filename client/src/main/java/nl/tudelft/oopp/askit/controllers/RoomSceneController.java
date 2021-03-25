@@ -54,7 +54,7 @@ public class RoomSceneController extends RoomController {
         this.slider.valueChangingProperty().addListener((observableValue, wasChanging, changing) -> {
             if (!changing) {
                 int value = (int) Math.round(slider.getValue());
-                SpeedLogic.sendSpeed(value);
+                SpeedLogic.sendSpeed(value, getUser().getId(), getRoomId());
             }
         });
     }

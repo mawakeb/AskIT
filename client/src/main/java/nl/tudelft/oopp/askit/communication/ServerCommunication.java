@@ -178,11 +178,11 @@ public class ServerCommunication {
         return getStringHttpResponse(request);
     }
 
-    public static HttpResponse<String> sendSpeedHttp(String speed)
+    public static HttpResponse<String> sendSpeedHttp(String parsedList)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/speed/send?s=" + speed)).build();
-        System.out.println("http://localhost:8080/speed/send?s=" + speed);
+                .POST(HttpRequest.BodyPublishers.ofString(parsedList))
+                .uri(URI.create("http://localhost:8080/speed/send")).build();
         return getStringHttpResponse(request);
     }
 }
