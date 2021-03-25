@@ -9,8 +9,15 @@ import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.User;
@@ -27,6 +34,10 @@ public abstract class RoomController {
     private Label roomName;
     @FXML
     private Label timeLabel;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
 
     private String roomId;
     private ZonedDateTime openTime;
@@ -60,6 +71,41 @@ public abstract class RoomController {
             }
         };
         this.timer = new Timer();
+
+        this.slider.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double n) {
+                if (n < 1) {
+                    return "Too Slow";
+                }
+                if (n < 2) {
+                    return "Slow";
+                }
+                if (n < 3) {
+                    return "Normal";
+                }
+                if (n < 4) {
+                    return "Fast";
+                }
+                return "Too Fast";
+            }
+
+            @Override
+            public Double fromString(String s) {
+                switch (s) {
+                    case "Too Slow":
+                        return 0d;
+                    case "Slow":
+                        return 1d;
+                    case "Normal":
+                        return 2d;
+                    case "Fast":
+                        return 3d;
+                    default:
+                        return 4d;
+                }
+            }
+        });
     }
 
     /**
@@ -141,6 +187,14 @@ public abstract class RoomController {
      */
     public double getListWidth() {
         return this.questionList.getWidth();
+    }
+
+    /**
+     * When the speedButton is clicked, it toggles to show/hide the slider for speed.
+     */
+    public void toggleSlider() {
+        slider.setDisable(!slider.isDisabled());
+        slider.setVisible(!slider.isVisible());
     }
 
     public String getRoomId() {
