@@ -71,9 +71,7 @@ public class SpeedController {
             return 2;
         }
         // Returns the changed speed if it passes 10% of the student count size threshold.
-        int weightedSpeed = roomSpeedWeighted(size, 0.1, speedList);
-        System.out.println(weightedSpeed);
-        return weightedSpeed;
+        return roomSpeedWeighted(size, 0.1, speedList);
     }
 
     /** Updates the vote for what speed the user chooses.
@@ -110,6 +108,7 @@ public class SpeedController {
             if (previous < 0) {
                 previous = 0;
             }
+            System.out.println(previousSpeed);
             speedList.set(previousSpeed, previous);
 
             // Adds the new vote by incrementing speed
@@ -133,5 +132,13 @@ public class SpeedController {
             previous++;
             roomSpeed.get(roomId).set(speed, previous);
         }
+    }
+
+    public static HashMap<UUID, Integer> getUserVote() {
+        return userVote;
+    }
+
+    public static HashMap<UUID, List<Integer>> getRoomSpeed() {
+        return roomSpeed;
     }
 }

@@ -54,6 +54,22 @@ class RoomControllerTest {
     }
 
     @Test
+    void testSizeIncrementCreateLink() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        int previous = room.getSize();
+        String links = id.toString() + "/student";
+        rc.joinLink(links);
+        int current = room.getSize();
+
+        // Check if it got incremented
+        assertEquals(current - 1, previous);
+
+        verify(roomRepository, times(1)).save(any(Room.class));
+    }
+
+    @Test
     void closeRoom() {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
