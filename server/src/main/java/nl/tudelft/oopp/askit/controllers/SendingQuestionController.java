@@ -9,11 +9,13 @@ import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.repositories.QuestionRepository;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("send")
@@ -37,35 +39,37 @@ public class SendingQuestionController {
      * Receive question sent by a student and store it in the repository.
      *
      * @param q String containing the question object
-     * @return "SUCCESS", or a message describing what failed
      */
 
     @PostMapping("question") // for /send/question
     @ResponseBody
-    public String sendQuestion(@RequestBody String q) {
+    public void sendQuestion(@RequestBody String q) {
         Question userQuestion = gson.fromJson(q, Question.class);
         // Set question up-votes to 0, to avoid hackers.
         userQuestion.setUpvotes(0);
 
         if (UserController.getBannedUsers().contains(userQuestion.getUserId())) {
             System.out.println("Question rejected: user banned");
-            return "You have been banned from sending questions";
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "You have been banned from sending questions");
         }
 
         Room room = roomRepo.findByid(userQuestion.getRoomId());
         if (room == null) {
             System.out.println("Question doesn't belong to a room");
-            return "The room can't be found on the server";
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The room can't be found on the server");
         }
+
         if (room.isOpen()) {
             userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             repo.save(userQuestion);
             System.out.println(q);
         } else {
             System.out.println("Question rejected: room closed");
-            return "The room has been closed by a staff member";
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The room has been closed by a staff member");
         }
-        return "SUCCESS";
     }
 
     /**

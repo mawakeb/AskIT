@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 class UserControllerTest {
     private static final Gson gson = new Gson();
@@ -59,7 +61,7 @@ class UserControllerTest {
         bannedUsers.add(question.getUserId());
         UserController.setBannedUsers(bannedUsers);
 
-        assertEquals("You have been banned from sending questions", sc.sendQuestion(parsed));
+        assertThrows(ResponseStatusException.class,() -> sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 

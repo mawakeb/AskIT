@@ -2,6 +2,8 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 class SendingQuestionControllerTest {
     private static final Gson gson = new Gson();
@@ -49,7 +52,6 @@ class SendingQuestionControllerTest {
     @Test
     void sendQuestion() {
         String parsed = gson.toJson(question);
-        assertEquals("SUCCESS",sc.sendQuestion(parsed));
         verify(repo, times(1)).save(any(Question.class));
     }
 
@@ -63,7 +65,7 @@ class SendingQuestionControllerTest {
         bannedUsers.add(question.getUserId());
         UserController.setBannedUsers(bannedUsers);
 
-        assertEquals("You have been banned from sending questions",sc.sendQuestion(parsed));
+        assertThrows(ResponseStatusException.class,() -> sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
@@ -71,7 +73,7 @@ class SendingQuestionControllerTest {
     void sendQuestionRoomClosed() {
         room.close();
         String parsed = gson.toJson(question);
-        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
+        assertThrows(ResponseStatusException.class,() -> sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
@@ -92,7 +94,7 @@ class SendingQuestionControllerTest {
         Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.answerQuestion(uuid.toString());
-        assertEquals(true, question.isAnswered());
+        assertTrue(question.isAnswered());
     }
 
 }
