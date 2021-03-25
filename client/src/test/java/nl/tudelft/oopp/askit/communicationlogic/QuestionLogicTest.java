@@ -101,7 +101,8 @@ class QuestionLogicTest {
         UUID testUserId = UUID.randomUUID();
         ZonedDateTime roomTimeTest = ZonedDateTime.now();
 
-        assertEquals("SUCCESS",QuestionLogic.sendQuestion(text, testId, testUserId, "nickname", roomTimeTest));
+        assertEquals("SUCCESS",QuestionLogic.sendQuestion(text, testId,
+                testUserId, "nickname", roomTimeTest));
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
