@@ -19,7 +19,7 @@ public class RoomSceneStaffController extends RoomController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        RoomLogic.closeRoom(super.getRoomId());
+        RoomLogic.closeRoom(super.getRoom().getId().toString());
         updateRoomStatus();
     }
 

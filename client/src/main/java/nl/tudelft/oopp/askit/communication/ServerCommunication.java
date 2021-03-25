@@ -194,7 +194,7 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/slow"
-                        + "?id=" + roomId + "&seconds=" + Integer.toString(seconds)
+                        + "?id=" + roomId + "&seconds=" + seconds
                 )).build();
         return getStringHttpResponse(request);
     }

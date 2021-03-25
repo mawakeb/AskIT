@@ -25,13 +25,9 @@ public abstract class RoomController {
     @FXML
     private ListView<Question> answeredQuestionList;
     @FXML
-    private Label roomName;
-    @FXML
     private Label timeLabel;
 
-    private String roomId;
     private Room room;
-    private ZonedDateTime openTime;
     private DateTimeFormatter formatter;
     private User user;
     private TimerTask update;
@@ -143,10 +139,6 @@ public abstract class RoomController {
      */
     public double getListWidth() {
         return this.questionList.getWidth();
-    }
-
-    public String getRoomId() {
-        return this.roomId;
     }
 
     public User getUser() {

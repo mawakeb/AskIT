@@ -25,16 +25,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 class RoomControllerTest {
+    private static final Gson gson = SerializingControl.getGsonObject();
     @Mock
     RoomRepository roomRepository;
     @Mock
     private Room room;
-
     private UUID id;
-
     private RoomController rc;
-
-    private static final Gson gson = SerializingControl.getGsonObject();
 
     @BeforeEach
     void setUp() {
@@ -90,7 +87,7 @@ class RoomControllerTest {
     void getNonExistentRoomStatus() {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(null);
-        assertThrows(ResponseStatusException.class,() -> rc.getRoomStatus(id.toString()));
+        assertThrows(ResponseStatusException.class, () -> rc.getRoomStatus(id.toString()));
     }
 
     @Test
@@ -98,8 +95,15 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        int seconds = 5;
-        rc.setSlowMode(id.toString(),seconds);
-        verify(roomRepository,times(1)).save(room);
+        rc.setSlowMode(id.toString(), 5);
+        verify(roomRepository, times(1)).save(room);
+    }
+
+    @Test
+    void setSlowModeException() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(null);
+
+        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5));
     }
 }

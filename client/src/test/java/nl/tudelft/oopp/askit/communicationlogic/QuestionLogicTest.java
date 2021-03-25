@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -100,7 +101,7 @@ class QuestionLogicTest {
         UUID testUserId = UUID.randomUUID();
         ZonedDateTime roomTimeTest = ZonedDateTime.now();
 
-        QuestionLogic.sendQuestion(text, testId, testUserId, roomTimeTest);
+        assertEquals("SUCCESS",QuestionLogic.sendQuestion(text, testId, testUserId, roomTimeTest));
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the question
@@ -145,4 +146,14 @@ class QuestionLogicTest {
         assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
     }
 
+    @Test
+    void getTimeLeft() {
+        UUID uid = UUID.randomUUID();
+        UUID rid = UUID.randomUUID();
+
+        int timeLeft = 42;
+        when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn(Integer.toString(timeLeft));
+        assertEquals(timeLeft, QuestionLogic.getTimeLeft(uid.toString(),rid.toString()));
+    }
 }

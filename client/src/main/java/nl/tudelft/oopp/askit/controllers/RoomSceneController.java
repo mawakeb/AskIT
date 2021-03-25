@@ -34,6 +34,7 @@ public class RoomSceneController extends RoomController {
 
         this.ban = false;
         slowModeLabel.setVisible(false);
+        slowModeLabel.setManaged(false);
         question.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -108,8 +109,10 @@ public class RoomSceneController extends RoomController {
             slowModeLabel.setText(
                     "Slow Mode: Wait " + timeString + " before asking a new question");
             slowModeLabel.setVisible(true);
+            slowModeLabel.setManaged(true);
         } else {
             slowModeLabel.setVisible(false);
+            slowModeLabel.setManaged(false);
         }
     }
 

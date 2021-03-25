@@ -107,4 +107,19 @@ class QuestionRepositoryTest {
 
         assertEquals(questions.get(0), question);
     }
+
+    @Test
+    void getLastQuestionTimeOfUser() {
+        UUID uid1 = UUID.randomUUID();
+        Question q1 = new Question("content", UUID.randomUUID(), uid1, 5);
+        Question q2 = new Question("content", UUID.randomUUID(), uid1, 6);
+        Question q3 = new Question("content", UUID.randomUUID(), UUID.randomUUID(), 7);
+        entityManager.persist(q1);
+        entityManager.persist(q2);
+        entityManager.persist(q3);
+        entityManager.flush();
+
+        Integer result = questionRepository.getLastQuestionTimeOfUser(uid1);
+        assertEquals(result, q2.getCreateTime());
+    }
 }

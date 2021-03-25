@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -43,7 +44,9 @@ class SendingQuestionControllerTest {
     void setUp() {
         UUID roomId = UUID.randomUUID();
         question = new Question("test",roomId,UUID.randomUUID(), 5);
-        room = new Room(roomId,"name","staf","sd", ZonedDateTime.now());
+        room = new Room(roomId,"name","staf","sd",
+                ZonedDateTime.now().minus(1, ChronoUnit.MINUTES)
+        );
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingQuestionController(repo, roomRepo);
@@ -52,6 +55,7 @@ class SendingQuestionControllerTest {
     @Test
     void sendQuestion() {
         String parsed = gson.toJson(question);
+        sc.sendQuestion(parsed);
         verify(repo, times(1)).save(any(Question.class));
     }
 

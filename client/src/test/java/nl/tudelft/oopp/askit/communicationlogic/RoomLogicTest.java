@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -126,4 +127,21 @@ class RoomLogicTest {
         assertEquals(room, RoomLogic.getRoomStatus(testId.toString()));
     }
 
+    @Test
+    void setSlowMode() {
+        UUID testId = UUID.randomUUID();
+        when(response.statusCode()).thenReturn(200);
+        RoomLogic.setSlowMode(testId.toString(), 42);
+
+        // assert that a request has been sent.
+        assertNotNull(request);
+    }
+
+    @Test
+    void setSlowModeNullRoom() {
+        RoomLogic.setSlowMode(null, 42);
+
+        // assert that no request has been sent.
+        assertNull(request);
+    }
 }
