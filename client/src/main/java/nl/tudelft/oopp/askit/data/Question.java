@@ -54,7 +54,8 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, int upvotes, UUID roomId, UUID userId, String username, int createTime) {
+    public Question(String content, int upvotes, UUID roomId,
+                    UUID userId, String username, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = upvotes;
