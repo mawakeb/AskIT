@@ -165,7 +165,16 @@
 
 .slider .track {
     -fx-padding: 3;
-    -fx-background-color: linear-gradient(to left, #21C5ED, #28cf87);
+    -fx-background-color: linear-gradient(to left, rgba(255,34,34,1) 0%, rgba(51,193,56,1) 50%, rgba(18,84,255,1) 100%);
+    -fx-text-fill: #fff;
+}
+
+.slider .thumb {
+    -fx-padding: 8;
+}
+
+.slider .axis {
+    -fx-tick-label-fill: #fff;
 }
 
 .slider:disabled {
