@@ -16,7 +16,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.data.Question;
@@ -71,6 +73,10 @@ public abstract class RoomController {
             }
         };
         this.timer = new Timer();
+
+        Tooltip tooltip = new Tooltip("Feedback on speed of lecture");
+        tooltip.setShowDelay(Duration.seconds(0.2));
+        speedButton.setTooltip(tooltip);
 
         this.slider.setLabelFormatter(new StringConverter<Double>() {
             @Override

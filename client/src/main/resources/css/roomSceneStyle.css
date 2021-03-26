@@ -183,10 +183,22 @@
 
 .speedButton {
     -fx-background-color: #1F2940;
+    -fx-border-width: 2px;
+    -fx-border-color: linear-gradient(to bottom, #21C5ED, #28cf87);
+    -fx-border-radius: 3;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-text-fill: #fff;
+    -fx-transition: 0.5s;
+}
+
+.speedButton:hover {
+    -fx-padding: 0 33;
+    -fx-border-insets: 0 33;
+    -fx-background-insets: 0 33;
+    -fx-border-color: #0000;
     -fx-background-image: url("../images/speedIcon.png");
     -fx-background-size: 37;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-radius: 30;
-    -fx-text-fill: #fff;
 }

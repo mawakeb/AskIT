@@ -64,12 +64,12 @@
                         <children>
                             <Slider fx:id="slider" disable="true" majorTickUnit="1.0" max="4.0" maxHeight="-Infinity" maxWidth="500.0" minorTickCount="0" prefHeight="60.0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" styleClass="speed" stylesheets="@../css/roomSceneStyle.css" value="2.0" visible="false" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
                                 <GridPane.margin>
-                                    <Insets bottom="25.0" left="15.0" right="80.0" />
+                                    <Insets bottom="25.0" left="15.0" right="70.0" />
                                 </GridPane.margin>
                             </Slider>
-                            <ToggleButton fx:id="speedButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#toggleSlider" prefHeight="50.0" prefWidth="50.0" styleClass="speedButton" stylesheets="@../css/roomSceneStyle.css" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                            <ToggleButton fx:id="speedButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#toggleSlider" prefHeight="60.0" prefWidth="55.0" styleClass="speedButton" stylesheets="@../css/roomSceneStyle.css" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                                 <GridPane.margin>
-                                    <Insets bottom="27.0" right="15.0" />
+                                    <Insets bottom="25.0" right="-40.0" />
                                 </GridPane.margin>
                             </ToggleButton>
                         </children>
