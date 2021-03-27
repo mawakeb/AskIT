@@ -1,0 +1,25 @@
+- test createButtonClicked
+1. Navigate to create tab
+2. Enter a name for the room
+3. Click create
+4. 2 Clickable links should appear: 1 for student, 1 for staff
+
+- test copyList
+1. Replicate "test createButtonClicked"
+2. Click on the link and verify that it got copied
+
+- test joinButtonClicked
+1. Replicate "test createButtonClicked"
+2. Navigate to Join tab
+3. Enter the link and an appropriate nickname
+4. If the link is correct, you a room window should pop up after pressing join
+
+- test scheduleButtonClicked
+1. Navigate to schedule tab
+2. Set opening time and room's name
+3. Click schedule
+4. Copy the room links, enter the room in Join tab and see if the room opens on the specified time.
+
+- test createTabClicked, joinTabClicked, scheduleTabClicked
+1. You should be able to navigate between all tabs by pressing on the buttons on the left side of the window
+2. Tabs should display appropriate information
