@@ -130,6 +130,22 @@ class QuestionLogicTest {
     }
 
     @Test
+    void cancelUpvote() {
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+
+        UUID uuid = UUID.randomUUID();
+        QuestionLogic.cancelUpvote(uuid);
+        assertEquals("POST", request.method());
+
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
+
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+    }
+
+    @Test
     void answerQuestion() {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
