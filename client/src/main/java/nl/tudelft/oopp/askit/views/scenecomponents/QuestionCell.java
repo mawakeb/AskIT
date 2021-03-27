@@ -29,7 +29,7 @@ public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
+    private final HashSet<UUID> upvotedQuestionIds = new HashSet();
     private boolean staffRole;
     private final RoomController roomController;
 
@@ -88,12 +88,14 @@ public class QuestionCell extends ListCell<Question> {
                     + "-fx-font-size: 70%;");
 
             // create upvote button
-            Button upvoteBtn = new Button("");
-            upvoteBtn.setDisable(upvotedQuestionIds.contains(q.getId()));
-            upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
+            Button upvoteBtn = new Button();
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
+            upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
+            if (upvotedQuestionIds.contains(q.getId())) {
+                upvoteBtn.setOpacity(0.5);
+            }
 
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.getContent());
@@ -176,9 +178,18 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-        upvoteBtn.setDisable(true);
-        QuestionLogic.upvoteQuestion(q.getId());
-        upvotedQuestionIds.add(q.getId());
-        roomController.updateQuestionList();
+
+        if (upvotedQuestionIds.contains(q.getId())) {
+            QuestionLogic.cancelUpvote(q.getId());
+            upvotedQuestionIds.remove(q.getId());
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(1);
+            return;
+        } else {
+            QuestionLogic.upvoteQuestion(q.getId());
+            upvotedQuestionIds.add(q.getId());
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(0.5);
+        }
     }
 }

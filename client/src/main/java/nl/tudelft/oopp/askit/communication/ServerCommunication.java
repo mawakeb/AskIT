@@ -94,6 +94,21 @@ public class ServerCommunication {
     }
 
     /**
+     * Connects to the server endpoint cancel the upvote of the specific question.
+     * You cannot cancel upvote of a question if it wasn't upvoted previously
+     *
+     * @param id the ID of the question
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> cancelUpvoteHttp(String id)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .uri(URI.create("http://localhost:8080/send/cancelUpvote")).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
      * Connects to the server endpoint to answer a single question.
      * no verification prevents from calling multiple times on the same question.
      * that condition should be checked beforehand (assuming that situation is not wanted).

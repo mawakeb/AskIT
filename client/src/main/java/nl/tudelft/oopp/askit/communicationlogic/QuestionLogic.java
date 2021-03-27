@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.answerQuestionHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.cancelUpvoteHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getAnsweredHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getQuestionsHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.sendQuestionHttp;
@@ -109,6 +110,24 @@ public class QuestionLogic {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
         }
     }
+
+    /**
+     * Cancels an upvote of a question.
+     *
+     * @param id of the upvoted question
+     */
+    public static void cancelUpvote(UUID id) {
+        try {
+            HttpResponse<String> response = cancelUpvoteHttp(id.toString());
+
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
 
     /**
      * Answers a question.

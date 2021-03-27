@@ -81,6 +81,18 @@ public class SendingQuestionController {
     }
 
     /**
+     * Cancel a single upvote to the question with the specified ID.
+     */
+    @PostMapping("cancelUpvote")
+    @ResponseBody
+    public void cancelUpvote(@RequestBody String id) {
+        UUID uuid = UUID.fromString(id);
+        Question question = repo.findById(uuid);
+        question.cancelUpvote();
+        repo.save(question);
+    }
+
+    /**
      * Mark the question with the specified ID as answered.
      */
     @PostMapping("answer")
