@@ -155,3 +155,13 @@
     -fx-background-color: #141B2D;
     -fx-background-radius: 5;
 }
+
+.hamburger{
+    -fx-opacity: 1;
+    -fx-background-color: #0000;
+    -fx-background-image: url("../images/menuIcon2.png");
+    -fx-background-size: 25;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 0;
+}

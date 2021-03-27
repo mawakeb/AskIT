@@ -2,13 +2,14 @@ package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 public class RoomSceneStaffController extends RoomController {
 
     @FXML
-    private Button closeRoomButton;
+    private MenuItem closeRoomItem;
 
     /**
      * Closes the current room through the server.
@@ -25,6 +26,6 @@ public class RoomSceneStaffController extends RoomController {
      */
     public void updateRoomStatus() {
         boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
-        closeRoomButton.setDisable(!isOpen);
+        closeRoomItem.setDisable(!isOpen);
     }
 }
