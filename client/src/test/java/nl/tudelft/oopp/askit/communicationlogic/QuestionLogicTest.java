@@ -81,12 +81,16 @@ class QuestionLogicTest {
                 new Question(UUID.randomUUID(), "Q1", 4, testId, UUID.randomUUID(), 5),
                 new Question(UUID.randomUUID(), "Q2", 5, testId, UUID.randomUUID(), 5),
                 new Question(UUID.randomUUID(), "Q3", 6, testId, UUID.randomUUID(), 5));
+        expected.get(0).setAnswered(true);
+        expected.get(1).setAnswered(true);
+        expected.get(2).setAnswered(true);
+
         String json = gson.toJson(expected);
 
         // set response content
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(json);
-        List<Question> actual = QuestionLogic.getQuestions(testId.toString());
+        List<Question> actual = QuestionLogic.getAnswered(testId.toString());
         assertEquals(expected, actual);
     }
 
@@ -144,5 +148,4 @@ class QuestionLogicTest {
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
     }
-
 }
