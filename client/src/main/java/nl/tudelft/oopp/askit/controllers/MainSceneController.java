@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
+import nl.tudelft.oopp.askit.views.ErrorDisplay;
 import nl.tudelft.oopp.askit.views.RoomSceneDisplay;
 import nl.tudelft.oopp.askit.views.scenecomponents.TimeSpinner;
 
@@ -108,6 +109,20 @@ public class MainSceneController {
      * Handles clicking the join button.
      */
     public void joinButtonClicked() {
+
+        if (username.getText().trim().equals("")) {
+            ErrorDisplay.open("No username", "Please enter a username to use in the lecture room.");
+            username.clear();
+            return;
+        }
+
+        if (username.getText().length() > 30) {
+            ErrorDisplay.open("Username too long",
+                    "Please enter a username that is under 30 characters.");
+            username.clear();
+            return;
+        }
+
         String link = userText.getText();
         userText.clear();
 
