@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
 import nl.tudelft.oopp.askit.views.RoomSceneDisplay;
 import nl.tudelft.oopp.askit.views.scenecomponents.TimeSpinner;
@@ -114,15 +115,14 @@ public class MainSceneController {
         if (responseList != null) {
             String[] links = link.split("/");
             String roomId = links[0];
-            String roomName = responseList.get(0);
+            Room room = RoomLogic.getRoomStatus(roomId);
             String roleId = responseList.get(1);
-            String openTime = responseList.get(2);
             String roomScene = roleId.equals("staff")
                     ? "/fxml/roomSceneStaff.fxml"
                     : "/fxml/roomScene.fxml";
 
             User user = new User(UUID.fromString(roomId), roleId, username.getText(), links[1]);
-            RoomSceneDisplay.open(roomScene, roomId, roomName, openTime, user);
+            RoomSceneDisplay.open(roomScene, room, user);
         }
     }
 
