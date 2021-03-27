@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -71,4 +72,16 @@ class UserControllerTest {
         assertTrue(UserController.getBannedUsers().contains(uuidToBan));
     }
 
+    @Test
+    void setBannedUsers() {
+        HashSet<UUID> hash = new HashSet<>();
+        hash.add(UUID.randomUUID());
+        UserController.setBannedUsers(hash);
+        assertEquals(hash, UserController.getBannedUsers());
+    }
+
+    @Test
+    void getBannedUsers() {
+        assertNotNull(UserController.getBannedUsers());
+    }
 }
