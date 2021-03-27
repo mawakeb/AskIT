@@ -189,7 +189,6 @@
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-text-fill: #fff;
-    -fx-transition: 0.5s;
 }
 
 .speedButton:hover {
