@@ -4,12 +4,15 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -141,6 +144,25 @@ public class QuestionCell extends ListCell<Question> {
                     answerItem.setOnAction(event -> useAnswerBtn(event, q));
                     menuBtn.getItems().add(answerItem);
                 }
+
+                //Add answer mode: answer question on double click
+                RoomSceneStaffController roomController =
+                        (RoomSceneStaffController) this.roomController;
+                if (roomController.getMode()) {
+                    this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                                if (mouseEvent.getClickCount() == 2) {
+                                    useAnswerBtn(new ActionEvent(), q);
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    //remove event handler
+                }
+
             }
 
             setText(null);

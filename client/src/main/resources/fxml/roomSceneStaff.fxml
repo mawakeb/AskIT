@@ -32,7 +32,7 @@
             <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="hamburger" stylesheets="@../css/roomSceneStyle.css" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                 <items>
                     <MenuItem mnemonicParsing="false" text="Enable Slow Mode" />
-                    <MenuItem mnemonicParsing="false" text="Enable 'DoubleClick to answer'" />
+                    <MenuItem fx:id="modeItem" mnemonicParsing="false" onAction="#setMode" text="Enable 'DoubleClick to answer'" />
                     <MenuItem fx:id="closeRoomItem" mnemonicParsing="false" onAction="#closeRoomButtonClicked" text="Close Room" />
                     <MenuItem mnemonicParsing="false" text="Export as text file" />
                 </items>

@@ -10,6 +10,10 @@ public class RoomSceneStaffController extends RoomController {
 
     @FXML
     private MenuItem closeRoomItem;
+    @FXML
+    private MenuItem modeItem;
+
+    private boolean mode;
 
     /**
      * Closes the current room through the server.
@@ -21,11 +25,29 @@ public class RoomSceneStaffController extends RoomController {
         updateRoomStatus();
     }
 
+    public void setMode() {
+        if (modeItem.getText().equals("Enable 'DoubleClick to answer'")) {
+            this.mode = true;
+            modeItem.setText("Disable 'DoubleClick to answer'");
+        } else {
+            this.mode = false;
+            modeItem.setText("Enable 'DoubleClick to answer'");
+        }
+    }
+
     /**
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
         boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
         closeRoomItem.setDisable(!isOpen);
+    }
+
+    /**
+     * check if answering mode is enabled
+     * @return boolean value for mode
+     */
+    public boolean getMode() {
+        return mode;
     }
 }
