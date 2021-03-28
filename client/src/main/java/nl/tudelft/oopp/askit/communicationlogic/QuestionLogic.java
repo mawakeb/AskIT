@@ -8,7 +8,9 @@ import static nl.tudelft.oopp.askit.communication.ServerCommunication.sendQuesti
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.upvoteQuestionHttp;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.UUID;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
+import org.json.JSONObject;
 
 public class QuestionLogic {
     private static final Gson gson = new Gson();
@@ -40,13 +43,14 @@ public class QuestionLogic {
             if (response.statusCode() == 200) {
                 return "SUCCESS";
             } else {
-                Exception e = gson.fromJson(response.body(), Exception.class);
+                JsonObject jsonResponseBody = gson.fromJson(response.body(), JsonObject.class);
                 if (response.statusCode() == 403) { // 403 = Forbidden
                     // when the server understood the request, but the question was
                     // rejected for other reasons, return the reason silently without ErrorDisplay
-                    return e.getMessage();
+                    return jsonResponseBody.get("message").getAsString();
                 } else {
-                    throw e;
+                    ErrorDisplay.open(response);
+                    return "EXCEPTION";
                 }
             }
         } catch (Exception e) {

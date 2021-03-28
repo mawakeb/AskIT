@@ -65,7 +65,9 @@ public class RoomSceneController extends RoomController {
                     super.getUser().getId(),
                     super.getUser().getName(),
                     super.getRoom().getOpenTime());
-            ban = questionStatus.equals("BANNED");
+            if (questionStatus.equals("BANNED")) {
+                ban = true;
+            }
         }
         updateAll();
         question.clear();
