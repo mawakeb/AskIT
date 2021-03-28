@@ -58,10 +58,11 @@ public class RoomSceneController extends RoomController {
         });
 
         this.slider
-                .valueChangingProperty().addListener((observableValue, wasChanging, changing) -> {
-                    if (!changing) {
-                        int value = (int) Math.round(slider.getValue());
-                        SpeedLogic.sendSpeed(value, getUser().getId(), getRoomId());
+                .valueProperty().addListener((observableValue, oldValue, newValue) -> {
+                    int oldInteger = (int) Math.round((double)oldValue);
+                    int newInteger = (int) Math.round((double)newValue);
+                    if (newInteger != oldInteger) {
+                        SpeedLogic.sendSpeed(newInteger, getUser().getId(), getRoomId());
                     }
                 });
     }
