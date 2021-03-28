@@ -58,10 +58,8 @@ public class SpeedController {
     public int getSpeed(@RequestParam String id) {
         UUID roomId = UUID.fromString(id);
 
-        Room room;
-        try {
-            room = roomRepo.findByid(roomId);
-        } catch (Exception e) {
+        Room room = roomRepo.findByid(roomId);
+        if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
