@@ -25,6 +25,9 @@ public class RoomSceneStaffController extends RoomController {
         updateRoomStatus();
     }
 
+    /**
+     * Sets answer mode when the item is selected.
+     */
     public void setMode() {
         if (modeItem.getText().equals("Enable 'DoubleClick to answer'")) {
             this.mode = true;
@@ -44,7 +47,7 @@ public class RoomSceneStaffController extends RoomController {
     }
 
     /**
-     * check if answering mode is enabled
+     * check if answering mode is enabled.
      * @return boolean value for mode
      */
     public boolean getMode() {
