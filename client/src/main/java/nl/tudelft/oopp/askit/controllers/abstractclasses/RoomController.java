@@ -202,7 +202,7 @@ public abstract class RoomController {
     }
 
     public String getRoomId() {
-        return this.roomId;
+        return this.room.getId().toString();
     }
 
     public User getUser() {

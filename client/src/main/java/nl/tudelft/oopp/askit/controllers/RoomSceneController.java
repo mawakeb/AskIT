@@ -22,6 +22,10 @@ public class RoomSceneController extends RoomController {
     private Button sendButton;
     @FXML
     private Label slowModeLabel;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
 
     private boolean ban;
     private int millisLeftForSlowMode;
