@@ -57,9 +57,7 @@ public class RoomSceneStaffController extends RoomController {
 
     protected void updateRoomSpeed() {
         int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId());
-        if (currentRoomSpeed != 2) {
             slider.setValue(currentRoomSpeed);
-        }
     }
 
     @Override
