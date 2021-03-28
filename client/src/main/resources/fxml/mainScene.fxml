@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -33,7 +34,7 @@
                <font>
                   <Font name="Century Gothic" size="12.0" />
                </font></TextField>
-            <ListView fx:id="list" onMouseClicked="#copyList" prefHeight="119.0" prefWidth="302.0" style="-fx-background-color: #0000;" styleClass="list" stylesheets="@../css/mainSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" GridPane.valignment="BOTTOM" />
+            <ListView fx:id="list" onMouseClicked="#copyList" prefHeight="119.0" prefWidth="302.0" style="-fx-background-color: #1F2940;" styleClass="list" stylesheets="@../css/mainSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.rowSpan="2" GridPane.valignment="BOTTOM" />
               <VBox prefHeight="487.0" prefWidth="170.0" styleClass="menu" stylesheets="@../css/mainSceneStyle.css" GridPane.columnSpan="2" GridPane.rowSpan="8">
                   <children>
                       <Pane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="108.0" prefWidth="154.0" VBox.vgrow="ALWAYS">
@@ -65,6 +66,24 @@
             <DatePicker fx:id="datePicker" disable="true" maxWidth="1.7976931348623157E308" prefHeight="35.0" styleClass="date-picker" stylesheets="@../css/roomSceneStyle.css" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label fx:id="timeLabel" style="-fx-font-size: 120%; -fx-text-fill: #fff;" text="Select time : " GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <Button fx:id="scheduleButton" alignment="CENTER" layoutX="437.0" layoutY="204.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scheduleButtonClicked" prefHeight="32.0" prefWidth="66.0" styleClass="buttons" stylesheets="@../css/mainSceneStyle.css" text="Schedule" textFill="WHITE" GridPane.columnIndex="5" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Button fx:id="staffLinkButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#copyStaffLink" styleClass="buttons" text="Copy Staff Link" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+               <GridPane.margin>
+                  <Insets left="35.0" right="35.0" top="7.0" />
+               </GridPane.margin></Button>
+            <Button fx:id="studentLinkButton" layoutX="284.0" layoutY="279.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#copyStudentLink" styleClass="buttons" text="Copy Student Link" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="35.0" right="35.0" top="40.0" />
+               </GridPane.margin></Button>
+            <Button fx:id="showListButton" layoutX="284.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showList" styleClass="buttons" text="Show Actual Link" GridPane.columnIndex="3" GridPane.columnSpan="3" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="35.0" right="35.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="closeList" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#hideList" styleClass="buttons" text="x" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+               <padding>
+                  <Insets bottom="-1.0" left="3.0" right="3.0" top="-1.0" />
+               </padding>
+            </Button>
          </children>
       </GridPane>
     </children>

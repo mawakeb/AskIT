@@ -152,15 +152,14 @@ public class QuestionCell extends ListCell<Question> {
                     this.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
-                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
+                                    && roomController.getMode()) {
                                 if (mouseEvent.getClickCount() == 2) {
                                     useAnswerBtn(new ActionEvent(), q);
                                 }
                             }
                         }
                     });
-                } else {
-                    //remove event handler
                 }
 
             }
