@@ -2,6 +2,8 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -9,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 class SendingQuestionControllerTest {
     private static final Gson gson = new Gson();
@@ -39,8 +43,10 @@ class SendingQuestionControllerTest {
     @BeforeEach
     void setUp() {
         UUID roomId = UUID.randomUUID();
-        question = new Question("test",roomId,UUID.randomUUID(), 5);
-        room = new Room(roomId,"name","staf","sd", ZonedDateTime.now());
+        question = new Question("test",roomId,UUID.randomUUID(), "nickname", 5);
+        room = new Room(roomId,"name","staf","sd",
+                ZonedDateTime.now().minus(1, ChronoUnit.MINUTES)
+        );
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingQuestionController(repo, roomRepo);
@@ -49,7 +55,7 @@ class SendingQuestionControllerTest {
     @Test
     void sendQuestion() {
         String parsed = gson.toJson(question);
-        assertEquals("SUCCESS",sc.sendQuestion(parsed));
+        sc.sendQuestion(parsed);
         verify(repo, times(1)).save(any(Question.class));
     }
 
@@ -63,7 +69,7 @@ class SendingQuestionControllerTest {
         bannedUsers.add(question.getUserId());
         UserController.setBannedUsers(bannedUsers);
 
-        assertEquals("You have been banned from sending questions",sc.sendQuestion(parsed));
+        assertThrows(ResponseStatusException.class,() -> sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
@@ -71,7 +77,7 @@ class SendingQuestionControllerTest {
     void sendQuestionRoomClosed() {
         room.close();
         String parsed = gson.toJson(question);
-        assertNotEquals("SUCCESS",sc.sendQuestion(parsed));
+        assertThrows(ResponseStatusException.class,() -> sc.sendQuestion(parsed));
         verify(repo, times(0)).save(any(Question.class));
     }
 
@@ -79,7 +85,7 @@ class SendingQuestionControllerTest {
     void upvoteQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         assertEquals(1, question.getUpvotes());
@@ -89,10 +95,10 @@ class SendingQuestionControllerTest {
     void answerQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.answerQuestion(uuid.toString());
-        assertEquals(true, question.isAnswered());
+        assertTrue(question.isAnswered());
     }
 
 }
