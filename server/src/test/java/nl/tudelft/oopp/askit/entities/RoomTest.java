@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -79,33 +80,42 @@ class RoomTest {
 
     @Test
     void isOpen() {
-        assertEquals(testRoomA.isOpen(), true);
+        assertTrue(testRoomA.isOpen());
+    }
+
+    @Test
+    void slowModeSeconds() {
+        // value should be initialized as 0 in constructor
+        assertEquals(0, testRoomA.getSlowModeSeconds());
+        testRoomA.setSlowModeSeconds(42);
+        assertEquals(42, testRoomA.getSlowModeSeconds());
+
     }
 
     @Test
     void close() {
         testRoomA.close();
-        assertEquals(testRoomA.isOpen(),false);
+        assertFalse(testRoomA.isOpen());
     }
 
     @Test
     public void sameRoomObjectEqualsTest() {
-        assertTrue(testRoomA.equals(testRoomA));
+        assertEquals(testRoomA, testRoomA);
     }
 
     @Test
     public void differentRoomsSameAttributesEqualsTest() {
-        assertTrue(testRoomA.equals(testRoomC));
+        assertEquals(testRoomC, testRoomA);
     }
 
     @Test
     public void differentRoomsEqualsTest() {
-        assertFalse(testRoomA.equals(testRoomB));
+        assertNotEquals(testRoomB, testRoomA);
     }
 
     @Test
     public void catchesNullPointerTest() {
         Room testRoom = new Room();
-        assertFalse(testRoom.equals(testRoomA));
+        assertNotEquals(testRoomA, testRoom);
     }
 }

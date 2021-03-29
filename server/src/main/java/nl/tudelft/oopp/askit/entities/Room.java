@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.askit.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -19,9 +20,11 @@ public class Room {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @Column(name = "staffAccess")
     private String staff;
 
+    @JsonIgnore
     @Column(name = "studentAccess")
     private String student;
 
@@ -30,6 +33,12 @@ public class Room {
 
     @Column(name = "openTime")
     private ZonedDateTime openTime;
+
+    @Column(name = "studentSize")
+    private int studentSize;
+
+    @Column(name = "slowModeSeconds")
+    private int slowModeSeconds;
 
     public Room() {
     }
@@ -49,6 +58,8 @@ public class Room {
         this.student = student;
         this.isOpen = true;
         this.openTime = openTime;
+        this.slowModeSeconds = 0;
+        this.studentSize = 0;
     }
 
     /**
@@ -65,7 +76,15 @@ public class Room {
         this.student = student;
         this.isOpen = true;
         this.openTime = openTime;
+        this.studentSize = 0;
+    }
 
+    public int getSize() {
+        return studentSize;
+    }
+
+    public void incrementSize() {
+        this.studentSize++;
     }
 
     public UUID getId() {
@@ -94,6 +113,14 @@ public class Room {
 
     public ZonedDateTime getOpenTime() {
         return this.openTime;
+    }
+
+    public void setSlowModeSeconds(int slowModeSeconds) {
+        this.slowModeSeconds = slowModeSeconds;
+    }
+
+    public int getSlowModeSeconds() {
+        return slowModeSeconds;
     }
 
     @Override

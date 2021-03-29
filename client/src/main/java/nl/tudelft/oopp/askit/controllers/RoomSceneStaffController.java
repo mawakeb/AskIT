@@ -2,13 +2,23 @@ package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 public class RoomSceneStaffController extends RoomController {
 
     @FXML
     private Button closeRoomButton;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
+    @FXML
+    private CheckBox slowModeToggle;
 
     /**
      * Closes the current room through the server.
@@ -16,7 +26,7 @@ public class RoomSceneStaffController extends RoomController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        RoomLogic.closeRoom(super.getRoomId());
+        RoomLogic.closeRoom(super.getRoom().getId().toString());
         updateRoomStatus();
     }
 
@@ -24,7 +34,40 @@ public class RoomSceneStaffController extends RoomController {
      * Gets the status of the room and updates the UI accordingly.
      */
     public void updateRoomStatus() {
-        boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
+        super.updateRoomStatus();
+        boolean isOpen = super.getRoom().isOpen();
         closeRoomButton.setDisable(!isOpen);
+        slider.setVisible(isOpen);
+        speedButton.setDisable(!isOpen);
+        speedButton.setVisible(isOpen);
+    }
+
+    /**
+     * Either enable or disable slow mode depending on checkbox value.
+     * Called in both cases through JavaFX onAction attribute of checkbox.
+     */
+    public void setSlowMode() {
+        boolean slowMode = slowModeToggle.isSelected();
+        System.out.println("Slow mode = " + slowMode);
+
+        // Slow mode is hard coded to a fixed question interval of 20 seconds
+        int slowModeSeconds = slowMode ? 20 : 0;
+        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
+    }
+
+    protected void updateRoomSpeed() {
+        int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId());
+        slider.setValue(currentRoomSpeed);
+    }
+
+    @Override
+    public void updateAll() {
+        super.updateAll();
+        updateRoomSpeed();
+    }
+
+    @Override
+    public void toggleSlider() {
+        slider.setVisible(!slider.isVisible());
     }
 }
