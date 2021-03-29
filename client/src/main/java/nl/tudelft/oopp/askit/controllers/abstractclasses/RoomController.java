@@ -39,6 +39,8 @@ public abstract class RoomController {
     private Slider slider;
     @FXML
     private ToggleButton speedButton;
+    @FXML
+    private Label roomName;
 
     private Room room;
     private DateTimeFormatter formatter;
@@ -117,6 +119,7 @@ public abstract class RoomController {
     public void setRoomInfo(Room room, User user) {
         this.room = room;
         this.user = user;
+        roomName.setText(room.getName());
         updateAll();
         timer.scheduleAtFixedRate(update, 0, 10000);
     }

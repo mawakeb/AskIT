@@ -21,8 +21,6 @@ public class RoomSceneStaffController extends RoomController {
     private Slider slider;
     @FXML
     private ToggleButton speedButton;
-    @FXML
-    private CheckBox slowModeToggle;
 
     private boolean answerMode;
 
