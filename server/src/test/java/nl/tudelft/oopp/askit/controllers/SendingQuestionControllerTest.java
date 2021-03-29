@@ -95,7 +95,7 @@ class SendingQuestionControllerTest {
     void cancelUpvote() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
-        Question question = new Question(uuid, "Unit test question", dupe, dupe, 5);
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
         sc.upvoteQuestion(uuid.toString());
         sc.upvoteQuestion(uuid.toString());
