@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.communication.ServerCommunication;
+import nl.tudelft.oopp.askit.data.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,7 +27,7 @@ import org.mockito.invocation.InvocationOnMock;
 
 class RoomLogicTest {
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     @Mock
     private HttpClient client;
@@ -35,9 +38,17 @@ class RoomLogicTest {
     // stores request sent by SUT
     private HttpRequest request;
 
+    private Room room;
+
     @BeforeEach
     void setUp() throws IOException, InterruptedException {
         MockitoAnnotations.initMocks(this);
+
+        room = new Room(UUID.randomUUID(),
+                "Room Name",
+                true,
+                ZonedDateTime.now(),
+                5);
 
         // clear request that might be left from earlier tests
         request = null;
@@ -116,28 +127,42 @@ class RoomLogicTest {
     }
 
     @Test
-    void getNotInitializedRoomStatus() {
+    void getNonExistentRoomStatus() {
         // mock boolean endpoint
         when(response.statusCode()).thenReturn(200);
 
-        // should return false regardless of response,
+        // should return null regardless of response,
         // because given string is null
-        assertFalse(RoomLogic.getRoomStatus(null));
+        assertNull(RoomLogic.getRoomStatus(null));
     }
 
     @Test
     void getRoomStatus() {
-
         UUID testId = UUID.randomUUID();
+        String roomJson = gson.toJson(room);
 
-        // mock boolean endpoint
+        // mock endpoint
         when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn(roomJson);
 
-        when(response.body()).thenReturn(Boolean.TRUE.toString());
-        assertTrue(RoomLogic.getRoomStatus(testId.toString()));
-
-        when(response.body()).thenReturn(Boolean.FALSE.toString());
-        assertFalse(RoomLogic.getRoomStatus(testId.toString()));
+        assertEquals(room, RoomLogic.getRoomStatus(testId.toString()));
     }
 
+    @Test
+    void setSlowMode() {
+        UUID testId = UUID.randomUUID();
+        when(response.statusCode()).thenReturn(200);
+        RoomLogic.setSlowMode(testId.toString(), 42);
+
+        // assert that a request has been sent.
+        assertNotNull(request);
+    }
+
+    @Test
+    void setSlowModeNullRoom() {
+        RoomLogic.setSlowMode(null, 42);
+
+        // assert that no request has been sent.
+        assertNull(request);
+    }
 }

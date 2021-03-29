@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.controllers.abstractclasses;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +20,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
+import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Question;
+import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
 import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
 
@@ -33,16 +34,13 @@ public abstract class RoomController {
     @FXML
     private ListView<Question> answeredQuestionList;
     @FXML
-    private Label roomName;
-    @FXML
     private Label timeLabel;
     @FXML
     private Slider slider;
     @FXML
     private ToggleButton speedButton;
 
-    private String roomId;
-    private ZonedDateTime openTime;
+    private Room room;
     private DateTimeFormatter formatter;
     private User user;
     private TimerTask update;
@@ -56,12 +54,8 @@ public abstract class RoomController {
     @FXML
     public void initialize() {
         // initialize cellFactory, to have questions be rendered using the QuestionCell class
-        questionList.setCellFactory(params -> {
-            return new QuestionCell(this);
-        });
-        answeredQuestionList.setCellFactory(params -> {
-            return new QuestionCell(this);
-        });
+        questionList.setCellFactory(params -> new QuestionCell(this));
+        answeredQuestionList.setCellFactory(params -> new QuestionCell(this));
         this.formatter = DateTimeFormatter.ofPattern("MMM dd HH:mm");
 
         this.update = new TimerTask() {
@@ -117,16 +111,11 @@ public abstract class RoomController {
     /**
      * shows name of the room in the scene and sets value for roomId.
      *
-     * @param roomId     - UUID of the room
-     * @param roomName   - Name of the room
-     * @param stringTime - openTime of the room in Sting
+     * @param room the room object created on the server
+     * @param user the user object related to this window
      */
-    public void setRoomInfo(String roomId, String roomName, String stringTime, User user) {
-        this.roomId = roomId;
-        this.roomName.setText(roomName);
-        ZonedDateTime zonedTime = ZonedDateTime.parse(stringTime)
-                .withZoneSameInstant(TimeZone.getDefault().toZoneId());
-        this.openTime = zonedTime;
+    public void setRoomInfo(Room room, User user) {
+        this.room = room;
         this.user = user;
         updateAll();
         timer.scheduleAtFixedRate(update, 0, 10000);
@@ -137,7 +126,7 @@ public abstract class RoomController {
      * Then updates the listview contents to display them.
      */
     public void updateQuestionList() {
-        List<Question> questions = QuestionLogic.getQuestions(roomId);
+        List<Question> questions = QuestionLogic.getQuestions(room.getId().toString());
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
@@ -147,7 +136,7 @@ public abstract class RoomController {
      * Then updates the listview contents to display them.
      */
     public void updateAnsweredQuestionList() {
-        List<Question> questions = QuestionLogic.getAnswered(roomId);
+        List<Question> questions = QuestionLogic.getAnswered(room.getId().toString());
         answeredQuestionList.getItems().clear();
         answeredQuestionList.getItems().addAll(questions);
     }
@@ -156,25 +145,34 @@ public abstract class RoomController {
      * Shows openTime if the room is not open because it's not the scheduled time yet.
      */
     public void checkOpenTime() {
-
         if (!timeLabel.isVisible()) {
             return;
         }
 
-        if (openTime.isAfter(ZonedDateTime.now())) {
+        if (!room.isOpen()) {
             timeLabel.setVisible(true);
-            String time = "Room opens at " + openTime.format(formatter);
+            String time = "Room opens at " + room.getLocalOpenTime().format(formatter);
             timeLabel.setText(time);
         } else {
             timeLabel.setVisible(false);
         }
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     /**
      * Update room-specific elements.
      * Implemented differently for staff and student room.
      */
-    public abstract void updateRoomStatus();
+    public void updateRoomStatus() {
+        RoomLogic.getRoomStatus(room.getId().toString());
+    }
 
     /**
      * Gets all possible updates from the server.
@@ -204,14 +202,10 @@ public abstract class RoomController {
     }
 
     public String getRoomId() {
-        return this.roomId;
+        return this.room.getId().toString();
     }
 
     public User getUser() {
         return this.user;
-    }
-
-    public ZonedDateTime getOpenTime() {
-        return this.openTime;
     }
 }

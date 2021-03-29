@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.askit.controllers.RoomSceneController;
 import nl.tudelft.oopp.askit.controllers.RoomSceneStaffController;
+import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
 
 public class RoomSceneDisplay {
@@ -15,8 +16,7 @@ public class RoomSceneDisplay {
     /**
      * Opens the roomScene in a new window.
      */
-    public static void open(String roomScene, String roomId, String roomName,
-                            String openTime, User user) {
+    public static void open(String roomScene, Room room, User user) {
         try {
             FXMLLoader loader = new FXMLLoader();
             URL xmlUrl = RoomSceneDisplay.class.getResource(roomScene);
@@ -25,15 +25,15 @@ public class RoomSceneDisplay {
 
             if (roomScene.equals("/fxml/roomScene.fxml")) {
                 RoomSceneController controller = loader.getController();
-                controller.setRoomInfo(roomId, roomName, openTime, user);
+                controller.setRoomInfo(room, user);
             } else if (roomScene.equals("/fxml/roomSceneStaff.fxml")) {
                 RoomSceneStaffController controller = loader.getController();
-                controller.setRoomInfo(roomId, roomName, openTime, user);
+                controller.setRoomInfo(room, user);
             }
 
             Stage roomStage = new Stage();
             roomStage.setScene(new Scene(root));
-            roomStage.setTitle(roomName);
+            roomStage.setTitle(room.getName());
             roomStage.show();
 
         } catch (Exception e) {
