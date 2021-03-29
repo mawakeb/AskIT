@@ -174,7 +174,7 @@ public abstract class RoomController {
      * Implemented differently for staff and student room.
      */
     public void updateRoomStatus() {
-        RoomLogic.getRoomStatus(room.getId().toString());
+        this.room = RoomLogic.getRoomStatus(room.getId().toString());
     }
 
     /**
