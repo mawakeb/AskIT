@@ -34,6 +34,9 @@ public class Room {
     @Column(name = "openTime")
     private ZonedDateTime openTime;
 
+    @Column(name = "studentSize")
+    private int studentSize;
+
     @Column(name = "slowModeSeconds")
     private int slowModeSeconds;
 
@@ -56,6 +59,32 @@ public class Room {
         this.isOpen = true;
         this.openTime = openTime;
         this.slowModeSeconds = 0;
+        this.studentSize = 0;
+    }
+
+    /**
+     * Constructor for the Room class without specifying id.
+     *
+     * @param name    title of the room chosen by lecturer.
+     * @param staff   room access code for the staff role.
+     * @param student room acces code for the student role.
+     */
+    public Room(String name, String staff, String student, ZonedDateTime openTime) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.staff = staff;
+        this.student = student;
+        this.isOpen = true;
+        this.openTime = openTime;
+        this.studentSize = 0;
+    }
+
+    public int getSize() {
+        return studentSize;
+    }
+
+    public void incrementSize() {
+        this.studentSize++;
     }
 
     public UUID getId() {

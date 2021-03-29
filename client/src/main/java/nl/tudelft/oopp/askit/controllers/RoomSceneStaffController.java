@@ -3,13 +3,20 @@ package nl.tudelft.oopp.askit.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 public class RoomSceneStaffController extends RoomController {
 
     @FXML
     private Button closeRoomButton;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
     @FXML
     private CheckBox slowModeToggle;
 
@@ -30,6 +37,9 @@ public class RoomSceneStaffController extends RoomController {
         super.updateRoomStatus();
         boolean isOpen = super.getRoom().isOpen();
         closeRoomButton.setDisable(!isOpen);
+        slider.setVisible(isOpen);
+        speedButton.setDisable(!isOpen);
+        speedButton.setVisible(isOpen);
     }
 
     /**
@@ -43,5 +53,21 @@ public class RoomSceneStaffController extends RoomController {
         // Slow mode is hard coded to a fixed question interval of 20 seconds
         int slowModeSeconds = slowMode ? 20 : 0;
         RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
+    }
+
+    protected void updateRoomSpeed() {
+        int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId());
+        slider.setValue(currentRoomSpeed);
+    }
+
+    @Override
+    public void updateAll() {
+        super.updateAll();
+        updateRoomSpeed();
+    }
+
+    @Override
+    public void toggleSlider() {
+        slider.setVisible(!slider.isVisible());
     }
 }

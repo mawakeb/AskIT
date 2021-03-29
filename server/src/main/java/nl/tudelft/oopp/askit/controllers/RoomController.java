@@ -98,11 +98,16 @@ public class RoomController {
         if (room != null) {
 
             if (role.equals(room.getStudent())) {
+                // Increases room student size
+                room.incrementSize();
+                this.repo.save(room);
+
                 System.out.println("You are a student");
                 System.out.println("Successfully joined");
                 return List.of(room.getName(),"student", room.getOpenTime().toString());
             }
             if (role.equals(room.getStaff())) {
+
                 System.out.println("You are a staff");
                 System.out.println("Successfully joined");
                 return List.of(room.getName(),"staff", room.getOpenTime().toString());

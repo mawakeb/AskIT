@@ -4,10 +4,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
+import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
+import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
 
 
@@ -18,6 +22,10 @@ public class RoomSceneController extends RoomController {
     private Button sendButton;
     @FXML
     private Label slowModeLabel;
+    @FXML
+    private Slider slider;
+    @FXML
+    private ToggleButton speedButton;
 
     private boolean ban;
     private int millisLeftForSlowMode;
@@ -48,6 +56,15 @@ public class RoomSceneController extends RoomController {
                 }
             }
         });
+
+        this.slider
+                .valueProperty().addListener((observableValue, oldValue, newValue) -> {
+                    int oldInteger = (int) Math.round((double)oldValue);
+                    int newInteger = (int) Math.round((double)newValue);
+                    if (newInteger != oldInteger) {
+                        SpeedLogic.sendSpeed(newInteger, getUser().getId(), getRoomId());
+                    }
+                });
     }
 
     /**
@@ -94,6 +111,10 @@ public class RoomSceneController extends RoomController {
         question.setDisable(!isOpen);
         if (!isOpen) {
             question.setPromptText("The room is closed.");
+            slider.setDisable(true);
+            slider.setVisible(false);
+            speedButton.setDisable(true);
+            speedButton.setVisible(false);
         } else {
             question.setPromptText("Ask a question...");
         }
