@@ -101,10 +101,10 @@ public class ServerCommunication {
      * @param id the ID of the question
      * @return HttpResponse object
      */
-    public static HttpResponse<String> answerQuestionHttp(String id)
+    public static HttpResponse<String> answerQuestionHttp(String id, int answerTime)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .POST(HttpRequest.BodyPublishers.ofString(id + "!@#" + Integer.toString(answerTime)))
                 .uri(URI.create("http://localhost:8080/send/answer")).build();
         return getStringHttpResponse(request);
     }

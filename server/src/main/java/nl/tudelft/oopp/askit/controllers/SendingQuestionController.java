@@ -80,15 +80,19 @@ public class SendingQuestionController {
         repo.save(question);
     }
 
-    /**
+      /**
      * Mark the question with the specified ID as answered.
      */
     @PostMapping("answer")
-    @ResponseBody
-    public void answerQuestion(@RequestBody String id) {
+    @ResponseBody            
+    public void answerQuestion(@RequestBody String q) {
+    	String[] data = q.split("!@#");
+    	String id = data[0];
+    	int answerTime = Integer.parseInt(data[1]);
         UUID uuid = UUID.fromString(id);
         Question question = repo.findById(uuid);
         question.setAnswered(true);
+        question.setAnswerTime(answerTime);
         repo.save(question);
     }
 }

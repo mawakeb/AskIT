@@ -135,7 +135,7 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.answerQuestion(uuid);
+        QuestionLogic.answerQuestion(uuid, ZonedDateTime.now());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"

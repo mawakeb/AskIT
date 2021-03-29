@@ -164,7 +164,7 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useAnswerBtn(ActionEvent event, Question q) {
-        QuestionLogic.answerQuestion(q.getId());
+        QuestionLogic.answerQuestion(q.getId(), roomController.getOpenTime());
         roomController.updateAll();
     }
 
