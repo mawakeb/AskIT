@@ -22,7 +22,7 @@ public class UserController {
     private final RoomRepository roomRepo;
 
     /**
-     * Constructor for SendingController, autowired for JPA repositories.
+     * Constructor for UserController, autowired for JPA repositories.
      * @param repo repository with all questions
      * @param roomRepo repository with all rooms
      */

@@ -29,7 +29,9 @@ class QuestionRepositoryTest {
     void getAllStrings() {
         // Sets up a dummy DB
         String content = "test";
-        Question question = new Question(content, UUID.randomUUID(), UUID.randomUUID(), 5);
+        String username = "username";
+        Question question = new Question(content, UUID.randomUUID(),
+                UUID.randomUUID(), username, 5);
         entityManager.persist(question);
         entityManager.flush();
 
@@ -42,7 +44,8 @@ class QuestionRepositoryTest {
     void findById() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question(id, "content", UUID.randomUUID(), UUID.randomUUID(), 5);
+        Question question = new Question(id, "content", UUID.randomUUID(), UUID.randomUUID(),
+                "nickname", 5);
         entityManager.persist(question);
         entityManager.flush();
 
@@ -55,11 +58,14 @@ class QuestionRepositoryTest {
     void getAllRoomQuestions() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question(UUID.randomUUID(), "content", id, UUID.randomUUID(), 5);
-        Question question1 = new Question(UUID.randomUUID(), "content1", id, UUID.randomUUID(), 5);
+        Question question = new Question(UUID.randomUUID(), "content", id,
+                UUID.randomUUID(), "nickname", 5);
+        Question question1 = new Question(UUID.randomUUID(), "content1", id,
+                UUID.randomUUID(), "nickname1", 5);
 
         UUID id2 = UUID.randomUUID();
-        Question different = new Question(UUID.randomUUID(), "content2", id2, UUID.randomUUID(), 5);
+        Question different = new Question(UUID.randomUUID(), "content2", id2,
+                UUID.randomUUID(), "nickname2", 5);
         entityManager.persist(question);
         entityManager.persist(question1);
         entityManager.persist(different);
@@ -76,14 +82,17 @@ class QuestionRepositoryTest {
     void getAllAnsweredQuestions() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question(UUID.randomUUID(), "content", id, UUID.randomUUID(), 5);
-        Question question1 = new Question(UUID.randomUUID(), "content1", id, UUID.randomUUID(), 5);
+        Question question = new Question(UUID.randomUUID(), "content", id,
+                UUID.randomUUID(), "nickname", 5);
+        Question question1 = new Question(UUID.randomUUID(), "content1", id,
+                UUID.randomUUID(), "nickname1", 5);
         question.setAnswered(true);
         entityManager.persist(question);
         entityManager.persist(question1);
 
         UUID id2 = UUID.randomUUID();
-        Question different = new Question(UUID.randomUUID(), "content2", id2, UUID.randomUUID(), 5);
+        Question different = new Question(UUID.randomUUID(), "content2", id2,
+                UUID.randomUUID(), "nickname2", 5);
         different.setAnswered(true);
         entityManager.persist(different);
         entityManager.flush();
@@ -99,12 +108,27 @@ class QuestionRepositoryTest {
     void findAll() {
         // Sets up a dummy DB
         UUID id = UUID.randomUUID();
-        Question question = new Question("content", id, UUID.randomUUID(), 5);
+        Question question = new Question("content", id, UUID.randomUUID(), "nickname", 5);
         entityManager.persist(question);
         entityManager.flush();
 
         List<Question> questions = questionRepository.findAll();
 
         assertEquals(questions.get(0), question);
+    }
+
+    @Test
+    void getLastQuestionTimeOfUser() {
+        UUID uid1 = UUID.randomUUID();
+        Question q1 = new Question("content", UUID.randomUUID(), uid1, "nickname", 5);
+        Question q2 = new Question("content", UUID.randomUUID(), uid1, "nickname", 6);
+        Question q3 = new Question("content", UUID.randomUUID(), UUID.randomUUID(), "nickname", 7);
+        entityManager.persist(q1);
+        entityManager.persist(q2);
+        entityManager.persist(q3);
+        entityManager.flush();
+
+        Integer result = questionRepository.getLastQuestionTimeOfUser(uid1);
+        assertEquals(result, q2.getCreateTime());
     }
 }

@@ -2,12 +2,14 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static nl.tudelft.oopp.askit.methods.GenerationMethods.randomString;
 
+import com.google.gson.Gson;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
+import nl.tudelft.oopp.askit.methods.SerializingControl;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 @RequestMapping("room")
 public class RoomController {
+
+    private static final Gson gson = SerializingControl.getGsonObject();
 
     private RoomRepository repo;
 
@@ -94,11 +98,16 @@ public class RoomController {
         if (room != null) {
 
             if (role.equals(room.getStudent())) {
+                // Increases room student size
+                room.incrementSize();
+                this.repo.save(room);
+
                 System.out.println("You are a student");
                 System.out.println("Successfully joined");
                 return List.of(room.getName(),"student", room.getOpenTime().toString());
             }
             if (role.equals(room.getStaff())) {
+
                 System.out.println("You are a staff");
                 System.out.println("Successfully joined");
                 return List.of(room.getName(),"staff", room.getOpenTime().toString());
@@ -135,20 +144,38 @@ public class RoomController {
     }
 
     /**
-     * Get the status of a room by ID.
+     * Get a room object by ID.
      *
      * @param id the request body containing room ID in string form
-     * @return a boolean, true iff the room is open for new questions,
-     *           also returns false if the room can't be found.
+     * @return string form of room object with all non-transient attributes
      */
     @GetMapping("status")
     @ResponseBody
-    public boolean getRoomStatus(@RequestParam String id) {
+    public String getRoomStatus(@RequestParam String id) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {
-            return false;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
         }
-        return room.isOpen();
+        return gson.toJson(room);
+    }
+
+    /**
+     * Set the slowMode for a specific room.
+     * @param id the id of the room
+     * @param seconds the amount of seconds between questions, 0 to disable slow mode
+     */
+    @PostMapping("slow")
+    @ResponseBody
+    public void setSlowMode(@RequestParam String id, @RequestParam int seconds) {
+        UUID uuid = UUID.fromString(id);
+        Room room = repo.findByid(uuid);
+        if (room == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
+        }
+        room.setSlowModeSeconds(seconds);
+        repo.save(room);
     }
 }

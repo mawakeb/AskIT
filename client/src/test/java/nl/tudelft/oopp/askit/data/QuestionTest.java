@@ -17,6 +17,7 @@ public class QuestionTest {
     private static Question question;
     private static UUID userId;
     private static UUID roomId;
+    private static String username;
 
     @BeforeEach
     void setUp() {
@@ -25,12 +26,13 @@ public class QuestionTest {
         upvotes = 5;
         userId = UUID.randomUUID();
         roomId = UUID.randomUUID();
-        question = new Question(id, content, upvotes, roomId, userId, 5);
+        username = "nickname";
+        question = new Question(id, content, upvotes, roomId, userId, username, 5);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, upvotes, roomId, userId, 5);
+        Question question1 = new Question(content, upvotes, roomId, userId, username, 5);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -59,13 +61,13 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         assertEquals(question, question2);
     }
 
     @Test
     void setUpvotes() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.setUpvotes(10);
         assertEquals(question2.getUpvotes(), 10);
 
@@ -73,7 +75,7 @@ public class QuestionTest {
 
     @Test
     void setAnswered() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.setAnswered(true);
         assertTrue(question2.isAnswered());
 
@@ -90,6 +92,11 @@ public class QuestionTest {
     }
 
     @Test
+    void getUsername() {
+        assertEquals(question.getUsername(), username);
+    }
+
+    @Test
     void isDeleted() {
         assertEquals(question.isDeleted(), false);
     }
@@ -101,7 +108,7 @@ public class QuestionTest {
 
     @Test
     void setDeleted() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.setDeleted(true);
         assertEquals(question2.isDeleted(), true);
     }
@@ -113,14 +120,14 @@ public class QuestionTest {
 
     @Test
     void setEdited() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username,5);
         question2.setEdited(true);
         assertEquals(question2.isEdited(), true);
     }
 
     @Test
     void addUpvote() {
-        Question question2 = new Question(id, content, upvotes, roomId, userId, 5);
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.addUpvote();
         assertEquals(question2.getUpvotes(), 6);
     }
@@ -140,7 +147,7 @@ public class QuestionTest {
     void testToString1() {
         assertEquals("Question{id=" + id + ", "
                 + "content='test', roomId=" + roomId + ", "
-                + "userId=" + userId + ", upvotes=5, "
+                + "userId=" + userId + ", username=nickname, upvotes=5, "
                 + "deleted=false, edited=false, answered=false, "
                 + "createTime=5, answerTime=0}", question.toString());
     }

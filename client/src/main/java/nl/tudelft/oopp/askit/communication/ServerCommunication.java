@@ -177,4 +177,72 @@ public class ServerCommunication {
                 .uri(URI.create("http://localhost:8080/send/ban")).build();
         return getStringHttpResponse(request);
     }
+
+    /**
+     * Sends users opinion on speed.
+     *
+     * @param parsedList parsed list of int speed, UUID userId, UUID roomId
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> sendSpeedHttp(String parsedList)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(parsedList))
+                .uri(URI.create("http://localhost:8080/speed/send")).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
+     * Gets user opinion on speed.
+     *
+     * @param roomId parsed room UUID
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> getSpeedHttp(String roomId)
+            throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/speed/get?id=" + roomId)).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
+     * Set the slow mode of a room.
+     *
+     * @param roomId parsed UUID of the User
+     * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds)
+            throws IOException, InterruptedException {
+
+        // creates POST with empty body
+        // it's easier to pass multiple parameters in url
+        // while the functionality of the method is still best described with POST
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(""))
+                .uri(URI.create("http://localhost:8080/room/slow"
+                        + "?id=" + roomId + "&seconds=" + seconds
+                )).build();
+        return getStringHttpResponse(request);
+    }
+
+    /**
+     * Get how long a user has to wait before asking a new question (regarding slow mode).
+     *
+     * @param userId user ID
+     * @param roomId ID of the room the user belongs to
+     * @return HttpResponse object
+     */
+    public static HttpResponse<String> getTimeLeftHttp(String userId, String roomId)
+            throws IOException, InterruptedException {
+
+        // creates POST with empty body
+        // it's easier to pass multiple parameters in url
+        // while the functionality of the method is still best described with POST
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET().uri(URI.create("http://localhost:8080/send/timeleft"
+                        + "?uid=" + userId + "&rid=" + roomId
+                )).build();
+        return getStringHttpResponse(request);
+    }
 }

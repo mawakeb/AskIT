@@ -16,6 +16,7 @@ public class Question {
     private final String content;
     private final UUID roomId;
     private final UUID userId;
+    private final String username;
     private int upvotes;
     private boolean deleted;
     private boolean edited;
@@ -32,12 +33,13 @@ public class Question {
      * @param userId  user that made this question.
      */
     public Question(UUID id, String content, int upvotes,
-                    UUID roomId, UUID userId, int createTime) {
+                    UUID roomId, UUID userId, String username, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = upvotes;
         this.roomId = roomId;
         this.userId = userId;
+        this.username = username;
         this.deleted = false;
         this.edited = false;
         this.createTime = createTime;
@@ -52,12 +54,14 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, int upvotes, UUID roomId, UUID userId, int createTime) {
+    public Question(String content, int upvotes, UUID roomId,
+                    UUID userId, String username, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = upvotes;
         this.roomId = roomId;
         this.userId = userId;
+        this.username = username;
         this.deleted = false;
         this.edited = false;
         this.createTime = createTime;
@@ -87,6 +91,10 @@ public class Question {
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public boolean isDeleted() {
@@ -136,7 +144,8 @@ public class Question {
                 + ", content='"
                 + content + '\'' + ", roomId="
                 + roomId + ", userId="
-                + userId + ", upvotes="
+                + userId + ", username="
+                + username + ", upvotes="
                 + upvotes + ", deleted="
                 + deleted + ", edited="
                 + edited + ", answered="
