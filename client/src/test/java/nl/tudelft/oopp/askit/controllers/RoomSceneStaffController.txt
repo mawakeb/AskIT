@@ -1,0 +1,16 @@
+- test closeRoomButtonClicked
+1. Open the room as staff and student
+2. Click the "close room" button as staff
+3. Students questions should be rejected from now on
+
+- test updateRoomSpeed
+1. Open the room as staff and student
+2. Click on the speed button as student
+3. Change the prefered speed
+4. The speed should update on staff window as well
+
+- test toggleSlider
+1. The speed button should close/open the slider that displays room speed
+
+-  test updateAll
+1. Each time interval or after refreshing, the all questions on all tabs should update

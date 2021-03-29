@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
@@ -121,6 +122,17 @@ class SpeedControllerTest {
                 1,
                 0
         ));
+
+    }
+
+    @Test
+    void getUserVote() {
+        assertNotNull(SpeedController.getUserVote());
+    }
+
+    @Test
+    void getRoomSpeed() {
+        assertNotNull(SpeedController.getRoomSpeed());
 
     }
 }

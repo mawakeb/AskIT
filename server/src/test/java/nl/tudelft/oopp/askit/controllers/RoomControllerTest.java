@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,6 +54,41 @@ class RoomControllerTest {
 
         assertEquals(links.get(0).length(), 52);
         assertEquals(links.get(1).length(), 52);
+    }
+
+    @Test
+    void joinRoomStudent() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        String links = id.toString() + "/student";
+        List<String> list = rc.joinLink(links);
+
+        assertEquals(list, List.of(room.getName(),"student", room.getOpenTime().toString()));
+    }
+
+    @Test
+    void joinRoomStaff() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        String links = id.toString() + "/staff";
+        List<String> list = rc.joinLink(links);
+
+        assertEquals(list, List.of(room.getName(),"staff", room.getOpenTime().toString()));
+    }
+
+    @Test
+    void joinRoomIncorrectRole() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        String links = id.toString() + "/bad";
+
+        // Must throw an ResponseStatusException
+        assertThrows(ResponseStatusException.class, () -> {
+            rc.joinLink(links);
+        });
     }
 
     @Test

@@ -1,0 +1,20 @@
+- test sendButtonClicked
+1. Open multiple windows of a room as a student
+2. Write a question in the appropriate text field.
+3. Click the button representing "send"
+4. The question should be visible on all windows, within a time interval or after refreshing
+
+- test checkBan
+1. Open a window of a room as a student and staff
+2. Write a question as student
+3. Ban the user as staff
+4. Write another question as student, this time it should not appear and your text field should be disabled
+
+- test updateRoomStatus
+1. Schedule a room
+2. Enter the room before it is scheduled to open
+3. Text should appear that says when the room opens and text field should be disabled
+4. When reaching the scheduled time, the text field should be open and the text about room opening should disappear
+
+- test updateAll
+1. Each time interval or after refreshing, the all questions on all tabs should update

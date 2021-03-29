@@ -56,7 +56,7 @@ class UserLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID userId = UUID.randomUUID();
-        RoomLogic.closeRoom(userId.toString());
+        UserLogic.banUser(userId);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"

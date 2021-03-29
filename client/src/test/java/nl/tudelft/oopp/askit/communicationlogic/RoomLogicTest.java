@@ -90,6 +90,27 @@ class RoomLogicTest {
     }
 
     @Test
+    void joinRoom() {
+        String roomName = "room name";
+        String roleId = "role";
+        String openTime = ZonedDateTime.now().toString();
+        List<String> expected = List.of(roomName, roleId, openTime);
+        String json = gson.toJson(expected);
+
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+        when(response.body()).thenReturn(json);
+
+        List<String> strings = RoomLogic.joinRoom("epic/link");
+        assertEquals("GET", request.method());
+
+        assertEquals(strings.get(0), expected.get(0));
+        assertEquals(strings.get(1), expected.get(1));
+        assertEquals(strings.get(2), expected.get(2));
+
+    }
+
+    @Test
     void closeRoom() {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);

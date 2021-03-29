@@ -1,0 +1,11 @@
+- test setErrorInfo
+1. Open the client without turning on the server
+2. Try to create a room on the Create tab
+3. Error window should pop up with
+    title: java.net.ConnectionException
+    body: Connection refused
+
+- test closeWindow
+1. Repeat "test setErrorInfo"
+2. Try closing the window by pressing "ok" button
+3. It should close
