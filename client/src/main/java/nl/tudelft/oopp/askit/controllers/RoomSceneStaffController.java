@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.askit.controllers;
 
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -26,8 +28,21 @@ public class RoomSceneStaffController extends RoomController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        RoomLogic.closeRoom(super.getRoom().getId().toString());
-        updateRoomStatus();
+    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    	alert.setTitle("Confirm");
+    	alert.setContentText("Are you sure?");
+    	ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+    	
+    	ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+    	
+    	alert.getButtonTypes().setAll(btnYes, btnNo);
+    	
+    	alert.showAndWait().ifPresent(type -> {
+    		if (type == btnYes) {
+    			RoomLogic.closeRoom(super.getRoomId());
+    	        updateRoomStatus();
+    		}
+    	});
     }
 
     /**
