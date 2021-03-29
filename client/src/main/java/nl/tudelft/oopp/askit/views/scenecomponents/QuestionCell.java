@@ -32,7 +32,7 @@ public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private final HashSet<UUID> upvotedQuestionIds = new HashSet();
+    private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
     private boolean staffRole;
     private final RoomController roomController;
 
