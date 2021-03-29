@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.askit.controllers;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -87,20 +88,7 @@ public class RoomSceneController extends RoomController {
         }
     }
 
-    public void exportQuestions() throws FileNotFoundException {
-    	List<Question> questions = QuestionLogic.getAnswered(super.getRoomId());
-    	PrintWriter writer = new PrintWriter(new File("ExportedQuestions.txt"));
-    	for(Question question : questions) {
-    		String prettyTime = TimeControl.getPrettyTime(question.getAnswerTime()).trim();
-    		String questionContent = question.getContent().trim();
-    		writer.print(questionContent + " " + prettyTime + "\n");
-    	}
-    	writer.flush();
-    	writer.close();
-    	//ErrorDisplay.open("Success!", "Successfully expored questions.");
-  	
-    }
-
+    
     @Override
     public void updateAll() {
         super.updateAll();

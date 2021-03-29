@@ -38,7 +38,7 @@
                     <Insets right="2.0" top="5.0" />
                 </GridPane.margin>
             </Button>
-         <Button graphicTextGap="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #003f71; -fx-font-size: 90%; -fx-text-fill: #fff;" text="Export questions">
+         <Button graphicTextGap="2.0" onAction="#exportQuestions" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #003f71; -fx-font-size: 90%; -fx-text-fill: #fff;" text="Export questions">
             <font>
                <Font size="10.0" />
             </font>

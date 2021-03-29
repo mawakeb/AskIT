@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.askit.controllers.abstractclasses;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -14,6 +17,7 @@ import javafx.scene.control.ListView;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.User;
+import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
 
 
@@ -139,6 +143,22 @@ public abstract class RoomController {
      *
      * @return width of questionList
      */
+    
+    public void exportQuestions() throws FileNotFoundException {
+    	List<Question> questions = QuestionLogic.getAnswered(getRoomId());
+    	PrintWriter writer = new PrintWriter(new File("ExportedQuestions.txt"));
+    	for(Question question : questions) {
+    		String prettyTime = TimeControl.getPrettyTime(question.getAnswerTime()).trim();
+    		String questionContent = question.getContent().trim();
+    		writer.print(questionContent + " " + prettyTime + "\n");
+    	}
+    	writer.flush();
+    	writer.close();
+    	//ErrorDisplay.open("Success!", "Successfully expored questions.");
+  	
+    }
+
+    
     public double getListWidth() {
         return this.questionList.getWidth();
     }
