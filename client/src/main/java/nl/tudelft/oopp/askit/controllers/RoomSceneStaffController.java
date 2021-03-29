@@ -1,11 +1,10 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.MenuItem;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
@@ -15,8 +14,9 @@ public class RoomSceneStaffController extends RoomController {
     @FXML
     private MenuItem closeRoomItem;
     @FXML
-    private MenuItem modeItem;
-    private Button closeRoomButton;
+    private MenuItem answerModeItem;
+    @FXML
+    private MenuItem slowModeItem;
     @FXML
     private Slider slider;
     @FXML
@@ -24,7 +24,7 @@ public class RoomSceneStaffController extends RoomController {
     @FXML
     private CheckBox slowModeToggle;
 
-    private boolean mode;
+    private boolean answerMode;
 
     /**
      * Closes the current room through the server.
@@ -39,13 +39,13 @@ public class RoomSceneStaffController extends RoomController {
     /**
      * Sets answer mode when the item is selected.
      */
-    public void setMode() {
-        if (modeItem.getText().equals("Enable 'DoubleClick to answer'")) {
-            this.mode = true;
-            modeItem.setText("Disable 'DoubleClick to answer'");
+    public void setAnswerMode() {
+        if (answerModeItem.getText().equals("Enable 'DoubleClick to answer'")) {
+            this.answerMode = true;
+            answerModeItem.setText("Disable 'DoubleClick to answer'");
         } else {
-            this.mode = false;
-            modeItem.setText("Enable 'DoubleClick to answer'");
+            this.answerMode = false;
+            answerModeItem.setText("Enable 'DoubleClick to answer'");
         }
     }
 
@@ -55,11 +55,9 @@ public class RoomSceneStaffController extends RoomController {
     public void updateRoomStatus() {
         super.updateRoomStatus();
         boolean isOpen = super.getRoom().isOpen();
-        closeRoomButton.setDisable(!isOpen);
         slider.setVisible(isOpen);
         speedButton.setDisable(!isOpen);
         speedButton.setVisible(isOpen);
-        boolean isOpen = RoomLogic.getRoomStatus(super.getRoomId());
         closeRoomItem.setDisable(!isOpen);
     }
 
@@ -67,8 +65,8 @@ public class RoomSceneStaffController extends RoomController {
      * check if answering mode is enabled.
      * @return boolean value for mode
      */
-    public boolean getMode() {
-        return mode;
+    public boolean getAnswerMode() {
+        return answerMode;
     }
 
     /**
@@ -76,12 +74,18 @@ public class RoomSceneStaffController extends RoomController {
      * Called in both cases through JavaFX onAction attribute of checkbox.
      */
     public void setSlowMode() {
-        boolean slowMode = slowModeToggle.isSelected();
+
+        boolean slowMode = slowModeItem.getText().equals("Enable Slow Mode");
         System.out.println("Slow mode = " + slowMode);
+
 
         // Slow mode is hard coded to a fixed question interval of 20 seconds
         int slowModeSeconds = slowMode ? 20 : 0;
         RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
+
+        String slowModeLabel = slowMode ? "Disable Slow Mode" : "Enable Slow Mode";
+        slowModeItem.setText(slowModeLabel);
+
     }
 
     protected void updateRoomSpeed() {

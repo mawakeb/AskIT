@@ -148,12 +148,12 @@ public class QuestionCell extends ListCell<Question> {
                 //Add answer mode: answer question on double click
                 RoomSceneStaffController roomController =
                         (RoomSceneStaffController) this.roomController;
-                if (roomController.getMode()) {
+                if (roomController.getAnswerMode()) {
                     this.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
-                                    && roomController.getMode()) {
+                                    && roomController.getAnswerMode()) {
                                 if (mouseEvent.getClickCount() == 2) {
                                     useAnswerBtn(new ActionEvent(), q);
                                 }
@@ -205,7 +205,6 @@ public class QuestionCell extends ListCell<Question> {
             upvotedQuestionIds.remove(q.getId());
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(1);
-            return;
         } else {
             QuestionLogic.upvoteQuestion(q.getId());
             upvotedQuestionIds.add(q.getId());
