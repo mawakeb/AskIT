@@ -79,7 +79,7 @@ public class QuestionCell extends ListCell<Question> {
 
             // nickname should be added when it is implemented
             Label nickname = new Label();
-            nickname.setText("nickname");
+            nickname.setText(q.getUsername());
             nickname.setStyle("-fx-text-fill: #9e9e9e;"
                     + "-fx-font-size: 80%;");
 

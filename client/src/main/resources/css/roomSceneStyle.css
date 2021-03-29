@@ -93,11 +93,20 @@
     -fx-background-position: center;
 }
 
-.sendButton: disabled {
+.sendButton:disabled {
     -fx-opacity: 0.5;
 }
 
 .closeButton {
+    -fx-background-color: #0000;
+    -fx-font-size: 150%;
+    -fx-text-fill: #21C5ED;
+    -fx-border-width: 3px;
+    -fx-border-color: #21C5ED;
+    -fx-border-radius: 3;
+}
+
+.slowModeToggle {
     -fx-background-color: #0000;
     -fx-font-size: 150%;
     -fx-text-fill: #21C5ED;
@@ -155,6 +164,53 @@
     -fx-background-color: #141B2D;
     -fx-background-radius: 5;
 }
+
+.slider {
+    -fx-background-color: #1F2940;
+    -fx-padding: 10 20 0 20;
+    -fx-background-radius: 10;
+    -fx-text-fill: #fff;
+}
+
+.slider .track {
+    -fx-padding: 3;
+    -fx-background-color: linear-gradient(to left, rgba(255,34,34,1) 0%, rgba(51,193,56,1) 50%, rgba(18,84,255,1) 100%);
+    -fx-text-fill: #fff;
+}
+
+.slider .thumb {
+    -fx-padding: 8;
+}
+
+.slider .axis {
+    -fx-tick-label-fill: #fff;
+}
+
+.slider:disabled {
+    -fx-opacity: 1;
+}
+
+.speedButton {
+    -fx-background-color: #1F2940;
+    -fx-border-width: 2px;
+    -fx-border-color: linear-gradient(to bottom, #21C5ED, #28cf87);
+    -fx-border-radius: 3;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-text-fill: #fff;
+}
+
+.speedButton:hover {
+    -fx-padding: 0 33;
+    -fx-border-insets: 0 33;
+    -fx-background-insets: 0 33;
+    -fx-border-color: #0000;
+    -fx-background-image: url("../images/speedIcon.png");
+    -fx-background-size: 37;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
 
 .hamburger{
     -fx-opacity: 1;

@@ -20,6 +20,8 @@ public class Question {
     private UUID roomId = null;
     @Column(name = "userId")
     private UUID userId = null;
+    @Column(name = "username")
+    private String username;
     @Column(name = "upvotes")
     private int upvotes;
     @Column(name = "deleted")
@@ -41,12 +43,14 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(UUID id, String content, UUID roomId, UUID userId, int createTime) {
+    public Question(UUID id, String content, UUID roomId,
+                    UUID userId, String username, int createTime) {
         this.id = id;
         this.content = content;
         this.upvotes = 0;
         this.roomId = roomId;
         this.userId = userId;
+        this.username = username;
         this.deleted = false;
         this.edited = false;
         this.createTime = createTime;
@@ -61,12 +65,13 @@ public class Question {
      * @param roomId  the room the question belongs to.
      * @param userId  user that made this question.
      */
-    public Question(String content, UUID roomId, UUID userId, int createTime) {
+    public Question(String content, UUID roomId, UUID userId, String username, int createTime) {
         this.id = UUID.randomUUID();
         this.content = content;
         this.upvotes = 0;
         this.roomId = roomId;
         this.userId = userId;
+        this.username = username;
         this.deleted = false;
         this.edited = false;
         this.createTime = createTime;
@@ -104,6 +109,10 @@ public class Question {
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public boolean isDeleted() {

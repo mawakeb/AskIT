@@ -4,11 +4,14 @@ import static nl.tudelft.oopp.askit.communication.ServerCommunication.answerQues
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.cancelUpvoteHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getAnsweredHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getQuestionsHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.getTimeLeftHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.sendQuestionHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.upvoteQuestionHttp;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.UUID;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
+import org.json.JSONObject;
 
 public class QuestionLogic {
     private static final Gson gson = new Gson();
@@ -26,30 +30,34 @@ public class QuestionLogic {
      *
      * @param text   String that represents the question
      * @param roomId id of the room that it's being sent to
-     * @return boolean of whether the user is banned
+     * @return "SUCCESS" if the question was sent successfully, a status why not otherwise
      */
-    public static boolean sendQuestion(String text, String roomId, UUID userId,
-                                       ZonedDateTime roomTime) {
+    public static String sendQuestion(String text, UUID roomId, UUID userId, String username,
+                                      ZonedDateTime roomTime) {
 
-        Question userQuestion = new Question(text, 0, UUID.fromString(roomId), userId,
+        Question userQuestion = new Question(text, 0, roomId, userId, username,
                 TimeControl.getMilisecondsPassed(roomTime));
 
         String parsedQuestion = gson.toJson(userQuestion);
         try {
             HttpResponse<String> response = sendQuestionHttp(parsedQuestion);
-            if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
-            }
-
-            // handle responses where the request was received successfully,
-            // but logic on the server rejects storing the question for different reasons
-            if (!response.body().equals("SUCCESS")) {
-                return true;
+            if (response.statusCode() == 200) {
+                return "SUCCESS";
+            } else {
+                JsonObject jsonResponseBody = gson.fromJson(response.body(), JsonObject.class);
+                if (response.statusCode() == 403) { // 403 = Forbidden
+                    // when the server understood the request, but the question was
+                    // rejected for other reasons, return the reason silently without ErrorDisplay
+                    return jsonResponseBody.get("message").getAsString();
+                } else {
+                    ErrorDisplay.open(response);
+                    return "EXCEPTION";
+                }
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+            return "EXCEPTION";
         }
-        return false;
     }
 
     /**
@@ -143,6 +151,27 @@ public class QuestionLogic {
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
+     * Get how long a user has to wait before asking a new question (regarding slow mode).
+     *
+     * @param userId user ID
+     * @param roomId ID of the room the user belongs to
+     * @return amount of milliseconds left to wait, might be negative
+     */
+    public static int getTimeLeft(String userId, String roomId) {
+        try {
+            HttpResponse<String> response = getTimeLeftHttp(userId,roomId);
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open(response);
+                return 0;
+            }
+            return Integer.parseInt(response.body());
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+            return 0;
         }
     }
 }

@@ -15,17 +15,19 @@ public class QuestionTest {
     private static Question question;
     private static UUID userId;
     private static UUID roomId;
+    private static String username;
 
     @BeforeEach
     void setUp() {
         id = UUID.randomUUID();
         content = "test";
-        question = new Question(id, content, roomId, userId, 5);
+        username = "nickname";
+        question = new Question(id, content, roomId, userId, username, 5);
     }
 
     @Test
     void testQuestionConstructorWithoutId() {
-        Question question1 = new Question(content, roomId, userId, 5);
+        Question question1 = new Question(content, roomId, userId, username, 5);
         assertNotNull(question1);
 
         // checks if id is unique
@@ -62,7 +64,7 @@ public class QuestionTest {
 
     @Test
     void testEquals() {
-        Question question2 = new Question(id, content, roomId, userId, 5);
+        Question question2 = new Question(id, content, roomId, userId, username, 5);
         assertEquals(question, question2);
     }
 
@@ -74,6 +76,12 @@ public class QuestionTest {
     @Test
     void getUserid() {
         assertEquals(question.getUserId(), userId);
+
+    }
+
+    @Test
+    void getUserName() {
+        assertEquals(question.getUsername(), username);
 
     }
 
