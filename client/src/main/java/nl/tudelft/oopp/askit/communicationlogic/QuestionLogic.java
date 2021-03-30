@@ -10,7 +10,6 @@ import static nl.tudelft.oopp.askit.communication.ServerCommunication.upvoteQues
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.UUID;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
-import org.json.JSONObject;
 
 public class QuestionLogic {
     private static final Gson gson = new Gson();

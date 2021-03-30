@@ -13,17 +13,12 @@ public class ErrorController {
     @FXML
     private Label errorTitle;
 
-    private String errorName;
-    private String stackTrace;
-
     /** Sets the variables and UI text.
      *
      * @param errorName name that is displayed on top
      * @param stackTrace stacktrace or just an error message
      */
     public void setErrorInfo(String errorName, String stackTrace) {
-        this.errorName = errorName;
-        this.stackTrace = stackTrace;
         errorTitle.setText(errorName);
         errorDescription.setText(stackTrace);
     }

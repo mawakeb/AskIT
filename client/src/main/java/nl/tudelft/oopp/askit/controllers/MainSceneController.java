@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -79,7 +78,7 @@ public class MainSceneController {
     /**
      * Handles clicking the create button.
      */
-    public void createButtonClicked() throws IOException, InterruptedException {
+    public void createButtonClicked() {
         List<String> links = RoomLogic.createRoom(userText.getText(),
                 ZonedDateTime.now());
         userText.clear();

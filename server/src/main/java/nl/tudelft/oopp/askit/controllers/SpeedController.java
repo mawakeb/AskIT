@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
 import nl.tudelft.oopp.askit.methods.SpeedMethods;
-import nl.tudelft.oopp.askit.repositories.QuestionRepository;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,21 +27,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("speed")
 public class SpeedController {
     private static final Gson gson = new Gson();
-    private final QuestionRepository repo;
     private final RoomRepository roomRepo;
 
-    private static HashMap<UUID, Integer> userVote = new HashMap<>();
-    private static HashMap<UUID, List<Integer>> roomSpeed = new HashMap<>();
+    private static final HashMap<UUID, Integer> userVote = new HashMap<>();
+    private static final HashMap<UUID, List<Integer>> roomSpeed = new HashMap<>();
 
     /**
      * Constructor for SpeedController, autowired for JPA repositories.
      *
-     * @param repo     repository with all questions
      * @param roomRepo repository with all rooms
      */
     @Autowired
-    public SpeedController(QuestionRepository repo, RoomRepository roomRepo) {
-        this.repo = repo;
+    public SpeedController(RoomRepository roomRepo) {
         this.roomRepo = roomRepo;
     }
 
@@ -85,9 +81,8 @@ public class SpeedController {
         UUID userId = UUID.fromString(list.get(1));
         UUID roomId = UUID.fromString(list.get(2));
 
-        Room room;
         try {
-            room = roomRepo.findByid(roomId);
+            roomRepo.findByid(roomId);
         } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");

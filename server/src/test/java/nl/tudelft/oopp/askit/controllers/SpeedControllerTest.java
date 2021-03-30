@@ -39,7 +39,7 @@ class SpeedControllerTest {
         id = UUID.randomUUID();
         userId = UUID.randomUUID();
         room = new Room(id, "test", "staff", "student", ZonedDateTime.now());
-        sc = new SpeedController(repo, roomRepository);
+        sc = new SpeedController(roomRepository);
     }
 
     @Test

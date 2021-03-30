@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -98,31 +99,31 @@ public class QuestionTest {
 
     @Test
     void isDeleted() {
-        assertEquals(question.isDeleted(), false);
+        assertFalse(question.isDeleted());
     }
 
     @Test
     void isAnswered() {
-        assertEquals(question.isAnswered(), false);
+        assertFalse(question.isAnswered());
     }
 
     @Test
     void setDeleted() {
         Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.setDeleted(true);
-        assertEquals(question2.isDeleted(), true);
+        assertTrue(question2.isDeleted());
     }
 
     @Test
     void isEdited() {
-        assertEquals(question.isEdited(), false);
+        assertFalse(question.isEdited());
     }
 
     @Test
     void setEdited() {
         Question question2 = new Question(id, content, upvotes, roomId, userId, username,5);
         question2.setEdited(true);
-        assertEquals(question2.isEdited(), true);
+        assertTrue(question2.isEdited());
     }
 
     @Test

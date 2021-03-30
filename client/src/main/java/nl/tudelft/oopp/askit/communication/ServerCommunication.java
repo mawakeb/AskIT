@@ -25,7 +25,7 @@ public class ServerCommunication {
      */
     static HttpResponse<String> getStringHttpResponse(HttpRequest request)
             throws IOException, InterruptedException {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {

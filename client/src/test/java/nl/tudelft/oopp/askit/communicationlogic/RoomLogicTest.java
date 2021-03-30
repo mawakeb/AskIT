@@ -21,6 +21,7 @@ import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.methods.SerializingControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -55,7 +56,7 @@ class RoomLogicTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -104,6 +105,7 @@ class RoomLogicTest {
         List<String> strings = RoomLogic.joinRoom("epic/link");
         assertEquals("GET", request.method());
 
+        assertNotNull(strings);
         assertEquals(strings.get(0), expected.get(0));
         assertEquals(strings.get(1), expected.get(1));
         assertEquals(strings.get(2), expected.get(2));

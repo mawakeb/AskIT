@@ -28,8 +28,7 @@ public class TimeControl {
         int minute = (secondsTotal / 60) % 60;
         int hour = (secondsTotal / 3600) % 100;
 
-        String time = String.format("%02d:%02d:%02d", hour, minute, second);
-        return time;
+        return String.format("%02d:%02d:%02d", hour, minute, second);
     }
 
 
