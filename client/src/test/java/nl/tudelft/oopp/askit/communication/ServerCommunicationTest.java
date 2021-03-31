@@ -21,8 +21,6 @@ import org.mockito.invocation.InvocationOnMock;
 
 public class ServerCommunicationTest {
 
-    private static final Gson gson = new Gson();
-
     @Mock
     private HttpClient client;
 

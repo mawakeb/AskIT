@@ -24,8 +24,6 @@ class SpeedControllerTest {
     @Mock
     RoomRepository roomRepository;
     @Mock
-    QuestionRepository repo;
-    @Mock
     private Room room;
 
     private UUID id;

@@ -22,8 +22,6 @@ import org.mockito.invocation.InvocationOnMock;
 
 class UserLogicTest {
 
-    private static final Gson gson = new Gson();
-
     @Mock
     private HttpClient client;
 
