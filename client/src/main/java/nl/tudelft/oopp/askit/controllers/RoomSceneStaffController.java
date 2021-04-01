@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
@@ -30,8 +33,20 @@ public class RoomSceneStaffController extends RoomController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        RoomLogic.closeRoom(super.getRoom().getId().toString());
-        updateRoomStatus();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Close room?");
+        alert.setContentText("Students cannot ask new questions in the room anymore.");
+
+        ButtonType btnYes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType btnNo = new ButtonType("No", ButtonBar.ButtonData.NO);
+        alert.getButtonTypes().setAll(btnNo, btnYes);
+
+        alert.showAndWait().ifPresent(type -> {
+            if (type == btnYes) {
+                RoomLogic.closeRoom(super.getRoomId());
+                updateRoomStatus();
+            }
+        });
     }
 
     /**
