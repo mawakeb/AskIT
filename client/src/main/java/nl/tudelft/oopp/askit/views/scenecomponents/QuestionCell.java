@@ -170,7 +170,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     private void useUpvoteBtn(Button upvoteBtn, Question q) {
         upvoteBtn.setDisable(true);
-        QuestionLogic.upvoteQuestion(q.getId());
+        QuestionLogic.upvoteQuestion(q.getId(), roomController.getUser().getId());
         upVotedQuestionIds.add(q.getId());
         roomController.updateQuestionList();
     }

@@ -18,6 +18,7 @@ import java.util.UUID;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
+import org.json.JSONObject;
 
 public class QuestionLogic {
     private static final Gson gson = new Gson();
@@ -104,12 +105,19 @@ public class QuestionLogic {
      *
      * @param id of the upvoted question
      */
-    public static void upvoteQuestion(UUID id) {
+    public static void upvoteQuestion(UUID id, UUID userId) {
+        List<String> sendList = List.of(
+                id.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         try {
-            HttpResponse<String> response = upvoteQuestionHttp(id.toString());
+            HttpResponse<String> response = upvoteQuestionHttp(parsedList);
 
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());

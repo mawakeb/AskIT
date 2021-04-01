@@ -125,14 +125,21 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.upvoteQuestion(uuid);
+        UUID userId = UUID.randomUUID();
+        QuestionLogic.upvoteQuestion(uuid, userId);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
+        // Simulates the sendList to get length
+        List<String> sendList = List.of(
+                uuid.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
