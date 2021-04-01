@@ -112,13 +112,13 @@ public class ServerCommunication {
     /**
      * Create a new room and returns access links.
      *
-     * @param name the String title of the room to create.
+     * @param list that contains both name and open time
      * @return HttpResponse object
      */
-    public static HttpResponse<String> createRoomHttp(String name, String openTime)
+    public static HttpResponse<String> createRoomHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         return getStringHttpResponse(request);
     }

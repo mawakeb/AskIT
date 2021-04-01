@@ -28,9 +28,15 @@ public class RoomLogic {
      * @return returns 2 links, one for staff one for student
      */
     public static List<String> createRoom(String name, ZonedDateTime openTime) {
+        List<String> sendList = List.of(
+                name,
+                openTime.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
         HttpResponse<String> response;
         try {
-            response = createRoomHttp(name, openTime.toString());
+            response = createRoomHttp(parsedList);
 
             if (response.statusCode() != 200) {
                 System.out.println("Status: " + response.statusCode());

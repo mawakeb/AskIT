@@ -128,7 +128,7 @@ public class MainSceneController {
         List<String> responseList = RoomLogic.joinRoom(link);
         if (responseList != null) {
             String[] links = link.split("/");
-            String roomId = links[0];
+            String roomId = links[1];
             Room room = RoomLogic.getRoomStatus(roomId);
             String roleId = responseList.get(1);
             String roomScene = roleId.equals("staff")

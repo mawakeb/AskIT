@@ -85,8 +85,14 @@ class RoomLogicTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        // 3 is for the '!@#' added
-        int length = name.length() + time.toString().length() + 3;
+        // Used this list to simulate the length
+        List<String> sendList = List.of(
+                name,
+                time.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        int length = parsedList.length();
         assertEquals(length, request.bodyPublisher().get().contentLength());
     }
 

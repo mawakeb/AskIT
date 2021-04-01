@@ -3,6 +3,7 @@ package nl.tudelft.oopp.askit.controllers;
 import static nl.tudelft.oopp.askit.methods.GenerationMethods.randomString;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,9 @@ public class RoomController {
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
 
-        String[] info = q.split("!@#");
-        ZonedDateTime time = ZonedDateTime.parse(info[1]);
+        List<String> list = gson.fromJson(q, new TypeToken<List<String>>() {
+        }.getType());
+        ZonedDateTime time = ZonedDateTime.parse(list.get(1));
 
         String string2;
         string2 = randomString();
@@ -56,12 +58,12 @@ public class RoomController {
             string2 = randomString();
         }
         UUID roomId = UUID.randomUUID();
-        Room newRoom = new Room(roomId, info[0], string1, string2, time);
+        Room newRoom = new Room(roomId, list.get(0), string1, string2, time);
         this.repo.save(newRoom);
 
         // TODO: links are way too long because of room id
-        string1 = roomId + "/" + string1;
-        string2 = roomId + "/" + string2;
+        string1 = "staff/" + roomId + "/" + string1;
+        string2 = "student/" + roomId + "/" + string2;
         System.out.println(string1);
         System.out.println(string2);
         List<String> links = new ArrayList<>();
@@ -82,7 +84,7 @@ public class RoomController {
         String[] links = q.split("/");
 
         // Checks if format is correct
-        if (links.length != 2) {
+        if (links.length != 3) {
             System.out.println("Invalid link");
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid link");
@@ -90,12 +92,12 @@ public class RoomController {
         // Checks if UUID is correct format
         UUID id;
         try {
-            id = UUID.fromString(links[0]);
+            id = UUID.fromString(links[1]);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid link");
         }
-        String role = links[1];
+        String role = links[2];
         Room room = this.repo.findByid(id);
         if (room != null) {
 

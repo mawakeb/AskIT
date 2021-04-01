@@ -44,14 +44,18 @@ class RoomControllerTest {
 
     @Test
     void createLink() {
+        List<String> sendList = List.of(
+                "name!@#",
+                ZonedDateTime.now().toString()
+        );
+        String parsedList = gson.toJson(sendList);
 
-        String info = "name!@#" + ZonedDateTime.now().toString();
-        List<String> links = rc.createLink(info);
+        List<String> links = rc.createLink(parsedList);
         // Sees if the room is saved
         verify(roomRepository, times(1)).save(any(Room.class));
 
-        assertEquals(links.get(0).length(), 52);
-        assertEquals(links.get(1).length(), 52);
+        assertEquals(links.get(0).length(), 58);
+        assertEquals(links.get(1).length(), 60);
     }
 
     @Test
@@ -59,7 +63,7 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        String links = id.toString() + "/student";
+        String links = "student/" + id.toString() + "/student";
         List<String> list = rc.joinLink(links);
 
         assertEquals(list, List.of(room.getName(),"student", room.getOpenTime().toString()));
@@ -70,7 +74,7 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        String links = id.toString() + "/staff";
+        String links = "staff/" + id.toString() + "/staff";
         List<String> list = rc.joinLink(links);
 
         assertEquals(list, List.of(room.getName(),"staff", room.getOpenTime().toString()));
@@ -81,7 +85,7 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        String links = id.toString() + "/bad";
+        String links = "student/" + id.toString() + "/bad";
 
         // Must throw an ResponseStatusException
         assertThrows(ResponseStatusException.class, () -> rc.joinLink(links));
@@ -93,7 +97,7 @@ class RoomControllerTest {
         when(roomRepository.findByid(id)).thenReturn(room);
 
         int previous = room.getSize();
-        String links = id.toString() + "/student";
+        String links = "student/" + id.toString() + "/student";
         rc.joinLink(links);
         int current = room.getSize();
 
