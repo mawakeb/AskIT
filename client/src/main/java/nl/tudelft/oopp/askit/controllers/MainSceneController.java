@@ -130,12 +130,12 @@ public class MainSceneController {
             String[] links = link.split("/");
             String roomId = links[1];
             Room room = RoomLogic.getRoomStatus(roomId);
-            String roleId = responseList.get(1);
-            String roomScene = roleId.equals("staff")
+            String roleName = responseList.get(1);
+            String roomScene = roleName.equals("staff")
                     ? "/fxml/roomSceneStaff.fxml"
                     : "/fxml/roomScene.fxml";
 
-            User user = new User(UUID.fromString(roomId), roleId, username.getText(), links[1]);
+            User user = new User(UUID.fromString(roomId), roleName, username.getText(), links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
         }
     }
