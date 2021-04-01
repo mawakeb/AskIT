@@ -64,6 +64,13 @@ public class SendingQuestionController {
                     HttpStatus.NOT_FOUND, "ROOM_NOT_FOUND");
         }
 
+        // Checks if user didn't bypass open time
+        if (room.getOpenTime().isAfter(ZonedDateTime.now())) {
+            System.out.println("Room is not open yet");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "ROOM_NOT_OPEN");
+        }
+
         if (room.isOpen()) {
             userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             repo.save(userQuestion);
