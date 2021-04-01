@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.askit.controllers.abstractclasses;
 
+import java.io.File;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,23 +12,23 @@ import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import javax.swing.JFileChooser;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
+import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
+
+
 
 
 public abstract class RoomController {
@@ -159,6 +163,30 @@ public abstract class RoomController {
         } else {
             timeLabel.setVisible(false);
         }
+    }
+
+    /**
+     * Exports answered questions into text file.
+     */
+
+    public void exportQuestions() throws FileNotFoundException {
+        List<Question> questions = QuestionLogic.getAnswered(getRoomId());
+        JFileChooser f = new JFileChooser();
+        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        f.showSaveDialog(null);
+        File file = new File(f.getSelectedFile().toString()
+                + "\\" + room.getName() + " Export.txt");
+        System.out.println(file.getAbsolutePath());
+        PrintWriter writer = new PrintWriter(file);
+        for (Question question : questions) {
+            String prettyTime = TimeControl.getPrettyTime(question.getAnswerTime()).trim();
+            String questionContent = question.getContent().trim();
+            String username = question.getUsername();
+            writer.print("[" + username + "/" + prettyTime + "]  " + questionContent + "\n\n");
+        }
+        writer.flush();
+        writer.close();
+
     }
 
     public Room getRoom() {

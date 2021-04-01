@@ -34,7 +34,7 @@
                     <MenuItem fx:id="slowModeItem" mnemonicParsing="false" onAction="#setSlowMode" text="Enable Slow Mode" />
                     <MenuItem fx:id="answerModeItem" mnemonicParsing="false" onAction="#setAnswerMode" text="Enable 'DoubleClick to answer'" />
                     <MenuItem fx:id="closeRoomItem" mnemonicParsing="false" onAction="#closeRoomButtonClicked" text="Close Room" />
-                    <MenuItem mnemonicParsing="false" text="Export as text file" />
+                    <MenuItem mnemonicParsing="false" onAction="#exportQuestions" text="Export as text file" />
                 </items>
                 <GridPane.margin>
                     <Insets left="5.0" top="1.0" />
