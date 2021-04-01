@@ -130,21 +130,32 @@ public class RoomController {
     /**
      * Close a room from asking new questions.
      *
-     * @param id the request body containing room ID in string form
+     * @param ids the request body containing room ID in string form
      */
     @PostMapping("close")
     @ResponseBody
-    public void closeRoom(@RequestBody String id) {
-        System.out.println("Closing room on server, id:" + id);
-        UUID uuid = UUID.fromString(id);
+    public void closeRoom(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+
+        UUID uuid = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
+        System.out.println("Closing room on server, id:" + uuid.toString());
+
         Room room = repo.findByid(uuid);
 
         if (room == null) {
-            System.out.println("room doesnt exist, id:" + id);
-            return;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
         }
-        room.close();
-        repo.save(room);
+        if (room.getStaff().equals(roleId)) {
+            room.close();
+            repo.save(room);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
+
     }
 
     /**

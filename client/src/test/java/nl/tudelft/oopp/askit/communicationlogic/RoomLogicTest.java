@@ -124,14 +124,20 @@ class RoomLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID roomId = UUID.randomUUID();
-        RoomLogic.closeRoom(roomId.toString());
+        String roleId = "staff";
+
+        RoomLogic.closeRoom(roomId.toString(), roleId);
         assertEquals("POST", request.method());
 
-        // check if a bodyPublisher was successfully included to transfer the value "123"
+        // Simulated request list, to obtain the length
         assertTrue(request.bodyPublisher().isPresent());
-
+        List<String> list = List.of(
+                roomId.toString(),
+                roleId
+        );
+        String parsedList = gson.toJson(list);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(roomId.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test

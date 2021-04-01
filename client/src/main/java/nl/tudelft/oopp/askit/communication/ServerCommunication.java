@@ -135,14 +135,14 @@ public class ServerCommunication {
     /**
      * Close the current room using its specified ID.
      *
-     * @param roomId parsed UUID of the lecture room to connect
+     * @param list contains parsed UUID of the lecture room to connect and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> closeRoomHttp(String roomId)
+    public static HttpResponse<String> closeRoomHttp(String list)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(roomId))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/room/close")).build();
         return getStringHttpResponse(request);
     }

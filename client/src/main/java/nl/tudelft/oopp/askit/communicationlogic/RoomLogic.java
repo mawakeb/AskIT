@@ -84,12 +84,19 @@ public class RoomLogic {
      *
      * @param roomId id of the room that needs to be closed
      */
-    public static void closeRoom(String roomId) {
+    public static void closeRoom(String roomId, String roleId) {
+        List<String> list = List.of(
+                roomId,
+                roleId
+        );
+        String parsedList = gson.toJson(list);
         HttpResponse<String> response;
         try {
-            response = closeRoomHttp(roomId);
+            response = closeRoomHttp(parsedList);
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());

@@ -111,17 +111,45 @@ class RoomControllerTest {
     void closeRoom() {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
+        List<String> list = List.of(
+                id.toString(),
+                "staff"
+        );
+        String parsedList = gson.toJson(list);
 
-        rc.closeRoom(id.toString());
+        rc.closeRoom(parsedList);
         verify(roomRepository, times(1)).save(any(Room.class));
+    }
+
+    @Test
+    void closeRoomUnauthorized() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+        List<String> list = List.of(
+                id.toString(),
+                "wrong"
+        );
+        String parsedList = gson.toJson(list);
+
+        // Must throw an exception
+        assertThrows(ResponseStatusException.class, () -> rc.closeRoom(parsedList));
+
+        verify(roomRepository, times(0)).save(any(Room.class));
     }
 
     @Test
     void closeNonExistentRoom() {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(null);
+        List<String> list = List.of(
+                id.toString(),
+                "staff"
+        );
+        String parsedList = gson.toJson(list);
 
-        rc.closeRoom(id.toString());
+        // Must throw an exception
+        assertThrows(ResponseStatusException.class, () -> rc.closeRoom(parsedList));
+
         verify(roomRepository, times(0)).save(any(Room.class));
 
     }
