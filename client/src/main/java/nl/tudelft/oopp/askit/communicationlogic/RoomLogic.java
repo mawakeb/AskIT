@@ -143,7 +143,7 @@ public class RoomLogic {
         }
 
         try {
-            HttpResponse<String> response = setSlowModeHttp(roomId, seconds, "roleId");
+            HttpResponse<String> response = setSlowModeHttp(roomId, seconds, roleId);
             if (response.statusCode() != 200) {
                 JSONObject json = new JSONObject(response.body());
                 ErrorDisplay.open("Status code: " + response.statusCode(),
