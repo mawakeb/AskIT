@@ -119,7 +119,7 @@ public class RoomController {
 
             System.out.println("Incorrect role code");
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Incorrect role code");
+                    HttpStatus.BAD_REQUEST, "Incorrect role code part of the link");
         } else {
             System.out.println("Room not found");
             throw new ResponseStatusException(
