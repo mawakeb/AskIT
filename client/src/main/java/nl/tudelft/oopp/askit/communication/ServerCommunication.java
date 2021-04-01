@@ -191,13 +191,14 @@ public class ServerCommunication {
     /**
      * Gets user opinion on speed.
      *
-     * @param roomId parsed room UUID
+     * @param parsedList contains parsed room UUID and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> getSpeedHttp(String roomId)
+    public static HttpResponse<String> getSpeedHttp(String parsedList)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/speed/get?id=" + roomId)).build();
+                .POST(HttpRequest.BodyPublishers.ofString(parsedList))
+                .uri(URI.create("http://localhost:8080/speed/get")).build();
         return getStringHttpResponse(request);
     }
 
