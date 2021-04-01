@@ -157,14 +157,16 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.answerQuestion(uuid);
+        QuestionLogic.answerQuestion(uuid, ZonedDateTime.now());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+        // But it is impossible to estimate the length as the length of time passed can be different
+
+        //assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test

@@ -142,9 +142,10 @@ public class QuestionLogic {
      *
      * @param id of the answered question
      */
-    public static void answerQuestion(UUID id) {
+    public static void answerQuestion(UUID id, ZonedDateTime roomTime) {
         try {
-            HttpResponse<String> response = answerQuestionHttp(id.toString());
+            HttpResponse<String> response = answerQuestionHttp(id.toString(),
+                    TimeControl.getMilisecondsPassed(roomTime));
 
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());

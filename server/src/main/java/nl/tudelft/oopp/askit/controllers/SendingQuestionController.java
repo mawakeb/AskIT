@@ -104,10 +104,12 @@ public class SendingQuestionController {
      */
     @PostMapping("answer")
     @ResponseBody
-    public void answerQuestion(@RequestBody String id) {
-        UUID uuid = UUID.fromString(id);
+    public void answerQuestion(@RequestBody String body) {
+        String[] info = body.split("!@#");
+        UUID uuid = UUID.fromString(info[0]);
         Question question = repo.findById(uuid);
         question.setAnswered(true);
+        question.setAnswerTime(Integer.parseInt(info[1]));
         repo.save(question);
     }
 
