@@ -79,8 +79,6 @@ public class ServerCommunication {
 
     /**
      * Connects to the server endpoint to upvote a single question.
-     * no verification prevents from calling multiple times on the same question.
-     * that condition should be checked beforehand (assuming that situation is not wanted).
      *
      * @param list the ID of the question and user
      * @return HttpResponse object
@@ -95,16 +93,14 @@ public class ServerCommunication {
 
     /**
      * Connects to the server endpoint to answer a single question.
-     * no verification prevents from calling multiple times on the same question.
-     * that condition should be checked beforehand (assuming that situation is not wanted).
      *
-     * @param id the ID of the question
+     * @param list contains the ID of the question and role
      * @return HttpResponse object
      */
-    public static HttpResponse<String> answerQuestionHttp(String id)
+    public static HttpResponse<String> answerQuestionHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/send/answer")).build();
         return getStringHttpResponse(request);
     }

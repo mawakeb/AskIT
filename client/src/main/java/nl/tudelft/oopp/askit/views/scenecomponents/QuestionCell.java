@@ -158,7 +158,7 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useAnswerBtn(Question q) {
-        QuestionLogic.answerQuestion(q.getId());
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId());
         roomController.updateAll();
     }
 

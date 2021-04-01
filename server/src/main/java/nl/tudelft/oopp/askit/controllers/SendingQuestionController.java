@@ -126,11 +126,20 @@ public class SendingQuestionController {
      */
     @PostMapping("answer")
     @ResponseBody
-    public void answerQuestion(@RequestBody String id) {
-        UUID uuid = UUID.fromString(id);
-        Question question = repo.findById(uuid);
-        question.setAnswered(true);
-        repo.save(question);
+    public void answerQuestion(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID questionId = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
+        Question question = repo.findById(questionId);
+        Room room = roomRepo.findByid(question.getRoomId());
+        if (room.getStaff().equals(roleId)) {
+            question.setAnswered(true);
+            repo.save(question);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator");
+        }
     }
 
 

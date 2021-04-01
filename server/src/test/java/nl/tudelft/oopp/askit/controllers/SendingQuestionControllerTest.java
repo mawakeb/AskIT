@@ -129,8 +129,42 @@ class SendingQuestionControllerTest {
         UUID dupe = UUID.randomUUID();
         Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
-        sc.answerQuestion(uuid.toString());
+        when(roomRepo.findByid(dupe)).thenReturn(room);
+
+        // Simulated request list
+        List<String> sendList = List.of(
+                uuid.toString(),
+                "staf"
+        );
+        String parsedList = gson.toJson(sendList);
+
+        sc.answerQuestion(parsedList);
+
         assertTrue(question.isAnswered());
+
+        verify(repo, times(1)).save(any(Question.class));
+    }
+
+    @Test
+    void answerQuestionUnauthorized() {
+        UUID uuid = UUID.randomUUID();
+        UUID dupe = UUID.randomUUID();
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
+        when(repo.findById(uuid)).thenReturn(question);
+        when(roomRepo.findByid(dupe)).thenReturn(room);
+
+        // Simulated request list
+        List<String> sendList = List.of(
+                uuid.toString(),
+                "wrong"
+        );
+        String parsedList = gson.toJson(sendList);
+
+        // Exception should be thrown
+        assertThrows(ResponseStatusException.class, () -> sc.answerQuestion(parsedList));
+
+
+        verify(repo, times(0)).save(any(Question.class));
     }
 
     @Test
