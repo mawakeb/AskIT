@@ -176,7 +176,7 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        rc.setSlowMode(id.toString(), 5);
+        rc.setSlowMode(id.toString(), 5, "staff");
         verify(roomRepository, times(1)).save(room);
     }
 
@@ -185,6 +185,14 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(null);
 
-        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5));
+        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5, "staff"));
+    }
+
+    @Test
+    void setSlowModeUnauthorized() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5, "wrong"));
     }
 }

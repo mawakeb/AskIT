@@ -183,14 +183,19 @@ public class RoomController {
      */
     @PostMapping("slow")
     @ResponseBody
-    public void setSlowMode(@RequestParam String id, @RequestParam int seconds) {
+    public void setSlowMode(@RequestParam String id, @RequestParam int seconds, @RequestParam String roleId) {
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
-        room.setSlowModeSeconds(seconds);
-        repo.save(room);
+        if (room.getStaff().equals(roleId)) {
+            room.setSlowModeSeconds(seconds);
+            repo.save(room);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
     }
 }

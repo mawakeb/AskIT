@@ -206,9 +206,10 @@ public class ServerCommunication {
      *
      * @param roomId parsed UUID of the User
      * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     * @param roleId moderator code
      * @return HttpResponse object
      */
-    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds)
+    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds, String roleId)
             throws IOException, InterruptedException {
 
         // creates POST with empty body
@@ -217,7 +218,7 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/slow"
-                        + "?id=" + roomId + "&seconds=" + seconds
+                        + "?id=" + roomId + "&seconds=" + seconds + "&roleId=" + roleId
                 )).build();
         return getStringHttpResponse(request);
     }

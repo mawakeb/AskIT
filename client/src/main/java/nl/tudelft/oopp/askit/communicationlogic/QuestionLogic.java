@@ -101,6 +101,7 @@ public class QuestionLogic {
      * Upvotes a question.
      *
      * @param id of the upvoted question
+     * @param userId id of the upVoting user
      */
     public static void upvoteQuestion(UUID id, UUID userId) {
         List<String> sendList = List.of(
@@ -125,6 +126,7 @@ public class QuestionLogic {
      * Answers a question.
      *
      * @param id of the answered question
+     * @param roleId moderator code
      */
     public static void answerQuestion(UUID id, String roleId) {
         List<String> sendList = List.of(

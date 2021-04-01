@@ -83,6 +83,7 @@ public class RoomLogic {
      * Closes the specified room, so no more questions can be added.
      *
      * @param roomId id of the room that needs to be closed
+     * @param roleId moderator code
      */
     public static void closeRoom(String roomId, String roleId) {
         List<String> list = List.of(
@@ -134,16 +135,19 @@ public class RoomLogic {
      *
      * @param roomId parsed UUID of the User
      * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     * @param roleId moderator code
      */
-    public static void setSlowMode(String roomId, int seconds) {
+    public static void setSlowMode(String roomId, int seconds, String roleId) {
         if (roomId == null) {
             return;
         }
 
         try {
-            HttpResponse<String> response = setSlowModeHttp(roomId, seconds);
+            HttpResponse<String> response = setSlowModeHttp(roomId, seconds, "roleId");
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());

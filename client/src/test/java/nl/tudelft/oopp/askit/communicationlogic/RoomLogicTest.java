@@ -166,7 +166,7 @@ class RoomLogicTest {
     void setSlowMode() {
         UUID testId = UUID.randomUUID();
         when(response.statusCode()).thenReturn(200);
-        RoomLogic.setSlowMode(testId.toString(), 42);
+        RoomLogic.setSlowMode(testId.toString(), 42, "staff");
 
         // assert that a request has been sent.
         assertNotNull(request);
@@ -174,7 +174,7 @@ class RoomLogicTest {
 
     @Test
     void setSlowModeNullRoom() {
-        RoomLogic.setSlowMode(null, 42);
+        RoomLogic.setSlowMode(null, 42, "staff");
 
         // assert that no request has been sent.
         assertNull(request);
