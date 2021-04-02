@@ -221,3 +221,7 @@
     -fx-background-position: center;
     -fx-padding: 0;
 }
+
+.slowMenu .arrow {
+    -fx-background-color: #9e9e9e;
+}

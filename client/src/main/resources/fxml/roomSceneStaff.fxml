@@ -31,7 +31,17 @@
             </Button>
             <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="hamburger" stylesheets="@../css/roomSceneStyle.css" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                 <items>
-                    <MenuItem fx:id="slowModeItem" mnemonicParsing="false" onAction="#setSlowMode" text="Enable Slow Mode" />
+               <Menu mnemonicParsing="false" styleClass="slowMenu" text="Slow Mode">
+                 <items>
+                     <RadioMenuItem mnemonicParsing="false" onAction="#setSlowMode" selected="true" text="Disabled">
+                        <toggleGroup>
+                           <ToggleGroup fx:id="slowMode" />
+                        </toggleGroup></RadioMenuItem>
+                     <RadioMenuItem mnemonicParsing="false" onAction="#setSlowMode" text="30 seconds" toggleGroup="$slowMode" />
+                     <RadioMenuItem mnemonicParsing="false" onAction="#setSlowMode" text="1 minute" toggleGroup="$slowMode" />
+                     <RadioMenuItem mnemonicParsing="false" onAction="#setSlowMode" text="5 minutes" toggleGroup="$slowMode" />
+                 </items>
+               </Menu>
                     <MenuItem fx:id="answerModeItem" mnemonicParsing="false" onAction="#setAnswerMode" text="Enable 'DoubleClick to answer'" />
                     <MenuItem fx:id="closeRoomItem" mnemonicParsing="false" onAction="#closeRoomButtonClicked" text="Close Room" />
                     <MenuItem mnemonicParsing="false" onAction="#exportQuestions" text="Export as text file" />

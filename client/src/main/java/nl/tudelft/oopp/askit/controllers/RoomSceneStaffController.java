@@ -4,10 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
@@ -19,11 +20,11 @@ public class RoomSceneStaffController extends RoomController {
     @FXML
     private MenuItem answerModeItem;
     @FXML
-    private MenuItem slowModeItem;
-    @FXML
     private Slider slider;
     @FXML
     private ToggleButton speedButton;
+    @FXML
+    private ToggleGroup slowMode;
 
     private boolean answerMode;
 
@@ -88,17 +89,26 @@ public class RoomSceneStaffController extends RoomController {
      */
     public void setSlowMode() {
 
-        boolean slowMode = slowModeItem.getText().equals("Enable Slow Mode");
-        System.out.println("Slow mode = " + slowMode);
+        RadioMenuItem selectedToggle = (RadioMenuItem) slowMode.getSelectedToggle();
+        String selected = selectedToggle.getText();
+        int slowModeSeconds = 0;
 
+        switch (selected) {
+            case "30 seconds":
+                slowModeSeconds = 30;
+                break;
+            case "1 minute":
+                slowModeSeconds = 60;
+                break;
+            case "5 minutes":
+                slowModeSeconds = 300;
+                break;
+            default:
+                slowModeSeconds = 0;
+                break;
+        }
 
-        // Slow mode is hard coded to a fixed question interval of 20 seconds
-        int slowModeSeconds = slowMode ? 20 : 0;
         RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
-
-        String slowModeLabel = slowMode ? "Disable Slow Mode" : "Enable Slow Mode";
-        slowModeItem.setText(slowModeLabel);
-
     }
 
     protected void updateRoomSpeed() {
