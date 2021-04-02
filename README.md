@@ -30,8 +30,11 @@ This project was made for the CSE1105 OOP project course. The backlog of intende
 ### Server
 3. If the service doesn't need to be persistent, then the server can be immediately executed with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java`
 4. If the service needs to be persistent, first change the value `dev` to `prod` in `server/src/main/resources/application.properties`
-5. Then install PostgreSQL on the server machine, and create a user that has all the privileges.
-6. Log in as the user in the console, and then execute `CREATE DATABASE askit;`. After doing so, the database should show up in a list after executing `\l` command.
+5. Then install PostgreSQL on the server machine.
+6. Log in as the superuser in the console, and then execute:
+   - `CREATE DATABASE askit;` makes the database
+   - `CREATE USER yourUserName WITH PASSWORD 'yourPassword';` creates the user for the database
+   - `GRANT ALL PRIVILEGES ON DATABASE askit TO yourUserName` gives necessary privileges.
 7. Go to `server/src/main/resources/application-prod.properties` and change
    - `spring.datasource.url=jdbc:postgresql://localhost:5432/askit` to whatever you have it on (if you have the default port, it should work without change).
    - `spring.datasource.username=postgres` change `postgres` to your used user.
