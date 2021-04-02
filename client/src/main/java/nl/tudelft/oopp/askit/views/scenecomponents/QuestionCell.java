@@ -96,7 +96,7 @@ public class QuestionCell extends ListCell<Question> {
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
             upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
-            if (upvotedQuestionIds.contains(q.getId())) {
+            if (upvotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
                 upvoteBtn.setOpacity(0.5);
             }
 
@@ -199,6 +199,10 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
+
+        if (!roomController.getRoom().isOpen()) {
+            return;
+        }
 
         if (upvotedQuestionIds.contains(q.getId())) {
             QuestionLogic.cancelUpvote(q.getId());
