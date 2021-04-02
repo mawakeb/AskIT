@@ -120,6 +120,8 @@ public abstract class RoomController {
      */
     public void updateQuestionList() {
         List<Question> questions = QuestionLogic.getQuestions(room.getId().toString());
+        // This line sorts the list by upvotes instead
+        // questions.sort((q1, q2) -> q2.getUpvotes() - q1.getUpvotes());
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
