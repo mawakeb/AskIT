@@ -94,8 +94,8 @@ public class QuestionCell extends ListCell<Question> {
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
-            upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
-            if (upvotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
+            upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
+            if (upVotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
                 upvoteBtn.setOpacity(0.5);
             }
 
@@ -154,7 +154,7 @@ public class QuestionCell extends ListCell<Question> {
                             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
                                     && roomController.getAnswerMode()) {
                                 if (mouseEvent.getClickCount() == 2) {
-                                    useAnswerBtn(new ActionEvent(), q);
+                                    useAnswerBtn(q);
                                 }
                             }
                         }
@@ -185,7 +185,8 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useAnswerBtn(Question q) {
-        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId(), roomController.getRoom().getOpenTime());
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId(),
+                roomController.getRoom().getOpenTime());
         roomController.updateAll();
     }
 
@@ -201,14 +202,14 @@ public class QuestionCell extends ListCell<Question> {
             return;
         }
 
-        if (upvotedQuestionIds.contains(q.getId())) {
-            QuestionLogic.cancelUpvote(q.getId());
-            upvotedQuestionIds.remove(q.getId());
+        if (upVotedQuestionIds.contains(q.getId())) {
+            QuestionLogic.cancelUpvote(q.getId(), roomController.getUser().getId());
+            upVotedQuestionIds.remove(q.getId());
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(1);
         } else {
-            QuestionLogic.upvoteQuestion(q.getId());
-            upvotedQuestionIds.add(q.getId());
+            QuestionLogic.upvoteQuestion(q.getId(), roomController.getUser().getId());
+            upVotedQuestionIds.add(q.getId());
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(0.5);
         }

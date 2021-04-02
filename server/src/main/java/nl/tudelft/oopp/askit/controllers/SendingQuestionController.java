@@ -126,8 +126,27 @@ public class SendingQuestionController {
      */
     @PostMapping("cancelUpvote")
     @ResponseBody
-    public void cancelUpvote(@RequestBody String id) {
-        UUID uuid = UUID.fromString(id);
+    public void cancelUpvote(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID uuid = UUID.fromString(list.get(0));
+        UUID userId = UUID.fromString(list.get(1));
+
+        // Checks if the user has upVoted the question before
+        if (questionUpVotes.containsKey(uuid)) {
+            List<UUID> prev = questionUpVotes.get(uuid);
+            if (prev == null || !prev.contains(userId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, "CANT_CANCEL_WITHOUT_UP_VOTING");
+            } else {
+                prev.remove(userId);
+            }
+
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "CANT_CANCEL_WITHOUT_UP_VOTING");
+        }
+
         Question question = repo.findById(uuid);
         question.cancelUpvote();
         repo.save(question);
