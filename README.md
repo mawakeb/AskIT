@@ -6,8 +6,7 @@ Server: ![Server coverage](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-
 A live QnA board for direct communication between students and lecturers.
 
 ## Description of project
-This project was made for the CSE1105 OOP project course. The backlog of intended features can be found in `docs/Backlog.md`
-Most notable functionality:
+This project was made for the CSE1105 OOP project course. The backlog of intended features can be found in `docs/Backlog.md` <br/> Most notable functionality:
 - Lecturers can create lecture rooms that open on a specific time.
 - Users can ask questions, upvote them and give feedback on the lecture's speed. 
 - Lecturers can answer questions by moving them to a different tab.
