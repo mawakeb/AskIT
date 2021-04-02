@@ -183,7 +183,9 @@ public class RoomController {
      */
     @PostMapping("slow")
     @ResponseBody
-    public void setSlowMode(@RequestParam String id, @RequestParam int seconds, @RequestParam String roleId) {
+    public void setSlowMode(@RequestParam String id, @RequestParam int seconds,
+                            @RequestParam String roleId) {
+
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {

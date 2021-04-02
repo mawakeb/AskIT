@@ -163,13 +163,13 @@ public class ServerCommunication {
     /**
      * Ban a user.
      *
-     * @param userId parsed UUID of the User
+     * @param list contains parsed UUID of the User and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> banUserHttp(String userId)
+    public static HttpResponse<String> banUserHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(userId))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/send/ban")).build();
         return getStringHttpResponse(request);
     }

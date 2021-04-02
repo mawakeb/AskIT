@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import com.google.gson.Gson;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,16 +39,17 @@ class UserControllerTest {
     private RoomRepository roomRepo;
 
     private Question question;
+    private UUID roomId;
 
     @BeforeEach
     void setUp() {
-        UUID roomId = UUID.randomUUID();
+        roomId = UUID.randomUUID();
         question = new Question("test", roomId, UUID.randomUUID(), "nickname", 5);
         Room room = new Room(roomId, "name", "staff", "sd", ZonedDateTime.now());
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingQuestionController(repo, roomRepo);
-        uc = new UserController();
+        uc = new UserController(roomRepo);
     }
 
     @Test
@@ -68,8 +70,52 @@ class UserControllerTest {
     void banUser() {
         UUID uuidToBan = UUID.randomUUID();
         assertFalse(UserController.getBannedUsers().contains(uuidToBan));
-        uc.banUser(uuidToBan.toString());
+        // Simulated request list, to get length
+        List<String> sendList = List.of(
+                uuidToBan.toString(),
+                "staff",
+                roomId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+        // bodyPublisher does not expose the contents d
+
+        uc.banUser(parsedList);
         assertTrue(UserController.getBannedUsers().contains(uuidToBan));
+    }
+
+    @Test
+    void banUserUnauthorized() {
+        UUID uuidToBan = UUID.randomUUID();
+        assertFalse(UserController.getBannedUsers().contains(uuidToBan));
+        // Simulated request list, to get length
+        List<String> sendList = List.of(
+                uuidToBan.toString(),
+                "wrong",
+                roomId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        // Exception should be thrown
+        assertThrows(ResponseStatusException.class, () -> uc.banUser(parsedList));
+
+    }
+
+    @Test
+    void banUserRoomNotFound() {
+        when(roomRepo.findByid(any(UUID.class))).thenReturn(null);
+        UUID uuidToBan = UUID.randomUUID();
+        assertFalse(UserController.getBannedUsers().contains(uuidToBan));
+        // Simulated request list, to get length
+        List<String> sendList = List.of(
+                uuidToBan.toString(),
+                "wrong",
+                roomId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        // Exception should be thrown
+        assertThrows(ResponseStatusException.class, () -> uc.banUser(parsedList));
+
     }
 
     @Test

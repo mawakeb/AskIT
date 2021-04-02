@@ -149,7 +149,8 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useBanBtn(Question q) {
-        UserLogic.banUser(q.getUserId());
+        UserLogic.banUser(q.getUserId(), roomController.getUser().getRoleId(),
+                roomController.getRoomId());
     }
 
     /**

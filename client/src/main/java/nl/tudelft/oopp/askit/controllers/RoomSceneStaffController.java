@@ -52,7 +52,8 @@ public class RoomSceneStaffController extends RoomController {
 
         // Slow mode is hard coded to a fixed question interval of 20 seconds
         int slowModeSeconds = slowMode ? 20 : 0;
-        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds, super.getUser().getRoleId());
+        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds,
+                super.getUser().getRoleId());
     }
 
     protected void updateRoomSpeed() {
