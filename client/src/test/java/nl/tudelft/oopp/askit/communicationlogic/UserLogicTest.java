@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.communication.ServerCommunication;
@@ -21,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
 class UserLogicTest {
+    private static final Gson gson = new Gson();
 
     @Mock
     private HttpClient client;
@@ -55,13 +57,20 @@ class UserLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID userId = UUID.randomUUID();
-        UserLogic.banUser(userId);
+        String roleId = "staff";
+        UserLogic.banUser(userId, roleId, userId.toString());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
-
+        // Simulated request list, to get length
+        List<String> sendList = List.of(
+                userId.toString(),
+                roleId,
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(userId.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 }

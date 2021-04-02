@@ -149,7 +149,8 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useBanBtn(Question q) {
-        UserLogic.banUser(q.getUserId());
+        UserLogic.banUser(q.getUserId(), roomController.getUser().getRoleId(),
+                roomController.getRoomId());
     }
 
     /**
@@ -158,7 +159,7 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useAnswerBtn(Question q) {
-        QuestionLogic.answerQuestion(q.getId());
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId());
         roomController.updateAll();
     }
 
@@ -170,7 +171,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     private void useUpvoteBtn(Button upvoteBtn, Question q) {
         upvoteBtn.setDisable(true);
-        QuestionLogic.upvoteQuestion(q.getId());
+        QuestionLogic.upvoteQuestion(q.getId(), roomController.getUser().getId());
         upVotedQuestionIds.add(q.getId());
         roomController.updateQuestionList();
     }

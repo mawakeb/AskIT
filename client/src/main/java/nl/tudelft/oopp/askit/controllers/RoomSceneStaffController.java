@@ -26,7 +26,7 @@ public class RoomSceneStaffController extends RoomController {
      * Method called through JavaFX onAction attribute.
      */
     public void closeRoomButtonClicked() {
-        RoomLogic.closeRoom(super.getRoom().getId().toString());
+        RoomLogic.closeRoom(super.getRoom().getId().toString(), super.getUser().getRoleId());
         updateRoomStatus();
     }
 
@@ -52,11 +52,12 @@ public class RoomSceneStaffController extends RoomController {
 
         // Slow mode is hard coded to a fixed question interval of 20 seconds
         int slowModeSeconds = slowMode ? 20 : 0;
-        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
+        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds,
+                super.getUser().getRoleId());
     }
 
     protected void updateRoomSpeed() {
-        int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId());
+        int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId(), super.getUser().getRoleId());
         slider.setValue(currentRoomSpeed);
     }
 

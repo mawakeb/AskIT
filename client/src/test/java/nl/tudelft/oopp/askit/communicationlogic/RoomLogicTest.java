@@ -85,8 +85,14 @@ class RoomLogicTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        // 3 is for the '!@#' added
-        int length = name.length() + time.toString().length() + 3;
+        // Used this list to simulate the length
+        List<String> sendList = List.of(
+                name,
+                time.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        int length = parsedList.length();
         assertEquals(length, request.bodyPublisher().get().contentLength());
     }
 
@@ -118,14 +124,20 @@ class RoomLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID roomId = UUID.randomUUID();
-        RoomLogic.closeRoom(roomId.toString());
+        String roleId = "staff";
+
+        RoomLogic.closeRoom(roomId.toString(), roleId);
         assertEquals("POST", request.method());
 
-        // check if a bodyPublisher was successfully included to transfer the value "123"
+        // Simulated request list, to obtain the length
         assertTrue(request.bodyPublisher().isPresent());
-
+        List<String> list = List.of(
+                roomId.toString(),
+                roleId
+        );
+        String parsedList = gson.toJson(list);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(roomId.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
@@ -154,7 +166,7 @@ class RoomLogicTest {
     void setSlowMode() {
         UUID testId = UUID.randomUUID();
         when(response.statusCode()).thenReturn(200);
-        RoomLogic.setSlowMode(testId.toString(), 42);
+        RoomLogic.setSlowMode(testId.toString(), 42, "staff");
 
         // assert that a request has been sent.
         assertNotNull(request);
@@ -162,7 +174,7 @@ class RoomLogicTest {
 
     @Test
     void setSlowModeNullRoom() {
-        RoomLogic.setSlowMode(null, 42);
+        RoomLogic.setSlowMode(null, 42, "staff");
 
         // assert that no request has been sent.
         assertNull(request);

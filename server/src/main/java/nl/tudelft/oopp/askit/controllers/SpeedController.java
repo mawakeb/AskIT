@@ -15,11 +15,9 @@ import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -45,20 +43,30 @@ public class SpeedController {
     /**
      * Returns the rooms speed.
      *
-     * @param id UUID of the room
+     * @param ids contains UUID of the room and moderator code
      * @return the most voted speed. If no one has voted or not
      *          enough votes, return default speed (2)
      */
-    @GetMapping("get")
+    @PostMapping("get")
     @ResponseBody
-    public int getSpeed(@RequestParam String id) {
-        UUID roomId = UUID.fromString(id);
+    public int getSpeed(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID roomId = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
 
         Room room = roomRepo.findByid(roomId);
         if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
+
+        // Checks if moderator
+        if (!room.getStaff().equals(roleId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
+
         int size = room.getSize();
         List<Integer> speedList = roomSpeed.get(roomId);
         if (speedList == null) {

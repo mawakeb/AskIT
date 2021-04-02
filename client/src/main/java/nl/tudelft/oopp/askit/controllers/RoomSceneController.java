@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.askit.controllers;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,10 +7,10 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.SpeedLogic;
 import nl.tudelft.oopp.askit.controllers.abstractclasses.RoomController;
+import nl.tudelft.oopp.askit.methods.TimeControl;
 
 
 public class RoomSceneController extends RoomController {
@@ -77,7 +76,7 @@ public class RoomSceneController extends RoomController {
                     super.getRoom().getId(),
                     super.getUser().getId(),
                     super.getUser().getName(),
-                    super.getRoom().getOpenTime());
+                    TimeControl.getMilisecondsPassed(super.getRoom().getOpenTime()));
             if (questionStatus.equals("BANNED")) {
                 ban = true;
             }

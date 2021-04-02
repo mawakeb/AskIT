@@ -72,32 +72,28 @@ public class ServerCommunication {
 
     /**
      * Connects to the server endpoint to upvote a single question.
-     * no verification prevents from calling multiple times on the same question.
-     * that condition should be checked beforehand (assuming that situation is not wanted).
      *
-     * @param id the ID of the question
+     * @param list the ID of the question and user
      * @return HttpResponse object
      */
-    public static HttpResponse<String> upvoteQuestionHttp(String id)
+    public static HttpResponse<String> upvoteQuestionHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/send/upvote")).build();
         return getStringHttpResponse(request);
     }
 
     /**
      * Connects to the server endpoint to answer a single question.
-     * no verification prevents from calling multiple times on the same question.
-     * that condition should be checked beforehand (assuming that situation is not wanted).
      *
-     * @param id the ID of the question
+     * @param list contains the ID of the question and role
      * @return HttpResponse object
      */
-    public static HttpResponse<String> answerQuestionHttp(String id)
+    public static HttpResponse<String> answerQuestionHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/send/answer")).build();
         return getStringHttpResponse(request);
     }
@@ -105,13 +101,13 @@ public class ServerCommunication {
     /**
      * Create a new room and returns access links.
      *
-     * @param name the String title of the room to create.
+     * @param list that contains both name and open time
      * @return HttpResponse object
      */
-    public static HttpResponse<String> createRoomHttp(String name, String openTime)
+    public static HttpResponse<String> createRoomHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(name + "!@#" + openTime))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/room/create")).build();
         return getStringHttpResponse(request);
     }
@@ -132,14 +128,14 @@ public class ServerCommunication {
     /**
      * Close the current room using its specified ID.
      *
-     * @param roomId parsed UUID of the lecture room to connect
+     * @param list contains parsed UUID of the lecture room to connect and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> closeRoomHttp(String roomId)
+    public static HttpResponse<String> closeRoomHttp(String list)
             throws IOException, InterruptedException {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(roomId))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/room/close")).build();
         return getStringHttpResponse(request);
     }
@@ -160,13 +156,13 @@ public class ServerCommunication {
     /**
      * Ban a user.
      *
-     * @param userId parsed UUID of the User
+     * @param list contains parsed UUID of the User and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> banUserHttp(String userId)
+    public static HttpResponse<String> banUserHttp(String list)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(userId))
+                .POST(HttpRequest.BodyPublishers.ofString(list))
                 .uri(URI.create("http://localhost:8080/send/ban")).build();
         return getStringHttpResponse(request);
     }
@@ -188,13 +184,14 @@ public class ServerCommunication {
     /**
      * Gets user opinion on speed.
      *
-     * @param roomId parsed room UUID
+     * @param parsedList contains parsed room UUID and roleId
      * @return HttpResponse object
      */
-    public static HttpResponse<String> getSpeedHttp(String roomId)
+    public static HttpResponse<String> getSpeedHttp(String parsedList)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/speed/get?id=" + roomId)).build();
+                .POST(HttpRequest.BodyPublishers.ofString(parsedList))
+                .uri(URI.create("http://localhost:8080/speed/get")).build();
         return getStringHttpResponse(request);
     }
 
@@ -203,9 +200,10 @@ public class ServerCommunication {
      *
      * @param roomId parsed UUID of the User
      * @param seconds amount of seconds between questions for slow mode, 0 to disable slow mode
+     * @param roleId moderator code
      * @return HttpResponse object
      */
-    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds)
+    public static HttpResponse<String> setSlowModeHttp(String roomId, int seconds, String roleId)
             throws IOException, InterruptedException {
 
         // creates POST with empty body
@@ -214,7 +212,7 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .uri(URI.create("http://localhost:8080/room/slow"
-                        + "?id=" + roomId + "&seconds=" + seconds
+                        + "?id=" + roomId + "&seconds=" + seconds + "&roleId=" + roleId
                 )).build();
         return getStringHttpResponse(request);
     }

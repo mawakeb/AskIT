@@ -85,7 +85,7 @@ class SpeedLogicTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(gson.toJson(speed));
 
-        int actualSpeed = SpeedLogic.getSpeed(UUID.randomUUID().toString());
+        int actualSpeed = SpeedLogic.getSpeed(UUID.randomUUID().toString(), "staff");
         assertEquals(actualSpeed, speed);
     }
 }

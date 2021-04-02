@@ -45,12 +45,19 @@ public class SpeedLogic {
     /** Gets the speed of current room based on votes by students.
      *
      * @param roomId UUID of the room
+     * @param roleId moderator code
      * @return the speed that is calculated on the server. In case of error, return default (2)
      */
-    public static int getSpeed(String roomId) {
+    public static int getSpeed(String roomId, String roleId) {
+        List<String> sendList = List.of(
+                roomId,
+                roleId
+        );
+        String parsedList = gson.toJson(sendList);
+
         HttpResponse<String> response;
         try {
-            response = getSpeedHttp(roomId);
+            response = getSpeedHttp(parsedList);
 
             if (response.statusCode() != 200) {
                 JSONObject json = new JSONObject(response.body());
