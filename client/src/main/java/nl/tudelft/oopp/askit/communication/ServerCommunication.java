@@ -21,18 +21,11 @@ public class ServerCommunication {
      * Tries to send specified request to server and catch any exceptions.
      *
      * @param request HttpRequest to send.
-     * @return response object or null.
+     * @return response object.
      */
     static HttpResponse<String> getStringHttpResponse(HttpRequest request)
             throws IOException, InterruptedException {
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-        return response;
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     /**

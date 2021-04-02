@@ -28,7 +28,7 @@ public class RoomLogic {
      * @return returns 2 links, one for staff one for student
      */
     public static List<String> createRoom(String name, ZonedDateTime openTime) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = createRoomHttp(name, openTime.toString());
 
@@ -79,7 +79,7 @@ public class RoomLogic {
      * @param roomId id of the room that needs to be closed
      */
     public static void closeRoom(String roomId) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = closeRoomHttp(roomId);
             if (response.statusCode() != 200) {

@@ -37,19 +37,17 @@ class UserControllerTest {
     @Mock
     private RoomRepository roomRepo;
 
-    private Room room;
-
     private Question question;
 
     @BeforeEach
     void setUp() {
         UUID roomId = UUID.randomUUID();
         question = new Question("test", roomId, UUID.randomUUID(), "nickname", 5);
-        room = new Room(roomId, "name", "staff", "sd", ZonedDateTime.now());
+        Room room = new Room(roomId, "name", "staff", "sd", ZonedDateTime.now());
         MockitoAnnotations.initMocks(this); // necessary when using @Mock's
         when(roomRepo.findByid(any(UUID.class))).thenReturn(room);
         sc = new SendingQuestionController(repo, roomRepo);
-        uc = new UserController(repo, roomRepo);
+        uc = new UserController();
     }
 
     @Test

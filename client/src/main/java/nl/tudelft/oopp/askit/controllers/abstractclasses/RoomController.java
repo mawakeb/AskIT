@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.askit.controllers.abstractclasses;
 
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Timer;
@@ -8,15 +7,11 @@ import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
@@ -61,9 +56,7 @@ public abstract class RoomController {
         this.update = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    updateAll();
-                });
+                Platform.runLater(() -> updateAll());
             }
         };
         this.timer = new Timer();
@@ -72,7 +65,7 @@ public abstract class RoomController {
         tooltip.setShowDelay(Duration.seconds(0.2));
         speedButton.setTooltip(tooltip);
 
-        this.slider.setLabelFormatter(new StringConverter<Double>() {
+        this.slider.setLabelFormatter(new StringConverter<>() {
             @Override
             public String toString(Double n) {
                 if (n < 1) {

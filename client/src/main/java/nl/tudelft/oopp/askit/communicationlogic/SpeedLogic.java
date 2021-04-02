@@ -21,7 +21,7 @@ public class SpeedLogic {
      * @param roomId UUID of the room
      */
     public static void sendSpeed(int speed, UUID userId, String roomId) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         List<String> sendList = List.of(
                 Integer.toString(speed),
                 userId.toString(),
@@ -48,7 +48,7 @@ public class SpeedLogic {
      * @return the speed that is calculated on the server. In case of error, return default (2)
      */
     public static int getSpeed(String roomId) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = getSpeedHttp(roomId);
 

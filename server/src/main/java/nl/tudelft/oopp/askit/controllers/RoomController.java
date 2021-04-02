@@ -28,7 +28,7 @@ public class RoomController {
 
     private static final Gson gson = SerializingControl.getGsonObject();
 
-    private RoomRepository repo;
+    private final RoomRepository repo;
 
     @Autowired
     public RoomController(RoomRepository repo) {
@@ -51,7 +51,9 @@ public class RoomController {
         ZonedDateTime time = ZonedDateTime.parse(info[1]);
 
         String string2;
-        for (string2 = randomString(); string1.equals(string2); string2 = randomString()) {
+        string2 = randomString();
+        while (string1.equals(string2)) {
+            string2 = randomString();
         }
         UUID roomId = UUID.randomUUID();
         Room newRoom = new Room(roomId, info[0], string1, string2, time);
