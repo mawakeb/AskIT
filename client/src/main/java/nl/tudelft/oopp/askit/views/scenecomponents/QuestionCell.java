@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.views.scenecomponents;
 import java.util.HashSet;
 import java.util.UUID;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -94,7 +93,6 @@ public class QuestionCell extends ListCell<Question> {
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
-            upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
             if (upVotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
                 upvoteBtn.setOpacity(0.5);
             }
@@ -202,14 +200,17 @@ public class QuestionCell extends ListCell<Question> {
             return;
         }
 
-        if (upVotedQuestionIds.contains(q.getId())) {
-            QuestionLogic.cancelUpvote(q.getId(), roomController.getUser().getId());
-            upVotedQuestionIds.remove(q.getId());
+        UUID id = q.getId();
+
+        if (upVotedQuestionIds.contains(id)) {
+            QuestionLogic.cancelUpvote(id, roomController.getUser().getId());
+            upVotedQuestionIds.remove(id);
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(1);
+            System.out.println("cancel Upvote");
         } else {
-            QuestionLogic.upvoteQuestion(q.getId(), roomController.getUser().getId());
-            upVotedQuestionIds.add(q.getId());
+            QuestionLogic.upvoteQuestion(id, roomController.getUser().getId());
+            upVotedQuestionIds.add(id);
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(0.5);
         }
