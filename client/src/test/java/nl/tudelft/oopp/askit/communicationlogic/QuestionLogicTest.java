@@ -116,8 +116,6 @@ class QuestionLogicTest {
                 roomTimeTest);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        // This sometimes fails, because TimeControl.getMilisecondsPassed(time) can differ depending on execution time
-        // Cant really solve this because the method is called
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
     }
 

@@ -185,7 +185,8 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(null);
 
-        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5, "staff"));
+        assertThrows(ResponseStatusException.class,() ->
+                rc.setSlowMode(id.toString(), 5, "staff"));
     }
 
     @Test
@@ -193,6 +194,7 @@ class RoomControllerTest {
         // sets up a response
         when(roomRepository.findByid(id)).thenReturn(room);
 
-        assertThrows(ResponseStatusException.class, () -> rc.setSlowMode(id.toString(), 5, "wrong"));
+        assertThrows(ResponseStatusException.class, () ->
+                rc.setSlowMode(id.toString(), 5, "wrong"));
     }
 }
