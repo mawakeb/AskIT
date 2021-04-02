@@ -64,7 +64,7 @@
     -fx-background-color: #003f71;
     -fx-background-radius: 5;
     -fx-text-fill: #fff;
-    -fx-margin: 10 0 40 0;
+    -fx-margin: 10px 0 40px 0;
     -fx-padding: 7 12;
 }
 
@@ -194,7 +194,6 @@
     -fx-background-color: #1F2940;
     -fx-border-width: 2px;
     -fx-border-color: linear-gradient(to bottom, #21C5ED, #28cf87);
-    -fx-border-radius: 3;
     -fx-background-radius: 15;
     -fx-border-radius: 15;
     -fx-text-fill: #fff;

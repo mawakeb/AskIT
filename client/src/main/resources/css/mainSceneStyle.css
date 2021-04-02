@@ -50,7 +50,7 @@
     -fx-font-size: 130%
 }
 
-.list-cell:odd: hover {
+.list-cell:odd:hover {
     -fx-text-fill: #1F2940;
     -fx-background-color: #21C5ED;
 }

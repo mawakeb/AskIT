@@ -21,6 +21,7 @@ import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.methods.SerializingControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -55,7 +56,7 @@ class RoomLogicTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -84,8 +85,14 @@ class RoomLogicTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        // 3 is for the '!@#' added
-        int length = name.length() + time.toString().length() + 3;
+        // Used this list to simulate the length
+        List<String> sendList = List.of(
+                name,
+                time.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        int length = parsedList.length();
         assertEquals(length, request.bodyPublisher().get().contentLength());
     }
 
@@ -104,6 +111,7 @@ class RoomLogicTest {
         List<String> strings = RoomLogic.joinRoom("epic/link");
         assertEquals("GET", request.method());
 
+        assertNotNull(strings);
         assertEquals(strings.get(0), expected.get(0));
         assertEquals(strings.get(1), expected.get(1));
         assertEquals(strings.get(2), expected.get(2));
@@ -116,14 +124,20 @@ class RoomLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID roomId = UUID.randomUUID();
-        RoomLogic.closeRoom(roomId.toString());
+        String roleId = "staff";
+
+        RoomLogic.closeRoom(roomId.toString(), roleId);
         assertEquals("POST", request.method());
 
-        // check if a bodyPublisher was successfully included to transfer the value "123"
+        // Simulated request list, to obtain the length
         assertTrue(request.bodyPublisher().isPresent());
-
+        List<String> list = List.of(
+                roomId.toString(),
+                roleId
+        );
+        String parsedList = gson.toJson(list);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(roomId.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
@@ -152,7 +166,7 @@ class RoomLogicTest {
     void setSlowMode() {
         UUID testId = UUID.randomUUID();
         when(response.statusCode()).thenReturn(200);
-        RoomLogic.setSlowMode(testId.toString(), 42);
+        RoomLogic.setSlowMode(testId.toString(), 42, "staff");
 
         // assert that a request has been sent.
         assertNotNull(request);
@@ -160,7 +174,7 @@ class RoomLogicTest {
 
     @Test
     void setSlowModeNullRoom() {
-        RoomLogic.setSlowMode(null, 42);
+        RoomLogic.setSlowMode(null, 42, "staff");
 
         // assert that no request has been sent.
         assertNull(request);

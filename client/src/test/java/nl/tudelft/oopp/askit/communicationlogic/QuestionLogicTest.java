@@ -2,7 +2,6 @@ package nl.tudelft.oopp.askit.communicationlogic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -20,6 +19,7 @@ import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.methods.TimeControl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -46,7 +46,7 @@ class QuestionLogicTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -103,7 +103,7 @@ class QuestionLogicTest {
 
         UUID testId = UUID.randomUUID();
         UUID testUserId = UUID.randomUUID();
-        ZonedDateTime roomTimeTest = ZonedDateTime.now();
+        int roomTimeTest = TimeControl.getMilisecondsPassed(ZonedDateTime.now());
 
         assertEquals("SUCCESS",QuestionLogic.sendQuestion(text, testId,
                 testUserId, "nickname", roomTimeTest));
@@ -113,7 +113,7 @@ class QuestionLogicTest {
         assertTrue(request.bodyPublisher().isPresent());
 
         Question userQuestion = new Question(text, 0, testId, testUserId, "nickname",
-                TimeControl.getMilisecondsPassed(roomTimeTest));
+                roomTimeTest);
         String parsedQuestion = gson.toJson(userQuestion);
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedQuestion.length(), request.bodyPublisher().get().contentLength());
@@ -125,30 +125,44 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.upvoteQuestion(uuid);
+        UUID userId = UUID.randomUUID();
+        QuestionLogic.upvoteQuestion(uuid, userId);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
+        // Simulates the sendList to get length
+        List<String> sendList = List.of(
+                uuid.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test
     void cancelUpvote() {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
-
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.cancelUpvote(uuid);
+
+        QuestionLogic.answerQuestion(uuid, "staff");
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
 
+        // Simulated sending list, so we can get its length
+        List<String> sendList = List.of(
+                uuid.toString(),
+                "staff"
+        );
+        String parsedList = gson.toJson(sendList);
+
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test

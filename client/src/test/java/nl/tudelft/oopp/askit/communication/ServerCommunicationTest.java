@@ -13,14 +13,13 @@ import java.net.http.HttpResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
 
 public class ServerCommunicationTest {
-
-    private static final Gson gson = new Gson();
 
     @Mock
     private HttpClient client;
@@ -41,7 +40,7 @@ public class ServerCommunicationTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> response);
 
         ServerCommunication.setHttpClient(client);
@@ -62,7 +61,7 @@ public class ServerCommunicationTest {
         // test the exception handling, getStringHttpResponse should not fail but just return null
         HttpResponse<String> result = null;
         try {
-            when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+            when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                     .thenThrow(IOException.class);
             result = ServerCommunication.getStringHttpResponse(mockRequest);
         } catch (Exception e) {

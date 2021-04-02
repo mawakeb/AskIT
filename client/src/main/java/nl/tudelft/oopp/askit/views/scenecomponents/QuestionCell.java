@@ -32,8 +32,8 @@ public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
-    private boolean staffRole;
+    private static final HashSet<UUID> upVotedQuestionIds = new HashSet<>();
+    private final boolean staffRole;
     private final RoomController roomController;
 
     /**
@@ -43,10 +43,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomController roomController) {
         this.roomController = roomController;
-        this.staffRole = false;
-        if (roomController instanceof RoomSceneStaffController) {
-            this.staffRole = true;
-        }
+        this.staffRole = roomController instanceof RoomSceneStaffController;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -91,7 +88,9 @@ public class QuestionCell extends ListCell<Question> {
                     + "-fx-font-size: 70%;");
 
             // create upvote button
-            Button upvoteBtn = new Button();
+            Button upvoteBtn = new Button("");
+            upvoteBtn.setDisable(upVotedQuestionIds.contains(q.getId()));
+            upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
@@ -136,12 +135,12 @@ public class QuestionCell extends ListCell<Question> {
                 MenuItem banItem = new MenuItem("Ban User");
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
                 box.setStyle("-fx-padding: 7 0 7 12");
-                banItem.setOnAction(event -> useBanBtn(event, q));
+                banItem.setOnAction(event -> useBanBtn(q));
                 box.getChildren().add(menuBtn);
 
                 if (!q.isAnswered()) {
                     MenuItem answerItem = new MenuItem("Answer");
-                    answerItem.setOnAction(event -> useAnswerBtn(event, q));
+                    answerItem.setOnAction(event -> useAnswerBtn(q));
                     menuBtn.getItems().add(answerItem);
                 }
 
@@ -173,32 +172,30 @@ public class QuestionCell extends ListCell<Question> {
     /**
      * Automatically Called when clicking the ban button.
      *
-     * @param event JavaFx button press event
      * @param q     question the button relates to
      */
-    private void useBanBtn(ActionEvent event, Question q) {
-        UserLogic.banUser(q.getUserId());
+    private void useBanBtn(Question q) {
+        UserLogic.banUser(q.getUserId(), roomController.getUser().getRoleId(),
+                roomController.getRoomId());
     }
 
     /**
      * Automatically Called when clicking the answer button.
      *
-     * @param event JavaFx button press event
      * @param q     question the button relates to
      */
-    private void useAnswerBtn(ActionEvent event, Question q) {
-        QuestionLogic.answerQuestion(q.getId(), roomController.getRoom().getOpenTime());
+    private void useAnswerBtn(Question q) {
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId(), roomController.getRoom().getOpenTime());
         roomController.updateAll();
     }
 
     /**
      * Automatically Called when clicking the upvote button.
      *
-     * @param event     JavaFX button press event
      * @param upvoteBtn button that was pressed
      * @param q         question the button relates to
      */
-    private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
+    private void useUpvoteBtn(Button upvoteBtn, Question q) {
 
         if (!roomController.getRoom().isOpen()) {
             return;

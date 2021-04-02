@@ -11,16 +11,13 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
 import nl.tudelft.oopp.askit.methods.SpeedMethods;
-import nl.tudelft.oopp.askit.repositories.QuestionRepository;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,41 +25,48 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("speed")
 public class SpeedController {
     private static final Gson gson = new Gson();
-    private final QuestionRepository repo;
     private final RoomRepository roomRepo;
 
-    private static HashMap<UUID, Integer> userVote = new HashMap<>();
-    private static HashMap<UUID, List<Integer>> roomSpeed = new HashMap<>();
+    private static final HashMap<UUID, Integer> userVote = new HashMap<>();
+    private static final HashMap<UUID, List<Integer>> roomSpeed = new HashMap<>();
 
     /**
      * Constructor for SpeedController, autowired for JPA repositories.
      *
-     * @param repo     repository with all questions
      * @param roomRepo repository with all rooms
      */
     @Autowired
-    public SpeedController(QuestionRepository repo, RoomRepository roomRepo) {
-        this.repo = repo;
+    public SpeedController(RoomRepository roomRepo) {
         this.roomRepo = roomRepo;
     }
 
     /**
      * Returns the rooms speed.
      *
-     * @param id UUID of the room
+     * @param ids contains UUID of the room and moderator code
      * @return the most voted speed. If no one has voted or not
      *          enough votes, return default speed (2)
      */
-    @GetMapping("get")
+    @PostMapping("get")
     @ResponseBody
-    public int getSpeed(@RequestParam String id) {
-        UUID roomId = UUID.fromString(id);
+    public int getSpeed(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID roomId = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
 
         Room room = roomRepo.findByid(roomId);
         if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
+
+        // Checks if moderator
+        if (!room.getStaff().equals(roleId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
+
         int size = room.getSize();
         List<Integer> speedList = roomSpeed.get(roomId);
         if (speedList == null) {
@@ -85,9 +89,8 @@ public class SpeedController {
         UUID userId = UUID.fromString(list.get(1));
         UUID roomId = UUID.fromString(list.get(2));
 
-        Room room;
         try {
-            room = roomRepo.findByid(roomId);
+            roomRepo.findByid(roomId);
         } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");

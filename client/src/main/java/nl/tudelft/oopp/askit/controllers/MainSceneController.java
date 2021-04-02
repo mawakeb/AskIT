@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -88,7 +87,7 @@ public class MainSceneController {
     /**
      * Handles clicking the create button.
      */
-    public void createButtonClicked() throws IOException, InterruptedException {
+    public void createButtonClicked() {
         List<String> links = RoomLogic.createRoom(userText.getText(),
                 ZonedDateTime.now());
         userText.clear();
@@ -142,14 +141,14 @@ public class MainSceneController {
         List<String> responseList = RoomLogic.joinRoom(link);
         if (responseList != null) {
             String[] links = link.split("/");
-            String roomId = links[0];
+            String roomId = links[1];
             Room room = RoomLogic.getRoomStatus(roomId);
-            String roleId = responseList.get(1);
-            String roomScene = roleId.equals("staff")
+            String roleName = responseList.get(1);
+            String roomScene = roleName.equals("staff")
                     ? "/fxml/roomSceneStaff.fxml"
                     : "/fxml/roomScene.fxml";
 
-            User user = new User(UUID.fromString(roomId), roleId, username.getText(), links[1]);
+            User user = new User(UUID.fromString(roomId), roleName, username.getText(), links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
         }
     }

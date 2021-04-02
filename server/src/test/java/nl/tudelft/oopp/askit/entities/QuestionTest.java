@@ -1,8 +1,10 @@
 package nl.tudelft.oopp.askit.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -51,7 +53,7 @@ public class QuestionTest {
 
     @Test
     void isAnswered() {
-        assertEquals(question.isAnswered(), false);
+        assertFalse(question.isAnswered());
     }
 
     @Test
@@ -87,24 +89,24 @@ public class QuestionTest {
 
     @Test
     void isDeleted() {
-        assertEquals(question.isDeleted(), false);
+        assertFalse(question.isDeleted());
     }
 
     @Test
     void isEdited() {
-        assertEquals(question.isEdited(), false);
+        assertFalse(question.isEdited());
     }
 
     @Test
     void setDeleted() {
         question.setDeleted(true);
-        assertEquals(question.isDeleted(), true);
+        assertTrue(question.isDeleted());
     }
 
     @Test
     void setEdited() {
         question.setEdited(true);
-        assertEquals(question.isEdited(), true);
+        assertTrue(question.isEdited());
     }
 
     @Test
@@ -116,7 +118,7 @@ public class QuestionTest {
     @Test
     void setAnswered() {
         question.setAnswered(true);
-        assertEquals(question.isAnswered(), true);
+        assertTrue(question.isAnswered());
     }
 
     @Test

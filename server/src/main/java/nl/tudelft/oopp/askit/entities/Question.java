@@ -144,7 +144,7 @@ public class Question {
     }
 
     public void setCreateTime(int createTime) {
-        this.createTime = Question.this.createTime;
+        this.createTime = createTime;
     }
 
     public int getAnswerTime() {

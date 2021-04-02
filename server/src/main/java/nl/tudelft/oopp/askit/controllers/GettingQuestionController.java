@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("get")
 public class GettingQuestionController {
 
-    private QuestionRepository repo;
+    private final QuestionRepository repo;
 
     @Autowired
     public GettingQuestionController(QuestionRepository repo) {

@@ -1,7 +1,11 @@
 package nl.tudelft.oopp.askit.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Question;
@@ -26,10 +30,12 @@ public class SendingQuestionController {
     private static final Gson gson = new Gson();
     private final QuestionRepository repo;
     private final RoomRepository roomRepo;
+    private static final HashMap<UUID, List<UUID>> questionUpVotes = new HashMap<>();
 
     /**
      * Constructor for SendingController, autowired for JPA repositories.
-     * @param repo repository with all questions
+     *
+     * @param repo     repository with all questions
      * @param roomRepo repository with all rooms
      */
     @Autowired
@@ -64,6 +70,13 @@ public class SendingQuestionController {
                     HttpStatus.NOT_FOUND, "ROOM_NOT_FOUND");
         }
 
+        // Checks if user didn't bypass open time
+        if (room.getOpenTime().isAfter(ZonedDateTime.now())) {
+            System.out.println("Room is not open yet");
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "ROOM_NOT_OPEN");
+        }
+
         if (room.isOpen()) {
             userQuestion.setCreateTime(TimeControl.getMilisecondsPassed(room.getOpenTime()));
             repo.save(userQuestion);
@@ -80,8 +93,29 @@ public class SendingQuestionController {
      */
     @PostMapping("upvote")
     @ResponseBody
-    public void upvoteQuestion(@RequestBody String id) {
-        UUID uuid = UUID.fromString(id);
+    public void upvoteQuestion(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID uuid = UUID.fromString(list.get(0));
+        UUID userId = UUID.fromString(list.get(1));
+
+        // Checks if the user hasn't upVoted before the same question
+        if (questionUpVotes.containsKey(uuid)) {
+            List<UUID> prev = questionUpVotes.get(uuid);
+            if (prev == null) {
+                prev = new ArrayList<>();
+            }
+            if (prev.contains(userId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, "CANT_UPVOTE_TWICE");
+            } else {
+                prev.add(userId);
+            }
+
+        } else {
+            questionUpVotes.put(uuid, List.of(userId));
+        }
+
         Question question = repo.findById(uuid);
         question.addUpvote();
         repo.save(question);
@@ -104,13 +138,22 @@ public class SendingQuestionController {
      */
     @PostMapping("answer")
     @ResponseBody
-    public void answerQuestion(@RequestBody String body) {
-        String[] info = body.split("!@#");
-        UUID uuid = UUID.fromString(info[0]);
-        Question question = repo.findById(uuid);
-        question.setAnswered(true);
-        question.setAnswerTime(Integer.parseInt(info[1]));
-        repo.save(question);
+    public void answerQuestion(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID questionId = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
+        Question question = repo.findById(questionId);
+        Room room = roomRepo.findByid(question.getRoomId());
+        if (room.getStaff().equals(roleId)) {
+            question.setAnswered(true);
+            question.setAnswerTime(Integer.parseInt(list.get(2)));
+            repo.save(question);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator");
+        }
+        
     }
 
 
@@ -146,5 +189,9 @@ public class SendingQuestionController {
         int timePassed = currentRoomTime - lastQuestionTime;
 
         return room.getSlowModeSeconds() * 1000 - timePassed;
+    }
+
+    public static HashMap<UUID, List<UUID>> getQuestionUpVotes() {
+        return questionUpVotes;
     }
 }

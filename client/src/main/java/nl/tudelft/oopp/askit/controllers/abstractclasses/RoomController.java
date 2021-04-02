@@ -67,9 +67,7 @@ public abstract class RoomController {
         this.update = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    updateAll();
-                });
+                Platform.runLater(() -> updateAll());
             }
         };
         this.timer = new Timer();
@@ -78,7 +76,7 @@ public abstract class RoomController {
         tooltip.setShowDelay(Duration.seconds(0.2));
         speedButton.setTooltip(tooltip);
 
-        this.slider.setLabelFormatter(new StringConverter<Double>() {
+        this.slider.setLabelFormatter(new StringConverter<>() {
             @Override
             public String toString(Double n) {
                 if (n < 1) {
