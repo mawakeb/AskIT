@@ -1,14 +1,18 @@
 Client: ![Client coverage](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-44/repository-template/badges/master/coverage.svg?job=client-test)
 Server: ![Server coverage](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-repositories/oopp-group-44/repository-template/badges/master/coverage.svg?job=server-test)
 
-# Starting template
+# AskIT
 
-This README will need to contain a description of your project, how to run it, how to set up the development
-environment, and who worked on it. This information can be added throughout the course, except for the names of the
-group members. Add your own name (do not add the names for others!) to the section below.
+A live QnA board for direct communication between students and lecturers.
 
 ## Description of project
-
+This project was made for the CSE1105 OOP project course. The backlog of intended features can be found in `docs/Backlog.md`
+Most notable functionality:
+- Lecturers can create lecture rooms that open on a specific time.
+- Users can ask questions, upvote them and give feedback on the lecture's speed. 
+- Lecturers can answer questions by moving them to a different tab.
+- Moderators can ban users.
+- Answered questions can be exported
 ## Group members
 
 | 📸 | Name | Email |
@@ -20,7 +24,30 @@ group members. Add your own name (do not add the names for others!) to the secti
 | ![](https://eu.ui-avatars.com/api/?name=EF&length=4&size=50&color=DDD&background=0d7f5a&font-size=0.35) | Ebenezer Fosu | E.Fosu@student.tudelft.nl |
 
 ## How to run it
+1. Project can be cloned with `git clone git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-44/repository-template.git`
+2. Project can be built using the build.gradle file.
+### Client
+3. The client can be executed with `client/src/main/java/nl/tudelft/oopp/askit/ClientApp.java`
+### Server
+3. If the service doesn't need to be persistent, then the server can be immediately executed with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java`
+4. If the service needs to be persistent, first change the value `dev` to `prod` in `server/src/main/resources/application.properties`
+5. Then install PostgreSQL on the server machine, and create a user that has all the privileges.
+6. Log in as the user in the console, and then execute `CREATE DATABASE askit;`. After doing so, the database should show up in a list after executing `\l` command.
+7. Go to `server/src/main/resources/application-prod.properties` and change
+   - `spring.datasource.url=jdbc:postgresql://localhost:5432/askit` to whatever you have it on (if you have the default port, it should work without change).
+   - `spring.datasource.username=postgres` change `postgres` to your used user.
+   - `spring.datasource.password=root` change `root` to your user password for the user.
+8. The app then must be run with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java` once to initialize the database. Next steps are to increase security.
+9. After 8. is done properly, the value `spring.jpa.hibernate.ddl-auto=update` should be changed from `update` to `none`.
+10. To limit accessibility, log into as superuser into postgreSQL on the console and execute  `revoke all on askit.* from 'yourUserName';` and then execute `grant select, insert, delete, update on askit.* to 'yourUserName';`
+11. The server can be executed with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java`
+
+Reference: https://spring.io/guides/gs/accessing-data-mysql/
 
 ## How to contribute to it
+1. Set up a local environment for the project
+2. After adding significant changes, a merge request can be made that adds these changes to the master branch.
+3. If the original team members approve of these changes and the changes pass the pipeline and Code of Conduct guidelines, it can be added to the project's source code.
 
-## Copyright / License (opt.)
+## Copyright / License 
+This project is under the MIT license.
