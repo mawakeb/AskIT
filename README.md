@@ -41,7 +41,7 @@ This project was made for the CSE1105 OOP project course. The backlog of intende
    - `spring.datasource.password=root` change `root` to your user password for the user.
 8. The app then must be run with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java` once to initialize the database. Next steps are to increase security.
 9. After 8. is done properly, the value `spring.jpa.hibernate.ddl-auto=update` should be changed from `update` to `none`.
-10. To limit accessibility, log into as superuser into postgreSQL on the console and execute  `revoke all on askit.* from 'yourUserName';` and then execute `grant select, insert, delete, update on askit.* to 'yourUserName';`
+10. To limit accessibility, log into as superuser into postgreSQL on the console and execute  `REVOKE ALL PRIVILEGES ON DATABASE askit FROM yourUserName;` and then execute `GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO yourUserName;`
 11. The server can be executed with `server/src/main/java/nl/tudelft/oopp/askit/ServerApplication.java`
 
 Reference: https://spring.io/guides/gs/accessing-data-mysql/
