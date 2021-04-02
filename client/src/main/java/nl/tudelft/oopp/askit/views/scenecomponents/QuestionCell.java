@@ -211,5 +211,6 @@ public class QuestionCell extends ListCell<Question> {
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(0.5);
         }
+        roomController.updateAll();
     }
 }
