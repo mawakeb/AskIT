@@ -170,7 +170,6 @@ public abstract class RoomController {
      */
 
     public void exportQuestions() throws FileNotFoundException {
-        List<Question> questions = QuestionLogic.getAnswered(getRoomId());
         JFileChooser f = new JFileChooser();
         f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         f.showSaveDialog(null);
@@ -178,6 +177,8 @@ public abstract class RoomController {
                 + "\\" + room.getName() + " Export.txt");
         System.out.println(file.getAbsolutePath());
         PrintWriter writer = new PrintWriter(file);
+
+        List<Question> questions = QuestionLogic.getAnswered(getRoomId());
         for (Question question : questions) {
             String prettyTime = TimeControl.getPrettyTime(question.getAnswerTime()).trim();
             String questionContent = question.getContent().trim();

@@ -109,7 +109,7 @@ class SendingQuestionControllerTest {
         UUID dupe = UUID.randomUUID();
         Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
         when(repo.findById(uuid)).thenReturn(question);
-        sc.answerQuestion(uuid.toString());
+        sc.answerQuestion(uuid.toString() + "!@#" + 200);
         assertTrue(question.isAnswered());
     }
 
