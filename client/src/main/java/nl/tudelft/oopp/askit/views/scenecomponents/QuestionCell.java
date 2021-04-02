@@ -88,13 +88,14 @@ public class QuestionCell extends ListCell<Question> {
 
             // create upvote button
             Button upvoteBtn = new Button("");
-            upvoteBtn.setDisable(upVotedQuestionIds.contains(q.getId()));
             upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
             if (upVotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
                 upvoteBtn.setOpacity(0.5);
+            } else {
+                upvoteBtn.setOpacity(1);
             }
 
             // combine elements in box and set the cell display to it
@@ -203,12 +204,13 @@ public class QuestionCell extends ListCell<Question> {
         UUID id = q.getId();
 
         if (upVotedQuestionIds.contains(id)) {
+            System.out.println("cancel Upvote");
             QuestionLogic.cancelUpvote(id, roomController.getUser().getId());
             upVotedQuestionIds.remove(id);
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(1);
-            System.out.println("cancel Upvote");
         } else {
+            System.out.println("just Upvote");
             QuestionLogic.upvoteQuestion(id, roomController.getUser().getId());
             upVotedQuestionIds.add(id);
             roomController.updateQuestionList();

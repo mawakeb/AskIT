@@ -30,7 +30,7 @@ public class SendingQuestionController {
     private static final Gson gson = new Gson();
     private final QuestionRepository repo;
     private final RoomRepository roomRepo;
-    private static final HashMap<UUID, List<UUID>> questionUpVotes = new HashMap<>();
+    private static final HashMap<UUID, ArrayList<UUID>> questionUpVotes = new HashMap<>();
 
     /**
      * Constructor for SendingController, autowired for JPA repositories.
@@ -113,7 +113,9 @@ public class SendingQuestionController {
             }
 
         } else {
-            questionUpVotes.put(uuid, List.of(userId));
+            ArrayList<UUID> arrayList = new ArrayList<>();
+            arrayList.add(userId);
+            questionUpVotes.put(uuid, arrayList);
         }
 
         Question question = repo.findById(uuid);
@@ -134,7 +136,7 @@ public class SendingQuestionController {
 
         // Checks if the user has upVoted the question before
         if (questionUpVotes.containsKey(uuid)) {
-            List<UUID> prev = questionUpVotes.get(uuid);
+            ArrayList<UUID> prev = questionUpVotes.get(uuid);
             if (prev == null || !prev.contains(userId)) {
                 throw new ResponseStatusException(
                         HttpStatus.FORBIDDEN, "CANT_CANCEL_WITHOUT_UP_VOTING");
@@ -210,7 +212,7 @@ public class SendingQuestionController {
         return room.getSlowModeSeconds() * 1000 - timePassed;
     }
 
-    public static HashMap<UUID, List<UUID>> getQuestionUpVotes() {
+    public static HashMap<UUID, ArrayList<UUID>> getQuestionUpVotes() {
         return questionUpVotes;
     }
 }

@@ -129,6 +129,7 @@ public class QuestionLogic {
      * Cancels an upvote of a question.
      *
      * @param id of the up voted question
+     * @param userId of the user
      */
     public static void cancelUpvote(UUID id, UUID userId) {
         List<String> sendList = List.of(

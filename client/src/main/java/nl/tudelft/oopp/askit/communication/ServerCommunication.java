@@ -95,13 +95,13 @@ public class ServerCommunication {
      * Connects to the server endpoint cancel the upvote of the specific question.
      * You cannot cancel upvote of a question if it wasn't upvoted previously
      *
-     * @param id the ID of the question
+     * @param ids the ID of the question and user
      * @return HttpResponse object
      */
-    public static HttpResponse<String> cancelUpvoteHttp(String id)
+    public static HttpResponse<String> cancelUpvoteHttp(String ids)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(id))
+                .POST(HttpRequest.BodyPublishers.ofString(ids))
                 .uri(URI.create("http://localhost:8080/send/cancelUpvote")).build();
         return getStringHttpResponse(request);
     }
