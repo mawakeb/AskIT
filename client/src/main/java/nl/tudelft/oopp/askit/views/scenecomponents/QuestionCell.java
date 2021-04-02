@@ -204,13 +204,11 @@ public class QuestionCell extends ListCell<Question> {
         UUID id = q.getId();
 
         if (upVotedQuestionIds.contains(id)) {
-            System.out.println("cancel Upvote");
             QuestionLogic.cancelUpvote(id, roomController.getUser().getId());
             upVotedQuestionIds.remove(id);
             roomController.updateQuestionList();
             upvoteBtn.setOpacity(1);
         } else {
-            System.out.println("just Upvote");
             QuestionLogic.upvoteQuestion(id, roomController.getUser().getId());
             upVotedQuestionIds.add(id);
             roomController.updateQuestionList();
