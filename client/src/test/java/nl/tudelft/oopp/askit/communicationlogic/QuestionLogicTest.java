@@ -148,7 +148,7 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
         UUID uuid = UUID.randomUUID();
 
-        QuestionLogic.answerQuestion(uuid, "staff");
+        QuestionLogic.cancelUpvote(uuid, uuid);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
@@ -157,7 +157,7 @@ class QuestionLogicTest {
         // Simulated sending list, so we can get its length
         List<String> sendList = List.of(
                 uuid.toString(),
-                "staff"
+                uuid.toString()
         );
         String parsedList = gson.toJson(sendList);
 
@@ -171,7 +171,7 @@ class QuestionLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID uuid = UUID.randomUUID();
-        QuestionLogic.answerQuestion(uuid, ZonedDateTime.now());
+        QuestionLogic.answerQuestion(uuid, "staff", ZonedDateTime.now());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"

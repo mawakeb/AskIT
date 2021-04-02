@@ -134,8 +134,8 @@ class SendingQuestionControllerTest {
         // Simulated request list
         List<String> sendList = List.of(
                 uuid.toString(),
-                "staf",
-                200
+                "staff",
+                "200"
         );
         String parsedList = gson.toJson(sendList);
 

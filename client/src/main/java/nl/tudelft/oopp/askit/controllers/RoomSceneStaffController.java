@@ -44,7 +44,7 @@ public class RoomSceneStaffController extends RoomController {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == btnYes) {
-                RoomLogic.closeRoom(super.getRoomId());
+                RoomLogic.closeRoom(super.getRoomId(),super.getUser().getRoleId());
                 updateRoomStatus();
             }
         });
@@ -108,7 +108,8 @@ public class RoomSceneStaffController extends RoomController {
                 break;
         }
 
-        RoomLogic.setSlowMode(super.getRoom().getId().toString(), slowModeSeconds);
+        RoomLogic.setSlowMode(super.getRoom().getId().toString(),
+                slowModeSeconds, super.getUser().getRoleId());
     }
 
     protected void updateRoomSpeed() {
