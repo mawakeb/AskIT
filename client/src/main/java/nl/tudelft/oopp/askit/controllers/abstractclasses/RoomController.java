@@ -156,7 +156,7 @@ public abstract class RoomController {
             return;
         }
 
-        if (!room.isOpen()) {
+        if (ZonedDateTime.now().isBefore(room.getLocalOpenTime())) {
             timeLabel.setVisible(true);
             String time = "Room opens at " + room.getLocalOpenTime().format(formatter);
             timeLabel.setText(time);
