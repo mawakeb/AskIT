@@ -3,16 +3,21 @@ package nl.tudelft.oopp.askit.views.scenecomponents;
 import java.util.HashSet;
 import java.util.UUID;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.UserLogic;
 import nl.tudelft.oopp.askit.controllers.RoomSceneStaffController;
@@ -85,11 +90,15 @@ public class QuestionCell extends ListCell<Question> {
 
             // create upvote button
             Button upvoteBtn = new Button("");
-            upvoteBtn.setDisable(upVotedQuestionIds.contains(q.getId()));
             upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
+            if (upVotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
+                upvoteBtn.setOpacity(0.5);
+            } else {
+                upvoteBtn.setOpacity(1);
+            }
 
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.getContent());
@@ -135,6 +144,29 @@ public class QuestionCell extends ListCell<Question> {
                     answerItem.setOnAction(event -> useAnswerBtn(q));
                     menuBtn.getItems().add(answerItem);
                 }
+
+                //Add answer mode: answer question on double click
+                RoomSceneStaffController roomController =
+                        (RoomSceneStaffController) this.roomController;
+                if (roomController.getAnswerMode()) {
+                    this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
+                                    && roomController.getAnswerMode()) {
+                                if (mouseEvent.getClickCount() == 2) {
+                                    useAnswerBtn(q);
+                                }
+                            }
+                        }
+                    });
+                    Tooltip tooltip = new Tooltip("Double Click to Answer");
+                    tooltip.setShowDelay(Duration.seconds(0));
+                    this.setTooltip(tooltip);
+
+                } else {
+                    this.setTooltip(null);
+                }
             }
 
             setText(null);
@@ -159,7 +191,8 @@ public class QuestionCell extends ListCell<Question> {
      * @param q     question the button relates to
      */
     private void useAnswerBtn(Question q) {
-        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId());
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId(),
+                roomController.getRoom().getOpenTime());
         roomController.updateAll();
     }
 
@@ -170,9 +203,24 @@ public class QuestionCell extends ListCell<Question> {
      * @param q         question the button relates to
      */
     private void useUpvoteBtn(Button upvoteBtn, Question q) {
-        upvoteBtn.setDisable(true);
-        QuestionLogic.upvoteQuestion(q.getId(), roomController.getUser().getId());
-        upVotedQuestionIds.add(q.getId());
-        roomController.updateQuestionList();
+
+        if (!roomController.getRoom().isOpen()) {
+            return;
+        }
+
+        UUID id = q.getId();
+
+        if (upVotedQuestionIds.contains(id)) {
+            QuestionLogic.cancelUpvote(id, roomController.getUser().getId());
+            upVotedQuestionIds.remove(id);
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(1);
+        } else {
+            QuestionLogic.upvoteQuestion(id, roomController.getUser().getId());
+            upVotedQuestionIds.add(id);
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(0.5);
+        }
+        roomController.updateAll();
     }
 }

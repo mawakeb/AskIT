@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.askit.controllers;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -124,6 +125,49 @@ class SendingQuestionControllerTest {
     }
 
     @Test
+    void cancelUpvote() {
+        UUID uuid = UUID.randomUUID();
+        UUID dupe = UUID.randomUUID();
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
+        when(repo.findById(uuid)).thenReturn(question);
+
+        // List that should be received
+        List<String> sendList = List.of(
+                uuid.toString(),
+                dupe.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+        sc.upvoteQuestion(parsedList);
+        sc.cancelUpvote(parsedList);
+
+        assertEquals(0, question.getUpvotes());
+
+        // Checks if it got added to the questionUpVotes map
+        assertTrue(SendingQuestionController.getQuestionUpVotes().containsKey(uuid));
+        assertFalse(SendingQuestionController.getQuestionUpVotes().get(uuid).contains(dupe));
+    }
+
+    @Test
+    void cancelWithoutUpvote() {
+        UUID uuid = UUID.randomUUID();
+        UUID dupe = UUID.randomUUID();
+        Question question = new Question(uuid, "Unit test question", dupe, dupe, "nickname", 5);
+        when(repo.findById(uuid)).thenReturn(question);
+
+        // List that should be received
+        List<String> sendList = List.of(
+                uuid.toString(),
+                dupe.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+
+        // Exception should be thrown
+        assertThrows(ResponseStatusException.class, () -> sc.cancelUpvote(parsedList));
+        // upvote is not negative
+        assertEquals(0, question.getUpvotes());
+    }
+
+    @Test
     void answerQuestion() {
         UUID uuid = UUID.randomUUID();
         UUID dupe = UUID.randomUUID();
@@ -134,7 +178,8 @@ class SendingQuestionControllerTest {
         // Simulated request list
         List<String> sendList = List.of(
                 uuid.toString(),
-                "staf"
+                "staf",
+                "200"
         );
         String parsedList = gson.toJson(sendList);
 

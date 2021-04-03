@@ -30,7 +30,7 @@ public class SendingQuestionController {
     private static final Gson gson = new Gson();
     private final QuestionRepository repo;
     private final RoomRepository roomRepo;
-    private static final HashMap<UUID, List<UUID>> questionUpVotes = new HashMap<>();
+    private static final HashMap<UUID, ArrayList<UUID>> questionUpVotes = new HashMap<>();
 
     /**
      * Constructor for SendingController, autowired for JPA repositories.
@@ -113,11 +113,44 @@ public class SendingQuestionController {
             }
 
         } else {
-            questionUpVotes.put(uuid, List.of(userId));
+            ArrayList<UUID> arrayList = new ArrayList<>();
+            arrayList.add(userId);
+            questionUpVotes.put(uuid, arrayList);
         }
 
         Question question = repo.findById(uuid);
         question.addUpvote();
+        repo.save(question);
+    }
+
+    /**
+     * Cancel a single upvote to the question with the specified ID.
+     */
+    @PostMapping("cancelUpvote")
+    @ResponseBody
+    public void cancelUpvote(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+        UUID uuid = UUID.fromString(list.get(0));
+        UUID userId = UUID.fromString(list.get(1));
+
+        // Checks if the user has upVoted the question before
+        if (questionUpVotes.containsKey(uuid)) {
+            ArrayList<UUID> prev = questionUpVotes.get(uuid);
+            if (prev == null || !prev.contains(userId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, "CANT_CANCEL_WITHOUT_UP_VOTING");
+            } else {
+                prev.remove(userId);
+            }
+
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "CANT_CANCEL_WITHOUT_UP_VOTING");
+        }
+
+        Question question = repo.findById(uuid);
+        question.cancelUpvote();
         repo.save(question);
     }
 
@@ -135,11 +168,13 @@ public class SendingQuestionController {
         Room room = roomRepo.findByid(question.getRoomId());
         if (room.getStaff().equals(roleId)) {
             question.setAnswered(true);
+            question.setAnswerTime(Integer.parseInt(list.get(2)));
             repo.save(question);
         } else {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "You are not a moderator");
         }
+        
     }
 
 
@@ -177,7 +212,7 @@ public class SendingQuestionController {
         return room.getSlowModeSeconds() * 1000 - timePassed;
     }
 
-    public static HashMap<UUID, List<UUID>> getQuestionUpVotes() {
+    public static HashMap<UUID, ArrayList<UUID>> getQuestionUpVotes() {
         return questionUpVotes;
     }
 }

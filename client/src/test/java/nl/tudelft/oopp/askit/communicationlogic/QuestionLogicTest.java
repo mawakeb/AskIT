@@ -143,12 +143,12 @@ class QuestionLogicTest {
     }
 
     @Test
-    void answerQuestion() {
+    void cancelUpvote() {
         // void type endpoint, so only mock response status code and not content
         when(response.statusCode()).thenReturn(200);
         UUID uuid = UUID.randomUUID();
 
-        QuestionLogic.answerQuestion(uuid, "staff");
+        QuestionLogic.cancelUpvote(uuid, uuid);
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
@@ -157,12 +157,30 @@ class QuestionLogicTest {
         // Simulated sending list, so we can get its length
         List<String> sendList = List.of(
                 uuid.toString(),
-                "staff"
+                uuid.toString()
         );
         String parsedList = gson.toJson(sendList);
 
         // bodyPublisher does not expose the contents directly, only length can be measured here
         assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
+    }
+
+    @Test
+    void answerQuestion() {
+        // void type endpoint, so only mock response status code and not content
+        when(response.statusCode()).thenReturn(200);
+
+        UUID uuid = UUID.randomUUID();
+        QuestionLogic.answerQuestion(uuid, "staff", ZonedDateTime.now());
+        assertEquals("POST", request.method());
+
+        // check if a bodyPublisher was successfully included to transfer the value "123"
+        assertTrue(request.bodyPublisher().isPresent());
+
+        // bodyPublisher does not expose the contents directly, only length can be measured here
+        // But it is impossible to estimate the length as the length of time passed can be different
+
+        //assertEquals(uuid.toString().length(), request.bodyPublisher().get().contentLength());
     }
 
     @Test

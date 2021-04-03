@@ -143,6 +143,10 @@ public class Question {
         upvotes++;
     }
 
+    public void cancelUpvote() {
+        upvotes--;
+    }
+
     public int getCreateTime() {
         return createTime;
     }

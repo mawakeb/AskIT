@@ -18,7 +18,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q FROM Question q "
             + "WHERE q.roomId = ?1 AND q.answered = true "
-            + "ORDER BY q.createTime")
+            + "ORDER BY q.answerTime")
     List<Question> getAllAnsweredQuestions(UUID roomId);
 
     Question findById(UUID id);

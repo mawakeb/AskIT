@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.answerQuestionHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.cancelUpvoteHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getAnsweredHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getQuestionsHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getTimeLeftHttp;
@@ -11,10 +12,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import java.net.http.HttpResponse;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.data.Question;
+import nl.tudelft.oopp.askit.methods.TimeControl;
 import nl.tudelft.oopp.askit.views.ErrorDisplay;
 import org.json.JSONObject;
 
@@ -98,9 +101,9 @@ public class QuestionLogic {
     }
 
     /**
-     * Upvotes a question.
+     * Up votes a question.
      *
-     * @param id of the upvoted question
+     * @param id of the up voted question
      * @param userId id of the upVoting user
      */
     public static void upvoteQuestion(UUID id, UUID userId) {
@@ -123,15 +126,41 @@ public class QuestionLogic {
     }
 
     /**
+     * Cancels an upvote of a question.
+     *
+     * @param id of the up voted question
+     * @param userId of the user
+     */
+    public static void cancelUpvote(UUID id, UUID userId) {
+        List<String> sendList = List.of(
+                id.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+        try {
+            HttpResponse<String> response = cancelUpvoteHttp(parsedList);
+
+            if (response.statusCode() != 200) {
+                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+
+    /**
      * Answers a question.
      *
      * @param id of the answered question
      * @param roleId moderator code
      */
-    public static void answerQuestion(UUID id, String roleId) {
+
+    public static void answerQuestion(UUID id, String roleId, ZonedDateTime roomTime) {
         List<String> sendList = List.of(
                 id.toString(),
-                roleId
+                roleId,
+                Integer.toString(TimeControl.getMilisecondsPassed(roomTime))
         );
         String parsedList = gson.toJson(sendList);
         try {

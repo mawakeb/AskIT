@@ -128,6 +128,14 @@ public class QuestionTest {
     }
 
     @Test
+    void removeUpvote() {
+        question.addUpvote();
+        question.addUpvote();
+        question.cancelUpvote();
+        assertEquals(question.getUpvotes(), 1);
+    }
+
+    @Test
     void getAndSetCreateTime() {
         question.setCreateTime(5);
         assertEquals(question.getCreateTime(), 5);
