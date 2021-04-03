@@ -5,10 +5,18 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "questions")
+@Table(
+        name = "questions",
+        indexes = {
+            @Index(columnList = "id"),
+            @Index(columnList = "roomId"),
+            @Index(columnList = "userId")
+        }
+        )
 public class Question {
 
     @Id

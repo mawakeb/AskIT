@@ -6,12 +6,14 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
 @Table(
-        name = "rooms"
-)
+        name = "rooms",
+        indexes = @Index(columnList = "id")
+        )
 public class Room {
     @Id
     @Column(name = "id")
