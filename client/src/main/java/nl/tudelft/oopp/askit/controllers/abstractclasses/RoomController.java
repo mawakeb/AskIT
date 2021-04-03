@@ -17,15 +17,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javax.swing.JFileChooser;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
 import nl.tudelft.oopp.askit.methods.TimeControl;
+import nl.tudelft.oopp.askit.views.ErrorDisplay;
 import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
 
 
@@ -168,12 +169,16 @@ public abstract class RoomController {
      */
 
     public void exportQuestions() throws FileNotFoundException {
-        JFileChooser f = new JFileChooser();
-        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        f.showSaveDialog(null);
-        File file = new File(f.getSelectedFile().toString()
-                + "\\" + room.getName() + " Export.txt");
-        System.out.println(file.getAbsolutePath());
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Open Resource File");
+        File dir = dc.showDialog(roomName.getParent().getScene().getWindow());
+
+        if (dir == null) {
+            ErrorDisplay.open("No valid path given", null);
+            return;
+        }
+
+        File file = new File(dir.getPath() + "\\" + room.getName() + " Export.txt");
         PrintWriter writer = new PrintWriter(file);
 
         List<Question> questions = QuestionLogic.getAnswered(getRoomId());
