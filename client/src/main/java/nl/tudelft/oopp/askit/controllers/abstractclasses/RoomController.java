@@ -194,7 +194,7 @@ public abstract class RoomController {
             return;
         }
 
-        File file = new File(dir.getPath() + "\\" + room.getName() + " Export.txt");
+        File file = new File(dir.getPath() + "/" + room.getName() + " Export.txt");
         PrintWriter writer = new PrintWriter(file);
 
         List<Question> questions = QuestionLogic.getAnswered(getRoomId());

@@ -11,10 +11,14 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT content FROM Question")
     List<String> getAllStrings();
 
-    @Query("SELECT q FROM Question q WHERE q.roomId = ?1 AND q.answered = false")
+    @Query("SELECT q FROM Question q "
+            + "WHERE q.roomId = ?1 AND q.answered = false "
+            + "ORDER BY q.createTime")
     List<Question> getAllRoomQuestions(UUID roomId);
 
-    @Query("SELECT q FROM Question q WHERE q.roomId = ?1 AND q.answered = true")
+    @Query("SELECT q FROM Question q "
+            + "WHERE q.roomId = ?1 AND q.answered = true "
+            + "ORDER BY q.answerTime")
     List<Question> getAllAnsweredQuestions(UUID roomId);
 
     Question findById(UUID id);
