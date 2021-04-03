@@ -14,8 +14,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
@@ -46,6 +48,8 @@ public abstract class RoomController {
     private ToggleButton speedButton;
     @FXML
     private Label roomName;
+    @FXML
+    private ToggleGroup sortBy;
 
     private Room room;
     private DateTimeFormatter formatter;
@@ -133,6 +137,10 @@ public abstract class RoomController {
      */
     public void updateQuestionList() {
         List<Question> questions = QuestionLogic.getQuestions(room.getId().toString());
+        RadioMenuItem selectedToggle = (RadioMenuItem) sortBy.getSelectedToggle();
+        if (selectedToggle.getText().equals("Upvote")) {
+            questions.sort((q1, q2) -> q2.getUpvotes() - q1.getUpvotes());
+        }
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
@@ -143,8 +151,16 @@ public abstract class RoomController {
      */
     public void updateAnsweredQuestionList() {
         List<Question> questions = QuestionLogic.getAnswered(room.getId().toString());
+        RadioMenuItem selectedToggle = (RadioMenuItem) sortBy.getSelectedToggle();
+        if (selectedToggle.getText().equals("Upvote")) {
+            questions.sort((q1, q2) -> q2.getUpvotes() - q1.getUpvotes());
+        }
         answeredQuestionList.getItems().clear();
         answeredQuestionList.getItems().addAll(questions);
+    }
+
+    public void setSortBy() {
+        this.room = room;
     }
 
     /**

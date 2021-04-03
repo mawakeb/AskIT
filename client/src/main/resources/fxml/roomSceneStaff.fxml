@@ -58,7 +58,19 @@
                         stylesheets="@../css/roomSceneStyle.css" GridPane.halignment="LEFT" GridPane.hgrow="NEVER"
                         GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                 <items>
-                    <Menu mnemonicParsing="false" styleClass="slowMenu" text="Slow Mode">
+                    <Menu mnemonicParsing="false" styleClass="subMenu" text="Sort Questions by">
+                        <items>
+                            <RadioMenuItem mnemonicParsing="false" onAction="#updateAll" selected="true"
+                                           text="Oldest">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="sortBy"/>
+                                </toggleGroup>
+                            </RadioMenuItem>
+                            <RadioMenuItem mnemonicParsing="false" onAction="#updateAll" text="Upvote"
+                                           toggleGroup="$sortBy"/>
+                        </items>
+                    </Menu>
+                    <Menu mnemonicParsing="false" styleClass="subMenu" text="Slow Mode">
                         <items>
                             <RadioMenuItem mnemonicParsing="false" onAction="#setSlowMode" selected="true"
                                            text="Disabled">
