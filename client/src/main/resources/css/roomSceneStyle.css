@@ -133,6 +133,10 @@
     -fx-background-position: center;
 }
 
+.refreshButton:hover {
+    -fx-opacity: 0.7;
+}
+
 .menu-button{
     -fx-background-color: #0000;
     -fx-background-image: url("../images/menuIcon.png");
@@ -211,7 +215,7 @@
 }
 
 
-.hamburger{
+.hamburger {
     -fx-opacity: 1;
     -fx-background-color: #0000;
     -fx-background-image: url("../images/menuIcon2.png");
@@ -219,6 +223,10 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-padding: 0;
+}
+
+.hamburger:hover {
+    -fx-opacity: 0.7;
 }
 
 .slowMenu .arrow {

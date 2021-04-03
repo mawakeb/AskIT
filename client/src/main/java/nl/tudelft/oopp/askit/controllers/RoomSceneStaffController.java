@@ -61,6 +61,7 @@ public class RoomSceneStaffController extends RoomController {
             this.answerMode = false;
             answerModeItem.setText("Enable 'DoubleClick to answer'");
         }
+        updateAll();
     }
 
     /**

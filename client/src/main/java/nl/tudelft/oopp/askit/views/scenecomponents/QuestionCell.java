@@ -10,12 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.UserLogic;
 import nl.tudelft.oopp.askit.controllers.RoomSceneStaffController;
@@ -158,8 +160,13 @@ public class QuestionCell extends ListCell<Question> {
                             }
                         }
                     });
-                }
+                    Tooltip tooltip = new Tooltip("Double Click to Answer");
+                    tooltip.setShowDelay(Duration.seconds(0));
+                    this.setTooltip(tooltip);
 
+                } else {
+                    this.setTooltip(null);
+                }
             }
 
             setText(null);
