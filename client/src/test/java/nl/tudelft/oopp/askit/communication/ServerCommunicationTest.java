@@ -1,11 +1,10 @@
 package nl.tudelft.oopp.askit.communication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,14 +12,13 @@ import java.net.http.HttpResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
 
 public class ServerCommunicationTest {
-
-    private static final Gson gson = new Gson();
 
     @Mock
     private HttpClient client;
@@ -41,7 +39,7 @@ public class ServerCommunicationTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> response);
 
         ServerCommunication.setHttpClient(client);
@@ -59,16 +57,15 @@ public class ServerCommunicationTest {
 
     @Test
     void getStringHttpResponseException() {
-        // test the exception handling, getStringHttpResponse should not fail but just return null
-        HttpResponse<String> result = null;
+        // test the exception handling, getStringHttpResponse should throw any exception,
+        // so that it can be used for an error message box later
         try {
-            when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+            when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                     .thenThrow(IOException.class);
-            result = ServerCommunication.getStringHttpResponse(mockRequest);
         } catch (Exception e) {
             // no exception should be thrown when initializing mock behaviour
         }
-
-        assertNull(result);
+        assertThrows(IOException.class,
+            () -> ServerCommunication.getStringHttpResponse(mockRequest));
     }
 }

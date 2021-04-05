@@ -3,6 +3,7 @@ package nl.tudelft.oopp.askit.controllers;
 import static nl.tudelft.oopp.askit.methods.GenerationMethods.randomString;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class RoomController {
 
     private static final Gson gson = SerializingControl.getGsonObject();
 
-    private RoomRepository repo;
+    private final RoomRepository repo;
 
     @Autowired
     public RoomController(RoomRepository repo) {
@@ -47,19 +48,22 @@ public class RoomController {
     public List<String> createLink(@RequestBody String q) {
         String string1 = randomString();
 
-        String[] info = q.split("!@#");
-        ZonedDateTime time = ZonedDateTime.parse(info[1]);
+        List<String> list = gson.fromJson(q, new TypeToken<List<String>>() {
+        }.getType());
+        ZonedDateTime time = ZonedDateTime.parse(list.get(1));
 
         String string2;
-        for (string2 = randomString(); string1.equals(string2); string2 = randomString()) {
+        string2 = randomString();
+        while (string1.equals(string2)) {
+            string2 = randomString();
         }
         UUID roomId = UUID.randomUUID();
-        Room newRoom = new Room(roomId, info[0], string1, string2, time);
+        Room newRoom = new Room(roomId, list.get(0), string1, string2, time);
         this.repo.save(newRoom);
 
         // TODO: links are way too long because of room id
-        string1 = roomId + "/" + string1;
-        string2 = roomId + "/" + string2;
+        string1 = "staff/" + roomId + "/" + string1;
+        string2 = "student/" + roomId + "/" + string2;
         System.out.println(string1);
         System.out.println(string2);
         List<String> links = new ArrayList<>();
@@ -80,7 +84,7 @@ public class RoomController {
         String[] links = q.split("/");
 
         // Checks if format is correct
-        if (links.length != 2) {
+        if (links.length != 3) {
             System.out.println("Invalid link");
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid link");
@@ -88,12 +92,12 @@ public class RoomController {
         // Checks if UUID is correct format
         UUID id;
         try {
-            id = UUID.fromString(links[0]);
+            id = UUID.fromString(links[1]);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid link");
         }
-        String role = links[1];
+        String role = links[2];
         Room room = this.repo.findByid(id);
         if (room != null) {
 
@@ -115,7 +119,7 @@ public class RoomController {
 
             System.out.println("Incorrect role code");
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Incorrect role code");
+                    HttpStatus.BAD_REQUEST, "Incorrect role code part of the link");
         } else {
             System.out.println("Room not found");
             throw new ResponseStatusException(
@@ -126,21 +130,32 @@ public class RoomController {
     /**
      * Close a room from asking new questions.
      *
-     * @param id the request body containing room ID in string form
+     * @param ids the request body containing room ID in string form
      */
     @PostMapping("close")
     @ResponseBody
-    public void closeRoom(@RequestBody String id) {
-        System.out.println("Closing room on server, id:" + id);
-        UUID uuid = UUID.fromString(id);
+    public void closeRoom(@RequestBody String ids) {
+        List<String> list = gson.fromJson(ids, new TypeToken<List<String>>() {
+        }.getType());
+
+        UUID uuid = UUID.fromString(list.get(0));
+        String roleId = list.get(1);
+        System.out.println("Closing room on server, id:" + uuid.toString());
+
         Room room = repo.findByid(uuid);
 
         if (room == null) {
-            System.out.println("room doesnt exist, id:" + id);
-            return;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Room not found");
         }
-        room.close();
-        repo.save(room);
+        if (room.getStaff().equals(roleId)) {
+            room.close();
+            repo.save(room);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
+
     }
 
     /**
@@ -168,14 +183,21 @@ public class RoomController {
      */
     @PostMapping("slow")
     @ResponseBody
-    public void setSlowMode(@RequestParam String id, @RequestParam int seconds) {
+    public void setSlowMode(@RequestParam String id, @RequestParam int seconds,
+                            @RequestParam String roleId) {
+
         UUID uuid = UUID.fromString(id);
         Room room = repo.findByid(uuid);
         if (room == null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Room not found");
         }
-        room.setSlowModeSeconds(seconds);
-        repo.save(room);
+        if (room.getStaff().equals(roleId)) {
+            room.setSlowModeSeconds(seconds);
+            repo.save(room);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "You are not a moderator of this room");
+        }
     }
 }

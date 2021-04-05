@@ -16,6 +16,7 @@ import java.util.UUID;
 import nl.tudelft.oopp.askit.communication.ServerCommunication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -42,7 +43,7 @@ class SpeedLogicTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -84,7 +85,7 @@ class SpeedLogicTest {
         when(response.statusCode()).thenReturn(200);
         when(response.body()).thenReturn(gson.toJson(speed));
 
-        int actualSpeed = SpeedLogic.getSpeed(UUID.randomUUID().toString());
+        int actualSpeed = SpeedLogic.getSpeed(UUID.randomUUID().toString(), "staff");
         assertEquals(actualSpeed, speed);
     }
 }

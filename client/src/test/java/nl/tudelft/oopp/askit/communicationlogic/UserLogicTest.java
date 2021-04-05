@@ -10,17 +10,18 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.UUID;
 
 import nl.tudelft.oopp.askit.communication.ServerCommunication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
 class UserLogicTest {
-
     private static final Gson gson = new Gson();
 
     @Mock
@@ -41,7 +42,7 @@ class UserLogicTest {
 
         // supply response mock for calls to client.send(request, bodyHandler)
         // also stores the corresponding request for access during tests
-        when(client.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class)))
+        when(client.send(any(HttpRequest.class), ArgumentMatchers.any()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     request = (HttpRequest) invocation.getArguments()[0];
                     return response;
@@ -56,13 +57,20 @@ class UserLogicTest {
         when(response.statusCode()).thenReturn(200);
 
         UUID userId = UUID.randomUUID();
-        UserLogic.banUser(userId);
+        String roleId = "staff";
+        UserLogic.banUser(userId, roleId, userId.toString());
         assertEquals("POST", request.method());
 
         // check if a bodyPublisher was successfully included to transfer the value "123"
         assertTrue(request.bodyPublisher().isPresent());
-
+        // Simulated request list, to get length
+        List<String> sendList = List.of(
+                userId.toString(),
+                roleId,
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         // bodyPublisher does not expose the contents directly, only length can be measured here
-        assertEquals(userId.toString().length(), request.bodyPublisher().get().contentLength());
+        assertEquals(parsedList.length(), request.bodyPublisher().get().contentLength());
     }
 }

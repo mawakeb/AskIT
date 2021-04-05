@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.askit.controllers.abstractclasses;
 
+import java.io.File;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,15 +12,14 @@ import java.util.TimerTask;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
@@ -24,7 +27,11 @@ import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Question;
 import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
+import nl.tudelft.oopp.askit.methods.TimeControl;
+import nl.tudelft.oopp.askit.views.ErrorDisplay;
 import nl.tudelft.oopp.askit.views.scenecomponents.QuestionCell;
+
+
 
 
 public abstract class RoomController {
@@ -39,6 +46,10 @@ public abstract class RoomController {
     private Slider slider;
     @FXML
     private ToggleButton speedButton;
+    @FXML
+    private Label roomName;
+    @FXML
+    private ToggleGroup sortBy;
 
     private Room room;
     private DateTimeFormatter formatter;
@@ -61,9 +72,7 @@ public abstract class RoomController {
         this.update = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    updateAll();
-                });
+                Platform.runLater(() -> updateAll());
             }
         };
         this.timer = new Timer();
@@ -72,7 +81,7 @@ public abstract class RoomController {
         tooltip.setShowDelay(Duration.seconds(0.2));
         speedButton.setTooltip(tooltip);
 
-        this.slider.setLabelFormatter(new StringConverter<Double>() {
+        this.slider.setLabelFormatter(new StringConverter<>() {
             @Override
             public String toString(Double n) {
                 if (n < 1) {
@@ -117,6 +126,7 @@ public abstract class RoomController {
     public void setRoomInfo(Room room, User user) {
         this.room = room;
         this.user = user;
+        roomName.setText(room.getName());
         updateAll();
         timer.scheduleAtFixedRate(update, 0, 10000);
     }
@@ -127,6 +137,10 @@ public abstract class RoomController {
      */
     public void updateQuestionList() {
         List<Question> questions = QuestionLogic.getQuestions(room.getId().toString());
+        RadioMenuItem selectedToggle = (RadioMenuItem) sortBy.getSelectedToggle();
+        if (selectedToggle.getText().equals("Upvote")) {
+            questions.sort((q1, q2) -> q2.getUpvotes() - q1.getUpvotes());
+        }
         questionList.getItems().clear();
         questionList.getItems().addAll(questions);
     }
@@ -137,8 +151,16 @@ public abstract class RoomController {
      */
     public void updateAnsweredQuestionList() {
         List<Question> questions = QuestionLogic.getAnswered(room.getId().toString());
+        RadioMenuItem selectedToggle = (RadioMenuItem) sortBy.getSelectedToggle();
+        if (selectedToggle.getText().equals("Upvote")) {
+            questions.sort((q1, q2) -> q2.getUpvotes() - q1.getUpvotes());
+        }
         answeredQuestionList.getItems().clear();
         answeredQuestionList.getItems().addAll(questions);
+    }
+
+    public void setSortBy() {
+        this.room = room;
     }
 
     /**
@@ -149,13 +171,42 @@ public abstract class RoomController {
             return;
         }
 
-        if (!room.isOpen()) {
+        if (ZonedDateTime.now().isBefore(room.getLocalOpenTime())) {
             timeLabel.setVisible(true);
             String time = "Room opens at " + room.getLocalOpenTime().format(formatter);
             timeLabel.setText(time);
         } else {
             timeLabel.setVisible(false);
         }
+    }
+
+    /**
+     * Exports answered questions into text file.
+     */
+
+    public void exportQuestions() throws FileNotFoundException {
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Open Resource File");
+        File dir = dc.showDialog(roomName.getParent().getScene().getWindow());
+
+        if (dir == null) {
+            ErrorDisplay.open("No valid path given", null);
+            return;
+        }
+
+        File file = new File(dir.getPath() + "/" + room.getName() + " Export.txt");
+        PrintWriter writer = new PrintWriter(file);
+
+        List<Question> questions = QuestionLogic.getAnswered(getRoomId());
+        for (Question question : questions) {
+            String prettyTime = TimeControl.getPrettyTime(question.getAnswerTime()).trim();
+            String questionContent = question.getContent().trim();
+            String username = question.getUsername();
+            writer.print("[" + username + "/" + prettyTime + "]  " + questionContent + "\n\n");
+        }
+        writer.flush();
+        writer.close();
+
     }
 
     public Room getRoom() {
@@ -171,7 +222,7 @@ public abstract class RoomController {
      * Implemented differently for staff and student room.
      */
     public void updateRoomStatus() {
-        RoomLogic.getRoomStatus(room.getId().toString());
+        this.room = RoomLogic.getRoomStatus(room.getId().toString());
     }
 
     /**

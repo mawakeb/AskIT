@@ -3,7 +3,6 @@ package nl.tudelft.oopp.askit.controllers;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,6 +47,13 @@ public class MainSceneController {
     @FXML private ToggleButton scheduleTab;
     @FXML private GridPane grid;
     @FXML private DatePicker datePicker;
+    @FXML private Button staffLinkButton;
+    @FXML private Button studentLinkButton;
+    @FXML private Button showListButton;
+    @FXML private Button closeList;
+
+    private String staffLink;
+    private String studentLink;
 
     private Spinner<LocalTime> timeSpinner;
 
@@ -71,6 +77,8 @@ public class MainSceneController {
         timeSpinner.setDisable(true);
 
         datePicker.setValue(LocalDate.now());
+        list.setVisible(false);
+        list.setDisable(true);
 
         joinTabClicked();
         joinTab.setSelected(true);
@@ -79,7 +87,7 @@ public class MainSceneController {
     /**
      * Handles clicking the create button.
      */
-    public void createButtonClicked() throws IOException, InterruptedException {
+    public void createButtonClicked() {
         List<String> links = RoomLogic.createRoom(userText.getText(),
                 ZonedDateTime.now());
         userText.clear();
@@ -92,7 +100,11 @@ public class MainSceneController {
             list.getItems().add(links.get(0));
             list.getItems().add("student link: ");
             list.getItems().add(links.get(1));
+
+            staffLink = links.get(0);
+            studentLink = links.get(1);
         }
+        showLinkButtons();
     }
 
     /**
@@ -129,14 +141,14 @@ public class MainSceneController {
         List<String> responseList = RoomLogic.joinRoom(link);
         if (responseList != null) {
             String[] links = link.split("/");
-            String roomId = links[0];
+            String roomId = links[1];
             Room room = RoomLogic.getRoomStatus(roomId);
-            String roleId = responseList.get(1);
-            String roomScene = roleId.equals("staff")
+            String roleName = responseList.get(1);
+            String roomScene = roleName.equals("staff")
                     ? "/fxml/roomSceneStaff.fxml"
                     : "/fxml/roomScene.fxml";
 
-            User user = new User(UUID.fromString(roomId), roleId, username.getText(), links[1]);
+            User user = new User(UUID.fromString(roomId), roleName, username.getText(), links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
         }
     }
@@ -165,6 +177,67 @@ public class MainSceneController {
             list.getItems().add(links.get(0));
             list.getItems().add("student link: ");
             list.getItems().add(links.get(1));
+
+            staffLink = links.get(0);
+            studentLink = links.get(1);
+        }
+        showLinkButtons();
+    }
+
+    /**
+     * Copies staff link to clipboard when staffLinkButton is clicked.
+     */
+    public void copyStaffLink() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection linkCopy = new StringSelection(staffLink);
+        clipboard.setContents(linkCopy, null);
+    }
+
+    /**
+     * Copies student link to clipboard when staffLinkButton is clicked.
+     */
+    public void copyStudentLink() {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection linkCopy = new StringSelection(studentLink);
+        clipboard.setContents(linkCopy, null);
+    }
+
+    /**
+     * Shows list when the listButton is clicked.
+     */
+    public void showList() {
+        list.setVisible(true);
+        list.setDisable(false);
+        list.toFront();
+        closeList.toFront();
+        closeList.setDisable(false);
+        closeList.setVisible(true);
+
+    }
+
+    /**
+     * hide list when the listButton is clicked.
+     */
+    public void hideList() {
+        list.setVisible(false);
+        list.setDisable(true);
+        list.toBack();
+        closeList.setDisable(true);
+        closeList.setVisible(false);
+    }
+
+    /**
+     * Show buttons to copy link if a link was created.
+     */
+    public void showLinkButtons() {
+        if (studentLink != null && staffLink != null) {
+            studentLinkButton.setVisible(true);
+            studentLinkButton.setDisable(false);
+            staffLinkButton.setVisible(true);
+            staffLinkButton.setDisable(false);
+            showListButton.setVisible(true);
+            showListButton.setDisable(false);
+            list.toBack();
         }
     }
 
@@ -176,7 +249,6 @@ public class MainSceneController {
         tabIcon.setText("+ ");
         userText.setPromptText("Enter name of the lecture...");
         createButton.toFront();
-        list.setVisible(true);
         joinButton.setVisible(false);
         joinButton.setDisable(true);
         scheduleButton.setVisible(false);
@@ -192,6 +264,7 @@ public class MainSceneController {
         datePicker.setDisable(true);
         timeLabel.setVisible(false);
 
+        showLinkButtons();
     }
 
     /**
@@ -202,7 +275,6 @@ public class MainSceneController {
         tabIcon.setText("# ");
         userText.setPromptText("Enter link to join the lecture...");
         username.toFront();
-        list.setVisible(false);
         joinButton.setVisible(true);
         joinButton.setDisable(false);
         scheduleButton.toBack();
@@ -215,6 +287,16 @@ public class MainSceneController {
         datePicker.setVisible(false);
         datePicker.setDisable(true);
         timeLabel.setVisible(false);
+        studentLinkButton.setVisible(false);
+        studentLinkButton.setDisable(true);
+        staffLinkButton.setVisible(false);
+        staffLinkButton.setDisable(true);
+        showListButton.setVisible(false);
+        showListButton.setDisable(true);
+        list.setVisible(false);
+        list.setDisable(true);
+        closeList.setDisable(true);
+        closeList.setVisible(false);
     }
 
     /**
@@ -226,7 +308,6 @@ public class MainSceneController {
         userText.setPromptText("Enter name of the lecture...");
         joinButton.toBack();
         scheduleButton.toFront();
-        list.setVisible(true);
         joinButton.setVisible(false);
         joinButton.setDisable(true);
         createTab.setSelected(false);
@@ -240,5 +321,7 @@ public class MainSceneController {
         timeLabel.setVisible(true);
         scheduleButton.setVisible(true);
         scheduleButton.setDisable(false);
+
+        showLinkButtons();
     }
 }

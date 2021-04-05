@@ -5,15 +5,22 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        indexes = {
+            @Index(columnList = "id"),
+            @Index(columnList = "roomId"),
+        }
+        )
 public class User {
 
     @Id
     @Column(name = "id")
-    private final UUID id;
+    private UUID id;
     @Column(name = "roomId")
     private UUID roomId;
     @Column(name = "name")
@@ -26,6 +33,12 @@ public class User {
     private String roleId;
 
     /**
+     * No-arg constructor required by JPA.
+     */
+    public User() {
+    }
+
+    /**
      * Creates the user object.
      *
      * @param id     identifies user
@@ -36,23 +49,6 @@ public class User {
      */
     public User(UUID id, UUID roomId, String name, String role, String roleId) {
         this.id = id;
-        this.roomId = roomId;
-        this.name = name;
-        this.banned = false;
-        this.role = role;
-        this.roleId = roleId;
-    }
-
-    /**
-     * Creates the user object.
-     *
-     * @param roomId room the user belongs to
-     *               banned - is the user currently banned (not allowed to comment)
-     * @param role   name of the users role
-     * @param roleId secret Id that the user has, what gives him his privileges
-     */
-    public User(UUID roomId, String role, String name, String roleId) {
-        this.id = UUID.randomUUID();
         this.roomId = roomId;
         this.name = name;
         this.banned = false;

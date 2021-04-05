@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.askit.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
@@ -56,13 +58,13 @@ class UserTest {
 
     @Test
     void isBanned() {
-        assertEquals(false, user.isBanned());
+        assertFalse(user.isBanned());
     }
 
     @Test
     void setBanned() {
         user.setBanned(true);
-        assertEquals(true, user.isBanned());
+        assertTrue(user.isBanned());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.communicationlogic;
 
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.answerQuestionHttp;
+import static nl.tudelft.oopp.askit.communication.ServerCommunication.cancelUpvoteHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getAnsweredHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getQuestionsHttp;
 import static nl.tudelft.oopp.askit.communication.ServerCommunication.getTimeLeftHttp;
@@ -10,7 +11,6 @@ import static nl.tudelft.oopp.askit.communication.ServerCommunication.upvoteQues
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -32,10 +32,9 @@ public class QuestionLogic {
      * @return "SUCCESS" if the question was sent successfully, a status why not otherwise
      */
     public static String sendQuestion(String text, UUID roomId, UUID userId, String username,
-                                      ZonedDateTime roomTime) {
+                                      int roomTimeMili) {
 
-        Question userQuestion = new Question(text, 0, roomId, userId, username,
-                TimeControl.getMilisecondsPassed(roomTime));
+        Question userQuestion = new Question(text, 0, roomId, userId, username, roomTimeMili);
 
         String parsedQuestion = gson.toJson(userQuestion);
         try {
@@ -102,13 +101,44 @@ public class QuestionLogic {
     }
 
     /**
-     * Upvotes a question.
+     * Up votes a question.
      *
-     * @param id of the upvoted question
+     * @param id of the up voted question
+     * @param userId id of the upVoting user
      */
-    public static void upvoteQuestion(UUID id) {
+    public static void upvoteQuestion(UUID id, UUID userId) {
+        List<String> sendList = List.of(
+                id.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
         try {
-            HttpResponse<String> response = upvoteQuestionHttp(id.toString());
+            HttpResponse<String> response = upvoteQuestionHttp(parsedList);
+
+            if (response.statusCode() != 200) {
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
+            }
+        } catch (Exception e) {
+            ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());
+        }
+    }
+
+    /**
+     * Cancels an upvote of a question.
+     *
+     * @param id of the up voted question
+     * @param userId of the user
+     */
+    public static void cancelUpvote(UUID id, UUID userId) {
+        List<String> sendList = List.of(
+                id.toString(),
+                userId.toString()
+        );
+        String parsedList = gson.toJson(sendList);
+        try {
+            HttpResponse<String> response = cancelUpvoteHttp(parsedList);
 
             if (response.statusCode() != 200) {
                 ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
@@ -118,17 +148,28 @@ public class QuestionLogic {
         }
     }
 
+
     /**
      * Answers a question.
      *
      * @param id of the answered question
+     * @param roleId moderator code
      */
-    public static void answerQuestion(UUID id) {
+
+    public static void answerQuestion(UUID id, String roleId, ZonedDateTime roomTime) {
+        List<String> sendList = List.of(
+                id.toString(),
+                roleId,
+                Integer.toString(TimeControl.getMilisecondsPassed(roomTime))
+        );
+        String parsedList = gson.toJson(sendList);
         try {
-            HttpResponse<String> response = answerQuestionHttp(id.toString());
+            HttpResponse<String> response = answerQuestionHttp(parsedList);
 
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
             }
         } catch (Exception e) {
             ErrorDisplay.open(e.getClass().getCanonicalName(), e.getMessage());

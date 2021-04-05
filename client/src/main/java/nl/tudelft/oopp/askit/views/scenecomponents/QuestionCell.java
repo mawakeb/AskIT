@@ -3,17 +3,21 @@ package nl.tudelft.oopp.askit.views.scenecomponents;
 import java.util.HashSet;
 import java.util.UUID;
 
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import nl.tudelft.oopp.askit.communicationlogic.QuestionLogic;
 import nl.tudelft.oopp.askit.communicationlogic.UserLogic;
 import nl.tudelft.oopp.askit.controllers.RoomSceneStaffController;
@@ -29,8 +33,8 @@ public class QuestionCell extends ListCell<Question> {
 
     // Set containing ID's of the questions that the user
     // up voted this session, to prevent up voting multiple times
-    private static final HashSet<UUID> upvotedQuestionIds = new HashSet();
-    private boolean staffRole;
+    private static final HashSet<UUID> upVotedQuestionIds = new HashSet<>();
+    private final boolean staffRole;
     private final RoomController roomController;
 
     /**
@@ -40,10 +44,7 @@ public class QuestionCell extends ListCell<Question> {
      */
     public QuestionCell(RoomController roomController) {
         this.roomController = roomController;
-        this.staffRole = false;
-        if (roomController instanceof RoomSceneStaffController) {
-            this.staffRole = true;
-        }
+        this.staffRole = roomController instanceof RoomSceneStaffController;
         this.setStyle("-fx-background-color: #0000;"
                 + "-fx-padding: 7 0 0 0;"
                 + "-fx-text-fill: #fff;");
@@ -89,11 +90,15 @@ public class QuestionCell extends ListCell<Question> {
 
             // create upvote button
             Button upvoteBtn = new Button("");
-            upvoteBtn.setDisable(upvotedQuestionIds.contains(q.getId()));
-            upvoteBtn.setOnAction(event -> useUpvoteBtn(event, upvoteBtn, q));
+            upvoteBtn.setOnAction(event -> useUpvoteBtn(upvoteBtn, q));
             upvoteBtn.getStyleClass().add("upvote");
             upvoteBtn.getStylesheets().add(getClass()
                     .getResource("/css/roomSceneStyle.css").toExternalForm());
+            if (upVotedQuestionIds.contains(q.getId()) || !roomController.getRoom().isOpen()) {
+                upvoteBtn.setOpacity(0.5);
+            } else {
+                upvoteBtn.setOpacity(1);
+            }
 
             // combine elements in box and set the cell display to it
             Label questionText = new Label(q.getContent());
@@ -131,13 +136,36 @@ public class QuestionCell extends ListCell<Question> {
                 MenuItem banItem = new MenuItem("Ban User");
                 menuBtn.getItems().addAll(editItem, deleteItem, banItem);
                 box.setStyle("-fx-padding: 7 0 7 12");
-                banItem.setOnAction(event -> useBanBtn(event, q));
+                banItem.setOnAction(event -> useBanBtn(q));
                 box.getChildren().add(menuBtn);
 
                 if (!q.isAnswered()) {
                     MenuItem answerItem = new MenuItem("Answer");
-                    answerItem.setOnAction(event -> useAnswerBtn(event, q));
+                    answerItem.setOnAction(event -> useAnswerBtn(q));
                     menuBtn.getItems().add(answerItem);
+                }
+
+                //Add answer mode: answer question on double click
+                RoomSceneStaffController roomController =
+                        (RoomSceneStaffController) this.roomController;
+                if (roomController.getAnswerMode()) {
+                    this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)
+                                    && roomController.getAnswerMode()) {
+                                if (mouseEvent.getClickCount() == 2) {
+                                    useAnswerBtn(q);
+                                }
+                            }
+                        }
+                    });
+                    Tooltip tooltip = new Tooltip("Double Click to Answer");
+                    tooltip.setShowDelay(Duration.seconds(0));
+                    this.setTooltip(tooltip);
+
+                } else {
+                    this.setTooltip(null);
                 }
             }
 
@@ -150,35 +178,49 @@ public class QuestionCell extends ListCell<Question> {
     /**
      * Automatically Called when clicking the ban button.
      *
-     * @param event JavaFx button press event
      * @param q     question the button relates to
      */
-    private void useBanBtn(ActionEvent event, Question q) {
-        UserLogic.banUser(q.getUserId());
+    private void useBanBtn(Question q) {
+        UserLogic.banUser(q.getUserId(), roomController.getUser().getRoleId(),
+                roomController.getRoomId());
     }
 
     /**
      * Automatically Called when clicking the answer button.
      *
-     * @param event JavaFx button press event
      * @param q     question the button relates to
      */
-    private void useAnswerBtn(ActionEvent event, Question q) {
-        QuestionLogic.answerQuestion(q.getId());
+    private void useAnswerBtn(Question q) {
+        QuestionLogic.answerQuestion(q.getId(), roomController.getUser().getRoleId(),
+                roomController.getRoom().getOpenTime());
         roomController.updateAll();
     }
 
     /**
      * Automatically Called when clicking the upvote button.
      *
-     * @param event     JavaFX button press event
      * @param upvoteBtn button that was pressed
      * @param q         question the button relates to
      */
-    private void useUpvoteBtn(ActionEvent event, Button upvoteBtn, Question q) {
-        upvoteBtn.setDisable(true);
-        QuestionLogic.upvoteQuestion(q.getId());
-        upvotedQuestionIds.add(q.getId());
-        roomController.updateQuestionList();
+    private void useUpvoteBtn(Button upvoteBtn, Question q) {
+
+        if (!roomController.getRoom().isOpen()) {
+            return;
+        }
+
+        UUID id = q.getId();
+
+        if (upVotedQuestionIds.contains(id)) {
+            QuestionLogic.cancelUpvote(id, roomController.getUser().getId());
+            upVotedQuestionIds.remove(id);
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(1);
+        } else {
+            QuestionLogic.upvoteQuestion(id, roomController.getUser().getId());
+            upVotedQuestionIds.add(id);
+            roomController.updateQuestionList();
+            upvoteBtn.setOpacity(0.5);
+        }
+        roomController.updateAll();
     }
 }

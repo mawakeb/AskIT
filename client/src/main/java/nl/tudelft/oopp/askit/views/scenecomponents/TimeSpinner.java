@@ -9,7 +9,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.InputEvent;
-
 import javafx.util.StringConverter;
 
 
@@ -19,18 +18,6 @@ import javafx.util.StringConverter;
 public class TimeSpinner extends Spinner<LocalTime> {
     // Property containing the current editing mode:
     private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(Mode.HOURS);
-
-    public ObjectProperty<Mode> modeProperty() {
-        return mode;
-    }
-
-    public final Mode getMode() {
-        return modeProperty().get();
-    }
-
-    public final void setMode(Mode mode) {
-        modeProperty().set(mode);
-    }
 
     // Constructor
     public TimeSpinner() {
@@ -47,7 +34,7 @@ public class TimeSpinner extends Spinner<LocalTime> {
         // Create a StringConverter for converting between the text in the
         // editor and the actual value:
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        StringConverter<LocalTime> localTimeConverter = new StringConverter<LocalTime>() {
+        StringConverter<LocalTime> localTimeConverter = new StringConverter<>() {
             @Override
             public String toString(LocalTime time) {
                 return formatter.format(time);
@@ -72,7 +59,7 @@ public class TimeSpinner extends Spinner<LocalTime> {
 
         // The spinner value factory defines increment and decrement by
         // delegating to the current editing mode:
-        SpinnerValueFactory<LocalTime> valueFactory = new SpinnerValueFactory<LocalTime>() {
+        SpinnerValueFactory<LocalTime> valueFactory = new SpinnerValueFactory<>() {
             @Override
             public void decrement(int steps) {
                 setValue(mode.get().decrement(getValue(), steps));
@@ -91,7 +78,7 @@ public class TimeSpinner extends Spinner<LocalTime> {
         // The textFormatter both manages the text <-> LocalTime conversion,
         // and vetoes any edits that are not valid. We just make sure we have
         // two colons and only digits in between:
-        TextFormatter<LocalTime> textFormatter = new TextFormatter<LocalTime>(localTimeConverter,
+        TextFormatter<LocalTime> textFormatter = new TextFormatter<>(localTimeConverter,
                 LocalTime.now(), c -> {
             String newText = c.getControlNewText();
             if (newText.matches("[0-9]{0,2}:[0-9]{0,2}")) {

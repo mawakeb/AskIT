@@ -5,10 +5,18 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "questions")
+@Table(
+        name = "questions",
+        indexes = {
+            @Index(columnList = "id"),
+            @Index(columnList = "roomId"),
+            @Index(columnList = "userId")
+        }
+        )
 public class Question {
 
     @Id
@@ -135,12 +143,16 @@ public class Question {
         upvotes++;
     }
 
+    public void cancelUpvote() {
+        upvotes--;
+    }
+
     public int getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(int createTime) {
-        this.createTime = Question.this.createTime;
+        this.createTime = createTime;
     }
 
     public int getAnswerTime() {

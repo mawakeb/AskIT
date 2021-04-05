@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.google.gson.Gson;
@@ -11,20 +12,18 @@ import java.util.UUID;
 
 import nl.tudelft.oopp.askit.entities.Room;
 import nl.tudelft.oopp.askit.methods.SpeedMethods;
-import nl.tudelft.oopp.askit.repositories.QuestionRepository;
 import nl.tudelft.oopp.askit.repositories.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 class SpeedControllerTest {
     private static final Gson gson = new Gson();
 
     @Mock
     RoomRepository roomRepository;
-    @Mock
-    QuestionRepository repo;
     @Mock
     private Room room;
 
@@ -39,7 +38,7 @@ class SpeedControllerTest {
         id = UUID.randomUUID();
         userId = UUID.randomUUID();
         room = new Room(id, "test", "staff", "student", ZonedDateTime.now());
-        sc = new SpeedController(repo, roomRepository);
+        sc = new SpeedController(roomRepository);
     }
 
     @Test
@@ -54,9 +53,29 @@ class SpeedControllerTest {
                 0,
                 0
         ));
+        List<String> sendList = List.of(
+                id.toString(),
+                "staff"
+        );
+        String parsedList = gson.toJson(sendList);
         room.incrementSize();
-        int result = sc.getSpeed(id.toString());
+        int result = sc.getSpeed(parsedList);
         assertEquals(result, 1);
+    }
+
+    @Test
+    void getSpeedUnauthorized() {
+        // sets up a response
+        when(roomRepository.findByid(id)).thenReturn(room);
+
+        List<String> sendList = List.of(
+                id.toString(),
+                "wrong"
+        );
+        String parsedList = gson.toJson(sendList);
+        // Exception should be thrown
+        assertThrows(ResponseStatusException.class, () -> sc.getSpeed(parsedList));
+
     }
 
     @Test

@@ -21,7 +21,7 @@ public class Question {
     private boolean deleted;
     private boolean edited;
     private boolean answered;
-    private int createTime;
+    private final int createTime;
     private int answerTime;
 
     /**
