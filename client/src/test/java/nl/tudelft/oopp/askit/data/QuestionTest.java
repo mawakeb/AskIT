@@ -67,6 +67,17 @@ public class QuestionTest {
     }
 
     @Test
+    void testEquals1() {
+        assertNotEquals(question, new Object());
+    }
+
+    @Test
+    void testEquals2() {
+        Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
+        assertEquals(question, question);
+    }
+
+    @Test
     void setUpvotes() {
         Question question2 = new Question(id, content, upvotes, roomId, userId, username, 5);
         question2.setUpvotes(10);

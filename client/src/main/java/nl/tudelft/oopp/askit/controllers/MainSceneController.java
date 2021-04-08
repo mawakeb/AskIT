@@ -148,7 +148,8 @@ public class MainSceneController {
                     ? "/fxml/roomSceneStaff.fxml"
                     : "/fxml/roomScene.fxml";
 
-            User user = new User(UUID.fromString(roomId), roleName, username.getText(), links[2]);
+            User user = new User(UUID.randomUUID(),
+                    UUID.fromString(roomId), roleName, username.getText(), links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
         }
     }

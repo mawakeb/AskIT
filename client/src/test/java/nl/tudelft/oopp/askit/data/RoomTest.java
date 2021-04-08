@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.askit.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -52,7 +53,28 @@ class RoomTest {
     }
 
     @Test
+    void testGetOpenTime() {
+        assertEquals(openTime, room.getOpenTime());
+    }
+
+    @Test
     void getSlowModeSeconds() {
         assertEquals(slowModeSeconds, room.getSlowModeSeconds());
+    }
+
+    @Test
+    void testEquals() {
+        Room room1 = new Room(id, name, isOpen, openTime, slowModeSeconds);
+        assertEquals(room, room1);
+    }
+
+    @Test
+    void testEquals1() {
+        assertNotEquals(room, new Object());
+    }
+
+    @Test
+    void testEquals2() {
+        assertEquals(room, room);
     }
 }
