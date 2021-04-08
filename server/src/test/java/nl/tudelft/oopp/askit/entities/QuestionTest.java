@@ -60,7 +60,17 @@ public class QuestionTest {
     void testToString() {
         assertEquals(
                 question.toString(),
-                "Question{id=" + id + ", content='test', upvotes=0}"
+                "Question{" + "id=" + id + ", content='"
+                        + content + '\'' + ", roomId="
+                        + roomId + ", userId="
+                        + userId + ", username='"
+                        + username + '\'' + ", upvotes="
+                        + 0 + ", deleted="
+                        + "false" + ", edited="
+                        + "false" + ", createTime="
+                        + 5 + ", answered="
+                        + "false" + ", answerTime="
+                        + 0 + '}'
         );
     }
 
@@ -68,6 +78,16 @@ public class QuestionTest {
     void testEquals() {
         Question question2 = new Question(id, content, roomId, userId, username, 5);
         assertEquals(question, question2);
+    }
+
+    @Test
+    void testEquals1() {
+        assertEquals(question, question);
+    }
+
+    @Test
+    void testEquals2() {
+        assertNotEquals(question, new Object());
     }
 
     @Test
@@ -147,4 +167,9 @@ public class QuestionTest {
         assertEquals(5, question.getAnswerTime());
     }
 
+    @Test
+    void setContent() {
+        question.setContent("epic");
+        assertEquals(question.getContent(), "epic");
+    }
 }
