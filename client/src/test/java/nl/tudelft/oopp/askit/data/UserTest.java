@@ -97,6 +97,7 @@ class UserTest {
         User user1 = new User(id, roomId, name, role, roleId);
         assertEquals(user1, user);
     }
+
     @Test
     void testEquals1() {
         assertNotEquals(user, new Object());
