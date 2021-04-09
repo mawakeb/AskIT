@@ -150,7 +150,7 @@ public class MainSceneController {
                     : "/fxml/roomScene.fxml";
 
             User user = new User(UUID.randomUUID(),
-                    UUID.fromString(roomId), roleName, username.getText(), links[2]);
+                    UUID.fromString(roomId), username.getText(), roleName, links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
             Stage stage = (Stage) this.list.getScene().getWindow();
             stage.close();
