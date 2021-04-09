@@ -112,13 +112,19 @@ public class User {
         return banned == user.banned
                 && Objects.equals(id, user.id)
                 && Objects.equals(roomId, user.roomId)
+                && Objects.equals(name, user.name)
                 && Objects.equals(role, user.role)
                 && Objects.equals(roleId, user.roleId);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", roomId=" + roomId + ", banned=" + banned
-                + ", role='" + role + '\'' + ", roleId='" + roleId + '\'' + '}';
+        return "User{" + "id=" + id
+                + ", roomId="
+                + roomId + ", name='"
+                + name + '\'' + ", banned="
+                + banned + ", role='"
+                + role + '\'' + ", roleId='"
+                + roleId + '\'' + '}';
     }
 }

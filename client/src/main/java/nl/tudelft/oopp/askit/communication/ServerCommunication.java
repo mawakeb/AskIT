@@ -10,6 +10,7 @@ import java.net.http.HttpResponse;
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
+    private static final String serverLoc = "http://localhost:8080";
 
     // method to supply mock client
     public static void setHttpClient(HttpClient client) {
@@ -40,7 +41,7 @@ public class ServerCommunication {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedQuestion))
-                .uri(URI.create("http://localhost:8080/send/question")).build();
+                .uri(URI.create(serverLoc + "/send/question")).build();
         return getStringHttpResponse(request);
     }
 
@@ -53,7 +54,8 @@ public class ServerCommunication {
     public static HttpResponse<String> getQuestionsHttp(String roomId)
             throws IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/questions?q=" + roomId)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(
+                serverLoc + "/get/questions?q=" + roomId)).build();
         return getStringHttpResponse(request);
     }
 
@@ -66,7 +68,8 @@ public class ServerCommunication {
     public static HttpResponse<String> getAnsweredHttp(String roomId)
             throws IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/get/answered?q=" + roomId)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(
+                serverLoc + "/get/answered?q=" + roomId)).build();
         return getStringHttpResponse(request);
     }
 
@@ -80,7 +83,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(list))
-                .uri(URI.create("http://localhost:8080/send/upvote")).build();
+                .uri(URI.create(serverLoc + "/send/upvote")).build();
         return getStringHttpResponse(request);
     }
 
@@ -95,7 +98,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(ids))
-                .uri(URI.create("http://localhost:8080/send/cancelUpvote")).build();
+                .uri(URI.create(serverLoc + "/send/cancelUpvote")).build();
         return getStringHttpResponse(request);
     }
 
@@ -109,7 +112,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(list))
-                .uri(URI.create("http://localhost:8080/send/answer")).build();
+                .uri(URI.create(serverLoc + "/send/answer")).build();
         return getStringHttpResponse(request);
     }
 
@@ -123,7 +126,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(list))
-                .uri(URI.create("http://localhost:8080/room/create")).build();
+                .uri(URI.create(serverLoc + "/room/create")).build();
         return getStringHttpResponse(request);
     }
 
@@ -136,7 +139,8 @@ public class ServerCommunication {
     public static HttpResponse<String> joinRoomHttp(String link)
             throws IOException, InterruptedException {
 
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room/join?q=" + link)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(
+                serverLoc + "/room/join?q=" + link)).build();
         return getStringHttpResponse(request);
     }
 
@@ -151,7 +155,7 @@ public class ServerCommunication {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(list))
-                .uri(URI.create("http://localhost:8080/room/close")).build();
+                .uri(URI.create(serverLoc + "/room/close")).build();
         return getStringHttpResponse(request);
     }
 
@@ -164,7 +168,7 @@ public class ServerCommunication {
     public static HttpResponse<String> getRoomStatusHttp(String roomId)
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/room/status?id=" + roomId)).build();
+                .uri(URI.create(serverLoc + "/room/status?id=" + roomId)).build();
         return getStringHttpResponse(request);
     }
 
@@ -178,7 +182,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(list))
-                .uri(URI.create("http://localhost:8080/send/ban")).build();
+                .uri(URI.create(serverLoc + "/send/ban")).build();
         return getStringHttpResponse(request);
     }
 
@@ -192,7 +196,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedList))
-                .uri(URI.create("http://localhost:8080/speed/send")).build();
+                .uri(URI.create(serverLoc + "/speed/send")).build();
         return getStringHttpResponse(request);
     }
 
@@ -206,7 +210,7 @@ public class ServerCommunication {
             throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(parsedList))
-                .uri(URI.create("http://localhost:8080/speed/get")).build();
+                .uri(URI.create(serverLoc + "/speed/get")).build();
         return getStringHttpResponse(request);
     }
 
@@ -226,7 +230,7 @@ public class ServerCommunication {
         // while the functionality of the method is still best described with POST
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(""))
-                .uri(URI.create("http://localhost:8080/room/slow"
+                .uri(URI.create(serverLoc + "/room/slow"
                         + "?id=" + roomId + "&seconds=" + seconds + "&roleId=" + roleId
                 )).build();
         return getStringHttpResponse(request);
@@ -246,7 +250,7 @@ public class ServerCommunication {
         // it's easier to pass multiple parameters in url
         // while the functionality of the method is still best described with POST
         HttpRequest request = HttpRequest.newBuilder()
-                .GET().uri(URI.create("http://localhost:8080/send/timeleft"
+                .GET().uri(URI.create(serverLoc + "/send/timeleft"
                         + "?uid=" + userId + "&rid=" + roomId
                 )).build();
         return getStringHttpResponse(request);

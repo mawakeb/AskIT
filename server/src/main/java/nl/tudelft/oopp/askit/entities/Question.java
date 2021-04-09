@@ -173,11 +173,17 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{"
-                + "id=" + id
-                + ", content='" + content + '\''
-                + ", upvotes=" + upvotes
-                + '}';
+        return "Question{" + "id=" + id + ", content='"
+                + content + '\'' + ", roomId="
+                + roomId + ", userId="
+                + userId + ", username='"
+                + username + '\'' + ", upvotes="
+                + upvotes + ", deleted="
+                + deleted + ", edited="
+                + edited + ", createTime="
+                + createTime + ", answered="
+                + answered + ", answerTime="
+                + answerTime + '}';
     }
 
     @Override
@@ -192,14 +198,13 @@ public class Question {
         return upvotes == question.upvotes
                 && deleted == question.deleted
                 && edited == question.edited
+                && createTime == question.createTime
+                && answered == question.answered
+                && answerTime == question.answerTime
                 && Objects.equals(id, question.id)
                 && Objects.equals(content, question.content)
                 && Objects.equals(roomId, question.roomId)
-                && Objects.equals(userId, question.userId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, content, upvotes, roomId, userId, deleted, edited);
+                && Objects.equals(userId, question.userId)
+                && Objects.equals(username, question.username);
     }
 }

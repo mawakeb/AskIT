@@ -118,7 +118,9 @@ public class RoomLogic {
         try {
             HttpResponse<String> response = getRoomStatusHttp(roomId);
             if (response.statusCode() != 200) {
-                ErrorDisplay.open("Status code: " + response.statusCode(), response.body());
+                JSONObject json = new JSONObject(response.body());
+                ErrorDisplay.open("Status code: " + response.statusCode(),
+                        json.get("message").toString());
                 return null;
             } else {
                 // extract boolean value from string

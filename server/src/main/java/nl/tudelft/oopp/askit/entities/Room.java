@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,23 +65,6 @@ public class Room {
         this.studentSize = 0;
     }
 
-    /**
-     * Constructor for the Room class without specifying id.
-     *
-     * @param name    title of the room chosen by lecturer.
-     * @param staff   room access code for the staff role.
-     * @param student room acces code for the student role.
-     */
-    public Room(String name, String staff, String student, ZonedDateTime openTime) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.staff = staff;
-        this.student = student;
-        this.isOpen = true;
-        this.openTime = openTime;
-        this.studentSize = 0;
-    }
-
     public int getSize() {
         return studentSize;
     }
@@ -129,11 +113,19 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        } else if (o != null && this.getClass() == o.getClass()) {
-            Room room = (Room) o;
-            return this.id == room.id;
-        } else {
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        Room room = (Room) o;
+        return isOpen == room.isOpen
+                && studentSize == room.studentSize
+                && slowModeSeconds == room.slowModeSeconds
+                && Objects.equals(id, room.id)
+                && Objects.equals(name, room.name)
+                && Objects.equals(staff, room.staff)
+                && Objects.equals(student, room.student)
+                && Objects.equals(openTime, room.openTime);
     }
+
 }

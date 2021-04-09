@@ -44,7 +44,7 @@ public class RoomSceneStaffController extends RoomController {
 
         alert.showAndWait().ifPresent(type -> {
             if (type == btnYes) {
-                RoomLogic.closeRoom(super.getRoomId(),super.getUser().getRoleId());
+                RoomLogic.closeRoom(super.getRoomId(), super.getUser().getRoleId());
                 updateRoomStatus();
             }
         });
@@ -78,6 +78,7 @@ public class RoomSceneStaffController extends RoomController {
 
     /**
      * check if answering mode is enabled.
+     *
      * @return boolean value for mode
      */
     public boolean getAnswerMode() {
@@ -116,6 +117,9 @@ public class RoomSceneStaffController extends RoomController {
     protected void updateRoomSpeed() {
         int currentRoomSpeed = SpeedLogic.getSpeed(super.getRoomId(), super.getUser().getRoleId());
         slider.setValue(currentRoomSpeed);
+        if (currentRoomSpeed != 2) {
+            slider.setVisible(true);
+        }
     }
 
     @Override

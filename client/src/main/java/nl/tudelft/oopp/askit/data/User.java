@@ -29,23 +29,6 @@ public class User {
         this.roleId = roleId;
     }
 
-    /**
-     * Creates the user object.
-     *
-     * @param roomId room the user belongs to
-     *               banned - is the user currently banned (not allowed to comment)
-     * @param role   name of the users role
-     * @param roleId secret Id that the user has, what gives him his privileges
-     */
-    public User(UUID roomId, String role, String name, String roleId) {
-        this.id = UUID.randomUUID();
-        this.roomId = roomId;
-        this.name = name;
-        this.banned = false;
-        this.role = role;
-        this.roleId = roleId;
-    }
-
     public UUID getId() {
         return id;
     }
@@ -102,13 +85,20 @@ public class User {
         return banned == user.banned
                 && Objects.equals(id, user.id)
                 && Objects.equals(roomId, user.roomId)
+                && Objects.equals(name, user.name)
                 && Objects.equals(role, user.role)
                 && Objects.equals(roleId, user.roleId);
     }
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", roomId=" + roomId + ", banned=" + banned
-                + ", role='" + role + '\'' + ", roleId='" + roleId + '\'' + '}';
+        return "User{"
+                + "id=" + id
+                + ", roomId="
+                + roomId + ", name='" + name
+                + '\'' + ", banned="
+                + banned + ", role='"
+                + role + '\'' + ", roleId='"
+                + roleId + '\'' + '}';
     }
 }

@@ -167,14 +167,14 @@ public class Question {
         return upvotes == question.upvotes
                 && deleted == question.deleted
                 && edited == question.edited
+                && answered == question.answered
+                && createTime == question.createTime
+                && answerTime == question.answerTime
                 && Objects.equals(id, question.id)
                 && Objects.equals(content, question.content)
                 && Objects.equals(roomId, question.roomId)
-                && Objects.equals(userId, question.userId);
+                && Objects.equals(userId, question.userId)
+                && Objects.equals(username, question.username);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, content, upvotes, roomId, userId, deleted, edited);
-    }
 }

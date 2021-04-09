@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Test;
 
 class RoomTest {
     private Room testRoomA;
-    private Room testRoomB;
-    private Room testRoomC;
     private UUID dupe;
     private String name;
     private String staff;
@@ -46,8 +44,6 @@ class RoomTest {
         time = ZonedDateTime.now().minus(1, ChronoUnit.MINUTES);
 
         testRoomA = new Room(dupe, name, staff, student, time);
-        testRoomB = new Room(UUID.randomUUID(), "Room B", "ace", "bdf", time);
-        testRoomC = new Room(dupe, "Room C", "abc", "def", time);
 
         // Rooms are identified by their ID,
         // so rooms A & C are identical, regardless of the different room names.
@@ -104,13 +100,14 @@ class RoomTest {
     }
 
     @Test
-    public void differentRoomsSameAttributesEqualsTest() {
-        assertEquals(testRoomC, testRoomA);
+    void testEquals2() {
+        assertNotEquals(testRoomA, new Object());
     }
 
     @Test
-    public void differentRoomsEqualsTest() {
-        assertNotEquals(testRoomB, testRoomA);
+    void testEquals() {
+        Room testRoomB = new Room(dupe, name, staff, student, time);
+        assertEquals(testRoomA, testRoomB);
     }
 
     @Test

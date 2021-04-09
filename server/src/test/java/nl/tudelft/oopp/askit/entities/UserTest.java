@@ -2,6 +2,7 @@ package nl.tudelft.oopp.askit.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
@@ -98,10 +99,24 @@ class UserTest {
     }
 
     @Test
+    void testEquals1() {
+        assertEquals(user, user);
+    }
+
+    @Test
+    void testEquals2() {
+        assertNotEquals(user, new Object());
+    }
+
+    @Test
     void testToString() {
-        assertEquals(user.toString(), "User{id=" + id + ", "
-                + "roomId=" + roomId + ", "
-                + "banned=false, role='role', roleId='roleId'}");
+        assertEquals(user.toString(), "User{" + "id=" + id
+                + ", roomId="
+                + roomId + ", name='"
+                + name + '\'' + ", banned="
+                + "false" + ", role='"
+                + role + '\'' + ", roleId='"
+                + roleId + '\'' + '}');
     }
 
 }
