@@ -21,6 +21,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import nl.tudelft.oopp.askit.communicationlogic.RoomLogic;
 import nl.tudelft.oopp.askit.data.Room;
 import nl.tudelft.oopp.askit.data.User;
@@ -151,6 +152,8 @@ public class MainSceneController {
             User user = new User(UUID.randomUUID(),
                     UUID.fromString(roomId), roleName, username.getText(), links[2]);
             RoomSceneDisplay.open(roomScene, room, user);
+            Stage stage = (Stage) this.list.getScene().getWindow();
+            stage.close();
         }
     }
 
