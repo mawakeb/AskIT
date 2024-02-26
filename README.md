@@ -6,7 +6,7 @@ Server: ![Server coverage](https://gitlab.ewi.tudelft.nl/cse1105/2020-2021/team-
 A live QnA board for direct communication between students and lecturers.
 
 ## Description of project
-This project was made for the CSE1105 OOP project course. The backlog of intended features can be found in `docs/Backlog.md` <br/> Most notable functionality:
+This project was made for the CSE1105 OOP project course. This repository does not capture all branches, pull requests and other version managements that took place in the original repository in GitLab. The backlog of intended features can be found in `docs/Backlog.md` <br/> Most notable functionality:
 - Lecturers can create lecture rooms that open on a specific time.
 - Users can ask questions, upvote them and give feedback on the lecture's speed. 
 - Lecturers can answer questions by moving them to a different tab.
@@ -14,13 +14,11 @@ This project was made for the CSE1105 OOP project course. The backlog of intende
 - Answered questions can be exported
 ## Group members
 
-| 📸 | Name | Email |
-|---|---|---|
-| ![](https://eu.ui-avatars.com/api/?name=DK&length=4&size=50&color=DDD&background=777&font-size=0.325) | Dāvis Kažemaks | D.Kazemaks@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=C.K.&length=4&size=50&color=DDD&background=3e3769&font-size=0.35) | Cherin Kim | C.Kim-1@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=NL&length=4&size=50&color=DDD&background=777&font-size=0.325) | NadjaLazarevic | N.lazarevic@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=EW&length=4&size=50&color=DDD&background=855&font-size=0.35) | Emiel Witting | E.A.Witting@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=EF&length=4&size=50&color=DDD&background=0d7f5a&font-size=0.35) | Ebenezer Fosu | E.Fosu@student.tudelft.nl |
+- Dāvis Kažemaks 
+- Cherin Kim 
+- Emiel Witting 
+- ~~Nadja Lazarevic~~ 
+- ~~Ebenezer Fosu~~ 
 
 ## How to run it
 1. Project can be cloned with `git clone git@gitlab.ewi.tudelft.nl:cse1105/2020-2021/team-repositories/oopp-group-44/repository-template.git`
